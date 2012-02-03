@@ -96,7 +96,7 @@ function DiffRepair_CheckBrokenLine($title)
 
   foreach ($diff_list as $diff_data)
   { $diff          = $diff_data['text'];
-    $reversed_diff = ReverseDiff($diff);
+    $reversed_diff = PlomDiffReverse($diff);
     $text          = PlomPatch($text, $reversed_diff); }
 
   $diff_list_reversed = array_reverse($diff_list);
@@ -116,7 +116,7 @@ function DiffRepair_CheckBadStart($title)
 
   foreach ($diff_list as $diff_data)
   { $diff          = $diff_data['text'];
-    $reversed_diff = ReverseDiff($diff);
+    $reversed_diff = PlomDiffReverse($diff);
     $text          = PlomPatch($text, $reversed_diff); }
 
   if ($text !== '') return TRUE;
