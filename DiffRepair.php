@@ -158,22 +158,20 @@ function Action_DiffRepair()
   $l['title'] = 'Apply repair function to all pages?'; $l['content'] = $content;
   OutputHTML(); }
 
-function PrepareWrite_DiffRepairPage()
+function PrepareWrite_DiffRepairPage(&$task_write_list, &$redir)
 { global $todo_urgent, $title, $title_url;
   $function = $_POST['function'];
   $temp = NewTemp();
-  $x['tasks'][$todo_urgent][] = array('DiffRepairWrite', array($title, $function, $temp));
-  $x['redir'] = $title_url;
-  return $x; }
+  $task_write_list[$todo_urgent][] = array('DiffRepairWrite', array($title, $function, $temp));
+  $redir = $title_url; }
 
-function PrepareWrite_DiffRepairAll()
+function PrepareWrite_DiffRepairAll(&$task_write_list, &$redir)
 { global $todo_urgent;
   $function = $_POST['function'];
   $titles = GetAllPageTitles();
   foreach ($titles as $title)
   { $temp = NewTemp();
-    $x['tasks'][$todo_urgent][] = array('DiffRepairWrite', array($title, $function, $temp)); }
-  return $x; }
+    $task_write_list[$todo_urgent][] = array('DiffRepairWrite', array($title, $function, $temp)); } }
 
 function DiffRepairWrite($title, $function, $temp)
 { global $diff_dir, $nl, $pages_dir;

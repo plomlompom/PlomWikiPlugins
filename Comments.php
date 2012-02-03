@@ -130,7 +130,7 @@ function Comments_GetComments($comment_file)
 
   return $comments; }
 
-function PrepareWrite_comment()
+function PrepareWrite_comment(&$task_write_list, &$redir)
 # Deliver to Action_write() all information needed for comment submission.
 { global $Comments_dir, $esc, $nl, $title, $title_url, $todo_urgent;
   $author = $_POST['author']; $url = $_POST['URL']; $text = $_POST['text'];
@@ -165,18 +165,17 @@ function PrepareWrite_comment()
       if ($id > $highest_id)
         $highest_id = $id; }
   $new_id = $highest_id + 1;
-  $x['redir'] = $title_url.'#comment_'.$new_id;
+  $redir = $title_url.'#comment_'.$new_id;
 
   # Put all strings together into $add, set writing task for it added to $old.
   $timestamp = time();
   $add = $new_id.$nl.$timestamp.$nl.$author.$nl.$url.$nl.$text.$nl.$esc.$nl;
-  $x['tasks'][$todo_urgent][] = array('SafeWrite',
+  $task_write_list[$todo_urgent][] = array('SafeWrite',
                                       array($cur_page_file), array($old.$add));
   $tmp = NewTemp();
-  $x['tasks'][$todo_urgent][] = array('Comments_AddToRecent',
+  $task_write_list[$todo_urgent][] = array('Comments_AddToRecent',
                                       array($title, $new_id, $timestamp, $tmp),
-                                      array($author));
-  return $x; }
+                                      array($author)); }
 
 ###################
 # Recent Comments #
@@ -274,20 +273,19 @@ function Action_comments_admin()
   $l['title'] = $esc.'CommentsAdmin'.$esc; $l['content'] = $form;
   OutputHTML(); }
 
-function PrepareWrite_comments_admin()
+function PrepareWrite_comments_admin(&$task_write_list, &$redir)
 # Return to Action_write() all information needed for comments administration.
 { global $captcha_path, $Comments_dir, $esc, $nl, $pw_path, $root_rel, 
          $title_url, $todo_urgent;
   $new_pw    = $_POST['captcha'];
   $build_dir = $_POST['build_dir'];
-  $x['tasks'] = array();
 
   # Directory building.
   if ($build_dir == 'yes')
   { if (is_dir($Comments_dir))
       ErrorFail($esc.'CommentsCannotBuildDir'.$esc);
     else
-      $x['tasks'][$todo_urgent][] = array('mkdir', array($Comments_dir)); }
+      $task_write_list[$todo_urgent][] = array('mkdir', array($Comments_dir)); }
 
   # If $new_pw is "delete", unset captcha. Else, $new_pw becomes new captcha.
   if ($new_pw)
@@ -297,13 +295,12 @@ function PrepareWrite_comments_admin()
     if ('delete' == $new_pw) 
     { unset($passwords['_comment_captcha']);
       if (is_file($captcha_path))
-        $x['tasks'][$todo_urgent][] = array('unlink', array($captcha_path)); }
+        $task_write_list[$todo_urgent][] = array('unlink', array($captcha_path)); }
     else
     { $passwords['_comment_captcha'] = hash('sha512', $salt.$new_pw);
-      $x['tasks'][$todo_urgent][] = array('SafeWrite', 
+      $task_write_list[$todo_urgent][] = array('SafeWrite', 
                                         array($captcha_path), array($new_pw)); }
     foreach ($passwords as $key => $pw)
       $pw_file_text .= $key.':'.$pw.$nl;
-    $x['tasks'][$todo_urgent][] = array('SafeWrite', 
-                                        array($pw_path), array($pw_file_text));}
-  return $x; }
+    $task_write_list[$todo_urgent][] = array('SafeWrite', 
+                                        array($pw_path), array($pw_file_text));} }

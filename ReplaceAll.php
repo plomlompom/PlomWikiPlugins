@@ -44,7 +44,7 @@ function Action_ReplaceAll()
   $l['title'] = 'Global string / regex replacement'; $l['content'] = $form;
   OutputHTML(); }
 
-function PrepareWrite_ReplaceAll()
+function PrepareWrite_ReplaceAll(&$task_write_list, &$redir)
 # Return to Action_write() tasks for a whole new todo list of replacements.
 { global $pages_dir, $todo_urgent, $work_dir;
   $todo_replace_all = $work_dir.'todo_replace_all';
@@ -72,10 +72,10 @@ function PrepareWrite_ReplaceAll()
   $tmp_path_pattern = NewTemp($pattern);
 
   # Write tasks.
-  $x['tasks'][$todo_urgent][] = array('touch', array($todo_replace_all));
+  $task_write_list[$todo_urgent][] = array('touch', array($todo_replace_all));
   foreach ($titles as $title)
   { $todo_temp = NewTemp();
-    $x['tasks'][$todo_urgent][] = array('ReplaceAll_OnPage',
+    $task_write_list[$todo_urgent][] = array('ReplaceAll_OnPage',
                                         array($todo_replace_all, $title, $regex,
                                               $timestamp, $tmp_path_pattern,
                                               $tmp_path_replace, 
@@ -83,15 +83,13 @@ function PrepareWrite_ReplaceAll()
                                               $tmp_path_summary, $del_rule_0,
                                               $tmp_path_del_0, $del_rule_1,
                                               $tmp_path_del_1, $todo_temp)); }
-  $x['tasks'][$todo_urgent][] = array('WorkTodo', array($todo_replace_all));
-  $x['tasks'][$todo_urgent][] = array('unlink', array($tmp_path_pattern));
-  $x['tasks'][$todo_urgent][] = array('unlink', array($tmp_path_replace));
-  $x['tasks'][$todo_urgent][] = array('unlink', array($tmp_path_author));
-  $x['tasks'][$todo_urgent][] = array('unlink', array($tmp_path_summary));
-  $x['tasks'][$todo_urgent][] = array('unlink', array($tmp_path_del_0));
-  $x['tasks'][$todo_urgent][] = array('unlink', array($tmp_path_del_1));
-
-  return $x; }
+  $task_write_list[$todo_urgent][] = array('WorkTodo', array($todo_replace_all));
+  $task_write_list[$todo_urgent][] = array('unlink', array($tmp_path_pattern));
+  $task_write_list[$todo_urgent][] = array('unlink', array($tmp_path_replace));
+  $task_write_list[$todo_urgent][] = array('unlink', array($tmp_path_author));
+  $task_write_list[$todo_urgent][] = array('unlink', array($tmp_path_summary));
+  $task_write_list[$todo_urgent][] = array('unlink', array($tmp_path_del_0));
+  $task_write_list[$todo_urgent][] = array('unlink', array($tmp_path_del_1)); }
 
 function ReplaceAll_OnPage($todo_replace_all, $title, $regex, $timestamp, 
                            $path_pattern, $path_replace, $path_author,

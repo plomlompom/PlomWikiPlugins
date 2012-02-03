@@ -290,7 +290,7 @@ function Action_autolink_admin()
   $l['title'] = $esc.'AutoLinkAdmin'.$esc; $l['content'] = $form; 
   OutputHTML(); }
 
-function PrepareWrite_autolink_admin()
+function PrepareWrite_autolink_admin(&$task_write_list, &$redir)
 { global $AutoLink_dir, $esc, $nl, $root_rel, $todo_urgent;
   $action = $_POST['do_what'];
 
@@ -299,14 +299,14 @@ function PrepareWrite_autolink_admin()
     # Abort if $AutoLink_dir found, else prepare task to create it.
     if (is_dir($AutoLink_dir))
       ErrorFail($esc.'AutoLinkNoBuildDB'.$esc);
-    $x['tasks'][$todo_urgent][] = array('mkdir', array($AutoLink_dir));
+    $task_write_list[$todo_urgent][] = array('mkdir', array($AutoLink_dir));
 
     # Build page file creation, linking tasks.
     $titles = GetAllPageTitles();
     $string = '';
     foreach ($titles as $title)
-    { $x['tasks'][$todo_urgent][] = array('AutoLink_CreateFile', array($title));
-      $x['tasks'][$todo_urgent][] = array('AutoLink_TryLinkingAll', 
+    { $task_write_list[$todo_urgent][] = array('AutoLink_CreateFile', array($title));
+      $task_write_list[$todo_urgent][] = array('AutoLink_TryLinkingAll', 
                                           array($title)); } }
 
   elseif ('Destroy' == $action)
@@ -319,14 +319,12 @@ function PrepareWrite_autolink_admin()
     $p_dir = opendir($AutoLink_dir);
     while (FALSE !== ($fn = readdir($p_dir)))
       if (is_file($AutoLink_dir.$fn))
-        $x['tasks'][$todo_urgent][] = array('unlink', array($AutoLink_dir.$fn));
+        $task_write_list[$todo_urgent][] = array('unlink', array($AutoLink_dir.$fn));
     closedir($p_dir); 
-    $x['tasks'][$todo_urgent][] = array('rmdir', array($AutoLink_dir)); }
+    $task_write_list[$todo_urgent][] = array('rmdir', array($AutoLink_dir)); }
 
   else
-    ErrorFail($esc.'AutoLinkInvalidDBAction'.$esc);
-
-  return $x; }
+    ErrorFail($esc.'AutoLinkInvalidDBAction'.$esc); }
 
 ##########################################
 # DB writing tasks to be called by todo. #
