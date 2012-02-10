@@ -1,8 +1,8 @@
 <?php
 # PlomWiki plugin: Search
 # 
-# Provides a very simple case-insensitive full-text string through all pages of
-# a PlomWiki via Action_search().
+# Provides a very simple case-insensitive full-text string search through all
+# pages of a PlomWiki via Action_Search().
 
 # Language-specific variables.
 $l['Search']            = 'Search'; 
