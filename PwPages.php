@@ -1,33 +1,55 @@
 <?php
+# PlomWiki plugin: PwPages
+# 
+# Provides page passwords, to be set by admin via Action_PwPages().
+#
+# To do: how to /remove/ page passwords.
 
-# PlomWiki plugin "PwPages"
-# Provides page passwords; Action_page_set_pw()
+# PwPages-specific language-variable phrases.
+$l['PwPages_PWfor']     = 'Password for';
+$l['PwPages_page']      = 'page';
+$l['PwPages_set']       = 'Set password for page';
 
-$l['SetPagePW'] = 'Set page password';
-$hook_Action_page_edit .= '$form = BuildPostForm($title_url.\'&amp;action=write'
-                             .'&amp;t=page\', $input, $esc.\'PWfor\'.$esc.\' <'.
-                          'select name="auth"><option value="*">\'.$esc.\'admin'
-                          .'\'.$esc.\'</option><option value="\'.$title.\'">\''.
-                            '.$esc.\'page\'.$esc.\'</option></select>: <input '.
-                                               'type="password" name="pw">\');';
-$permissions['page'][] = $title;
+# Extend $legal_pw_key keys to page titles prefixed with 'PwPages_'.
+$PwPages_prefix         = 'PwPages_';
+$legal_pw_key          .= '|'.$PwPages_prefix.$legal_title;
 
-$l['PWfor'] = 'Password for';
-$l['page'] = 'page';
-function Action_page_set_pw()
-{ global $esc, $title;
-  ChangePW_form($esc.'page'.$esc.' "'.$title.'"', $title); }
+# Authorize as key for "t=page" the current page title prefixed with 'PwPages_'.
+$PwPages_CurKey         = $PwPages_prefix.$title;
+$permissions['page'][]  = $PwPages_CurKey;
 
-function ChangePW_form($desc_new_pw, $new_auth, $desc_pw = 'Admin', 
-                       $auth = '*', $t = 'admin_sets_pw')
-# Output page for changing password keyed to $auth and described by $desc.
-{ global $esc, $l, $nl, $nl2, $title_url;
-  $input = $esc.'NewPWfor'.$esc.' '.$desc_new_pw.':<br />'.$nl.
-           '<input type="hidden" name="new_auth" value="'.$new_auth.'">'.$nl
-          .'<input type="password" name="new_pw" /><br />'.$nl.
-           '<input type="hidden" name="auth" value="'.$auth.'">'.$nl.
-           $desc_pw.' '.$esc.'pw'.$esc.':<br />'.$nl.
-           '<input type="password" name="pw">';
-  $form = BuildPostForm($title_url.'&amp;action=write&amp;t='.$t, $input, '');
-  $l['title'] = $esc.'ChangePWfor'.$esc.' '.$desc_new_pw; $l['content'] = $form;
+# Replace Action_page_edit() form with one allowing page passwords.
+$hook_Action_page_edit .= '
+global $PwPages_CurKey;
+$form = \'<form method="post" \'.
+                 \'action="\'.$title_url.\'&amp;action=write&amp;t=page">\'.$nl.
+        \'<textarea name="text" \'.
+              \'rows="\'.$esc.\'Action_page_edit_TextareaRows\'.$esc.\'">\'.$nl.
+        $text.\'</textarea>\'.$nl.
+        $esc.\'Author\'.$esc.\': <input name="author" type="text" />\'.$nl.
+        $esc.\'Summary\'.$esc.\': <input name="summary" type="text" />\'.$nl.
+        $esc.\'PwPages_PWfor\'.$esc.\' <select name="auth">\'.$nl.
+        \'<option value="*">\'.$esc.\'admin\'.$esc.\'</option>\'.$nl.
+        \'<option value="\'.$PwPages_CurKey.\'">\'.
+                                   $esc.\'PwPages_page\'.$esc.\'</option>\'.$nl.
+        \'</select>: <input type="password" name="pw">\'.$nl.
+        \'<input type="submit" value="OK" />\'.$nl.
+        \'</form>\';';
+
+function Action_PwPages()
+# Output form to set password for current page via admin authorization.
+{ global $l, $nl, $PwPages_CurKey, $PwPages_prefix, $title, $title_url;
+  $form = '<form method="post" '.
+            'action="'.$title_url.'&amp;action=write&amp;t=admin_sets_pw">'.$nl.
+          $l['PwPages_set'].' "'.$title.'":<br />'.$nl.
+          '<input type="hidden"   name="new_auth" '.
+                                             'value="'.$PwPages_CurKey.'">'.$nl.
+          '<input type="password" name="new_pw" /><br />'.$nl.
+          '<input type="hidden"   name="auth"     value="*">'.$nl.
+          'Admin '.$l['pw'].':<br />'.$nl.
+          '<input type="password" name="pw">'.$nl.
+          '<input type="submit"   value="OK" />'.$nl.
+          '</form>';
+  $l['title']   = $l['PwPages_set'].' "'.$title.'"';
+  $l['content'] = $form;
   OutputHTML(); }
