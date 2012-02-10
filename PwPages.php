@@ -38,18 +38,18 @@ $form = \'<form method="post" \'.
 
 function Action_PwPages()
 # Output form to set password for current page via admin authorization.
-{ global $l, $nl, $PwPages_CurKey, $PwPages_prefix, $title, $title_url;
+{ global $esc, $l, $nl, $PwPages_CurKey, $PwPages_prefix, $title, $title_url;
   $form = '<form method="post" '.
             'action="'.$title_url.'&amp;action=write&amp;t=admin_sets_pw">'.$nl.
-          $l['PwPages_set'].' "'.$title.'":<br />'.$nl.
+          $esc.'PwPages_set'.$esc.' "'.$title.'":<br />'.$nl.
           '<input type="hidden"   name="new_auth" '.
                                              'value="'.$PwPages_CurKey.'">'.$nl.
           '<input type="password" name="new_pw" /><br />'.$nl.
           '<input type="hidden"   name="auth"     value="*">'.$nl.
-          'Admin '.$l['pw'].':<br />'.$nl.
+          'Admin '.$esc.'pw'.$esc.':<br />'.$nl.
           '<input type="password" name="pw">'.$nl.
           '<input type="submit"   value="OK" />'.$nl.
           '</form>';
-  $l['title']   = $l['PwPages_set'].' "'.$title.'"';
+  $l['title']   = $esc.'PwPages_set'.$esc.' "'.$title.'"';
   $l['content'] = $form;
   OutputHTML(); }
