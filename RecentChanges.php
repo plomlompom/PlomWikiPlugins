@@ -1,62 +1,66 @@
 <?php
-# PlomWiki plugin "RecentChanges"
+# PlomWiki plugin: RecentChanges
+# 
 # Provides Action_RecentChanges().
 
 # Language-specific variables.
-$l['RecentChanges'] = 'Recent Changes';
+$l['RecentChanges']   = 'Recent Changes';
 $l['NoRecentChanges'] = 'No RecentChanges file found.';
 
-$RC_dir                  = $plugin_dir.'RecentChanges/';
-$RC_path                 = $RC_dir.'RecentChanges.txt';
+# RecentChanges-specific global variables.
+$RecentChanges_dir  = $plugin_dir.'RecentChanges/';
+$RecentChanges_path = $RecentChanges_dir.'RecentChanges';
+
+# Hook into WritePage(): Prepare and write RecentChanges_Add() call to todo.
 $hook_WritePage .= '
-$tmp = Newtemp();
-$x = NewTemp($txt_PluginsTodo);
-$state = 1;
-if     ($text == \'delete\') $state = 0;
-elseif ($diff_old == \'\')   $state = 2;
-$tmp_author  = NewTemp($author);
-$tmp_summary = NewTemp($summary);
-WriteTask($x, "Add_to_RecentChanges", array($title, $timestamp, $new_diff_id, 
-                                            $tmp_author, $tmp_summary, $tmp,
-                                            $state));
-WriteTask($x, "unlink", array($tmp_author));
-WriteTask($x, "unlink", array($tmp_summary));
-$txt_PluginsTodo = file_get_contents($x);
-unlink($x);';
+$del = \'FALSE\';
+if ($text == \'delete\') $del = \'TRUE\';
+$tmp = NewTemp();
+$txt_PluginsTodo .= "
+RecentChanges_Add(\'$title\', $timestamp, $del, \'$tmp\');";';
 
-function Add_to_RecentChanges($title, $timestamp, $id, $tmp_author,
-                              $tmp_summary, $tmp,$state)
-# Add info of page change to RecentChanges file.
-{ global $nl, $l, $RC_dir, $RC_path, $todo_urgent;
+function RecentChanges_Add($title, $time, $del, $tmp) {
+  # Add info of page change to RecentChanges file.
+  global $diff_dir, $nl, $RecentChanges_dir, $RecentChanges_path;
 
-  $author  = file_get_contents($tmp_author);
-  $summary = file_get_contents($tmp_summary);
+  # Work was finished in a previous run if $tmp is no more, so exit.
+  if (!is_file($tmp)) return;
 
-  if (!is_dir($RC_dir))
-    mkdir($RC_dir);
+  # Check for (create if needed) RecentChanges tree, get old RC file text.
+  if (!is_dir($RecentChanges_dir))
+    mkdir($RecentChanges_dir);
+  if (is_file($RecentChanges_path))
+    $RC_txt = file_get_contents($RecentChanges_path);
 
-  $RC_txt = '';
-  if (is_file($RC_path))
-    $RC_txt = file_get_contents($RC_path);
+  # If page is deleted, merely prepend '!' to the title and ignore all else.
+  if ($del) $title = '!'.$title;
 
-  if     (0 == $state) $title = '!'.$title;
-  elseif (2 == $state) $title = '+'.$title;
+  # Otherwise, get metadata from newest diff (highest id) from page's diff list. 
+  else {
+	$diffs = DiffList($diff_dir.$title);
+    $id = 0;
+	foreach ($diffs as $i => $x)
+	  if ($id < $i) 
+	    $id = $i;
+    $author = $diffs[$id]['author'];
+    $sum = $diffs[$id]['summary'];
 
-  $RC_txt = $timestamp.$nl.$title.$nl.$id.$nl.$author.$nl.$summary.$nl.'%%'.$nl.
-                                                                        $RC_txt;
+    # If the newest diff has id=0, the page was newly created, so prepend '+'.
+    if ($id == 0) $title = '+'.$title; }
 
-  if (is_file($tmp))
-  { file_put_contents($tmp, $RC_txt); 
-    rename($tmp, $RC_path); } }
+  # Add new data to new RC file text, write result atomically.
+  $RC_txt = $time.$nl.$title.$nl.$id.$nl.$author.$nl.$sum.$nl.'%%'.$nl.$RC_txt;
+  file_put_contents($tmp, $RC_txt); 
+  rename($tmp, $RecentChanges_path); }
 
 function Action_RecentChanges()
 # Provide HTML output of RecentChanges file.
-{ global $esc, $l, $nl, $nl2, $RC_path, $title_root;
+{ global $esc, $l, $nl, $nl2, $RecentChanges_path, $title_root;
 
   # Format RecentChanges file content into HTML output.
   $output = '';
-  if (is_file($RC_path)) 
-  { $txt = file_get_contents($RC_path);
+  if (is_file($RecentChanges_path)) 
+  { $txt = file_get_contents($RecentChanges_path);
     $lines    = explode($nl, $txt);
     $i        = 0;
     $date_old = $state = $state_on = $state_off = '';
