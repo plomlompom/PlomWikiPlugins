@@ -9,7 +9,7 @@ $l['Search']            = 'Search';
 $l['SearchResults']     = 'Search results for';
 $l['SearchResultsNone'] = 'None.';
 
-function Action_search()
+function Action_Search()
 # Case-insensitive search through all pages' texts and titles.
 { global $esc, $legal_title, $l, $nl, $nl2, $pages_dir, $title_root;
 
@@ -36,7 +36,7 @@ function Action_search()
     else              $results .= '<p>'.$esc.'SearchResultsNone'.$esc.'</p>'; }
 
   $content = '<form method="get" action="'.$root_rel.'">'.$nl.
-             '<input type="hidden" name="action" value="search" />'.$nl.
+             '<input type="hidden" name="action" value="Search" />'.$nl.
              '<input type="text" name="query" value="'.$query.'" />'.$nl.
              '<input type="submit" value="'.$esc.'Search'.$esc.'!" />'.$nl.
              '</form>'.$results; 
