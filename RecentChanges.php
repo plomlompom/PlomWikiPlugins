@@ -38,10 +38,7 @@ function RecentChanges_Add($title, $time, $del, $tmp) {
   # Otherwise, get metadata from newest diff (highest id) from page's diff list. 
   else {
 	$diffs = DiffList($diff_dir.$title);
-    $id = 0;
-	foreach ($diffs as $i => $x)
-	  if ($id < $i) 
-	    $id = $i;
+	$id = count($diffs) - 1;
     $author = $diffs[$id]['author'];
     $sum = $diffs[$id]['summary'];
 
