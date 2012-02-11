@@ -1,32 +1,37 @@
 <?php
-
-# PlomWiki plugin "AutoLink"
-# Provides autolinks; Action_autolink_admin()
+# PlomWiki plugin: Autolink
+#
+# Provides autolinks; Action_Autolink_admin()
 
 # Language-specific phrases.
-$l['AutoLinkAdmin'] = 'AutoLink administration';
-$l['AutoLinkBuild'] = 'Build';
-$l['AutoLinkDestroy'] = 'Destroy';
-$l['AutoLinkNoBuildDB'] = 'Not building AutoLink DB. Directory already exists.';
-$l['AutoLinkNoDestroyDB'] = 'Not destroying AutoLink DB. Directory does not exist.';
-$l['AutoLinkInvalidDBAction'] = 'Invalid AutoLink DB action.';
-$l['AutoLinkToggle'] = 'Toggle AutoLink display';
+$l['Autolink_Admin'] = 'Autolink administration';
+$l['Autolink_Build'] = 'Build';
+$l['Autolink_Destroy'] = 'Destroy';
+$l['Autolink_NoBuildDB'] = 'Not building Autolink DB. Directory already exists.';
+$l['Autolink_NoDestroyDB'] = 'Not destroying Autolink DB. Directory does not exist.';
+$l['Autolink_InvalidDBAction'] = 'Invalid Autolink DB action.';
+$l['Autolink_Toggle'] = 'Toggle Autolink display';
+$l['Autolink_Backlinks'] = 'Autolink BackLinks';
+$l['Autolink_NoBacklinks'] = 'No Autolink backlinks found for this page.';
 
-# AutoLink display toggling.
-$l['AutoLinks_show_neg'] = 'yes';
-if ('yes' == $_GET['show_autolinks'])
-{ $l['AutoLinks_show_neg'] = 'no'; 
-  $l['pageview_params'] = $l['pageview_params'].'&amp;show_autolinks=yes'; }
+# Directory for Autolink DB.
+$Autolink_dir = $plugin_dir.'Autolink/';
 
-$AutoLink_dir   = $plugin_dir.'AutoLink/';
+# Hook into WritePage(). Autolink_Update() expects the text of the newest diff,
+# which WritePage() does not guarantee to make available; if in need, read it in
+# from the file system (at this point of WritePage() already updated by it).
 $hook_WritePage .= '
-$x = NewTemp($txt_PluginsTodo);
-$y = array();
-$y = UpdateAutoLinks($y, $title, $text, $diff_add);
-foreach ($y as $task)
-  WriteTask($x, $task[0], $task[1]);
-$txt_PluginsTodo = file_get_contents($x);
-unlink($x);';
+if (!$diff_add) {
+  $diffs          = DiffList($diff_dir.$title);
+  $id             = count($diffs) - 1;
+  $diff_add       = $diffs[$id][\'text\']; }
+$txt_PluginsTodo .= $nl.Autolink_Update($title, $text, $diff_add);';
+
+# Autolink display toggling.
+$l['Autolink_show_neg'] = 'yes';
+if ('yes' == $_GET['Autolinks_show'])
+{ $l['Autolink_show_neg'] = 'no'; 
+  $l['pageview_params'] = $l['pageview_params'].'&amp;Autolinks_show=yes'; }
 
 ##########
 # Markup #
@@ -34,36 +39,39 @@ unlink($x);';
 
 function MarkupAutolink($text)
 # Autolink $text according to its Autolink file.
-{ global $AutoLink_dir, $title;
+{ global $Autolink_dir, $title;
 
-  # AutoLink display toggling.
-  if ('yes' !== $_GET['show_autolinks'])
+  # Autolink display toggling.
+  if ('yes' !== $_GET['Autolinks_show'])
     return $text;
   
   # Don't do anything if there's no Autolink file for the page displayed.
-  $cur_page_file = $AutoLink_dir.$title;
+  $cur_page_file = $Autolink_dir.$title;
   if (!is_file($cur_page_file))
     return $text; 
   
   # Get $links_out from $cur_page_file, turn into regex from their resp. files.
-  $links_out = AutoLink_GetFromFileLine($cur_page_file, 1, TRUE);
+  $links_out = Autolink_GetFromFileLine($cur_page_file, 1, TRUE);
   foreach ($links_out as $pagename)
-  { $regex_pagename = AutoLink_RetrieveRegexForTitle($pagename);
+  { $regex_pagename = Autolink_RetrieveRegexForTitle($pagename);
     
-    # Build autolinks into $text where $avoid applies.
+    # Build autolinks into $text where $avoid applies. Note that even though the
+    # regex of $pagename is used for finding strings to autolink, SetLink() may
+    # decide to link that string to another title from $titles, a list generated
+    # from the matches of $regex_pagename on the other titles of $links_out.
     $avoid  = '(?=[^>]*($|<(?!\/(a|script))))';
     $match  = '/('.$regex_pagename.')'.$avoid.'/ieu';
     $titles = array();
     foreach ($links_out as $x)
       if (preg_match('/'.$regex_pagename.'/ieu', $x))
         $titles[] = $x;
-    $repl   = 'AutoLink_SetLink("$1", $titles)';
+    $repl   = 'Autolink_SetLink("$1", $titles)';
     $text   = preg_replace($match, $repl, $text); }
 
   return $text; }
 
-function AutoLink_SetLink($string, $titles)
-# From $links_out choose best title regex match to $string, return HTML link.
+function Autolink_SetLink($string, $titles)
+# From $titles choose best title regex match to $string, return HTML link.
 { global $l, $root_rel;
 
   # In $titles_ranked, store for each title its levenshtein distance to $string.
@@ -82,39 +90,38 @@ function AutoLink_SetLink($string, $titles)
   # Build link.
   return '<a rel="nofollow" style="text-decoration: none;" href="'.$root_rel.
                    '?title='.$title.$l['pageview_params'].'">'.$string.'</a>'; }
+
 #############
 # Backlinks #
 #############
 
-$l['AutoLinkBacklinks'] = 'AutoLink BackLinks';
-$l['AutoLinkNoBacklinks'] = 'No AutoLink backlinks found for this page.';
-
-function AutoLink_Backlinks()
-{ global $AutoLink_dir, $l, $esc, $nl, $nl2, $root_rel, $title;
+function Autolink_Backlinks()
+{ global $Autolink_dir, $l, $esc, $nl, $nl2, $root_rel, $title;
 
   # Don't do anything if there's no Autolink file for the page displayed
-  $cur_page_file = $AutoLink_dir.$title;
+  $cur_page_file = $Autolink_dir.$title;
   if (!is_file($cur_page_file))
     return; 
 
   # Build HTML of linked $links_in.
-  $links_in = AutoLink_GetFromFileLine($cur_page_file, 2, TRUE);
+  $links_in = Autolink_GetFromFileLine($cur_page_file, 2, TRUE);
   foreach ($links_in as $link)
-    $backlinks .= '<a rel="nofollow" href="'.$root_rel.'?title='.$link.'">'.$link.'</a> ';
+    $backlinks .= '<a rel="nofollow" href="'.$root_rel.'?title='.$link.'">'.
+                                                                  $link.'</a> ';
 
   # $backlinks empty message.
   if (!$links_in)
-    $backlinks = $esc.'AutoLinkNoBacklinks'.$esc;
+    $backlinks = $esc.'Autolink_NoBacklinks'.$esc;
   
   return $nl2.
-         '<h2>'.$esc.'AutoLinkBacklinks'.$esc.'</h2>'.$nl.'<p>'.$backlinks.
+         '<h2>'.$esc.'Autolink_Backlinks'.$esc.'</h2>'.$nl.'<p>'.$backlinks.
                                                                        '</p>'; }
 
 ####################
 # Regex generation #
 ####################
 
-function BuildRegex($title)
+function Autolink_BuildRegex($title)
 # Generate the regular expression to match $title for autolinking in pages.
 { $umlaut_table = array('äÄ' => array('ae', 'Ae'), 'öÖ' => array('oe', 'Oe'),
                         'üÜ' => array('ue', 'Ue'), 'ß'  => array('ss'));
@@ -215,35 +222,35 @@ function BuildRegex($title)
 # DB updating / building / purging #
 ####################################
 
-function UpdateAutoLinks($t, $title, $text, $diff)
-# Add to task list $t AutoLink DB update tasks. $text, $diff determine change.
-{ global $AutoLink_dir, $nl;
+function Autolink_Update($title, $text, $diff)
+# Add to task list Autolink DB update tasks. $text, $diff determine change.
+{ global $Autolink_dir, $nl;
 
-  # Silently fail if AutoLink DB directory does not exist.
-  if (!is_dir($AutoLink_dir)) return $t;
+  # Silently fail if Autolink DB directory does not exist.
+  if (!is_dir($Autolink_dir)) return $t;
 
   # Some needed variables.
-  $cur_page_file = $AutoLink_dir.$title;
+  $cur_page_file    = $Autolink_dir.$title;
   $all_other_titles = array_diff(GetAllPageTitles(), array($title));
 
-  # Page creation demands new file, going through all pages for new AutoLinks.
+  # Page creation demands new file, going through all pages for new Autolinks.
   if (!is_file($cur_page_file))
-  { $t[] = array('AutoLink_CreateFile', array($title));
+  { $t .= 'Autolink_CreateFile("'.$title.'");'.$nl;
     foreach ($all_other_titles as $linkable)
-    { $t[] = array('AutoLink_TryLinking', array($title, $linkable));
-      $t[] = array('AutoLink_TryLinking', array($linkable, $title)); } }
+    { $t .= 'Autolink_TryLinking("'.$title.'", "'.$linkable.'");'.$nl;
+      $t .= 'Autolink_TryLinking("'.$linkable.'", "'.$title.'");'.$nl; } }
 
   else
-  { $links_out  = AutoLink_GetFromFileLine($cur_page_file, 1, TRUE);
+  { $links_out  = Autolink_GetFromFileLine($cur_page_file, 1, TRUE);
 
     # Page deletion severs links between files before $cur_page_file deletion.
     if ($text == 'delete')
     { foreach ($links_out as $pagename)
-        $t[] = array('AutoLink_ChangeLine', array($pagename, 2, 'out', $title));
-      $links_in = AutoLink_GetFromFileLine($cur_page_file, 2, TRUE);
+        $t .= 'Autolink_ChangeLine("'.$pagename.'",2,"del","'.$title.'");'.$nl;
+      $links_in = Autolink_GetFromFileLine($cur_page_file, 2, TRUE);
       foreach ($links_in as $pagename)
-        $t[] = array('AutoLink_ChangeLine', array($pagename, 1, 'out', $title));
-      $t[] = array('unlink', array($cur_page_file)); }
+        $t .= 'Autolink_ChangeLine("'.$pagename.'",1,"del","'.$title.'");'.$nl;
+      $t .= 'unlink("'.$cur_page_file.'")'.$nl; }
 
     # For mere page change, determine tasks comparing $diff against $links_out.
     else
@@ -254,144 +261,151 @@ function UpdateAutoLinks($t, $title, $text, $diff)
       if     ($line[0] == '<') $diff_del[] = substr($line, 1);
       elseif ($line[0] == '>') $diff_add[] = substr($line, 1);
   
-      # Compare unlinked titles' regexes against $diff_add: harvest $links_new.
-      $links_new = array();
+      # Compare unlinked titles' regexes against $diff_add: harvest new links.
       $not_linked = array_diff($all_other_titles, $links_out);
-      foreach (AutoLink_TitlesInLines($not_linked, $diff_add) as $pagename)
-        $links_new[] = $pagename;
-      $t = AutoLink_TasksLinksInOrOut($t, 'in', $title, $links_new);
+      foreach (Autolink_TitlesInLines($not_linked, $diff_add) as $pn)
+      { $t .= 'Autolink_ChangeLine("'.$title.'",1,"add","'.$pn.'");'.$nl;
+        $t .= 'Autolink_ChangeLine("'.$pn.'",2,"add","'.$title.'");'.$nl; }
  
       # Threaten $links_out by matches in $diff_del. Remove threat if regexes
       # still matched in $diff_add or whole page $text. Else remove link_out.
       $links_rm = array();
-      foreach (AutoLink_TitlesInLines($links_out, $diff_del) as $pagename)
+      foreach (Autolink_TitlesInLines($links_out, $diff_del) as $pagename)
         $links_rm[] = $pagename;
-      foreach (AutoLink_TitlesInLines($links_rm, $diff_add) as $pagename)
+      foreach (Autolink_TitlesInLines($links_rm, $diff_add) as $pagename)
         $links_rm = array_diff($links_rm, array($pagename)); 
       $lines_text = explode($nl, $text);
-      foreach (AutoLink_TitlesInLines($links_rm, $lines_text) as $pagename)
+      foreach (Autolink_TitlesInLines($links_rm, $lines_text) as $pagename)
         $links_rm = array_diff($links_rm, array($pagename));
-      $t = AutoLink_TasksLinksInOrOut($t, 'out', $title, $links_rm); } }
+      foreach ($links_rm as $pn)
+      { $t .= 'Autolink_ChangeLine("'.$title.'",1,"del","'.$pn.'");'.$nl;
+        $t .= 'Autolink_ChangeLine("'.$pn.'",2,"del","'.$title.'");'.$nl; } } }
 
   return $t; }
 
-function Action_autolink_admin()
-{ global $l, $AutoLink_dir, $esc, $nl;
+function Action_Autolink_admin()
+{ global $l, $Autolink_dir, $esc, $nl;
 
-  # Offer building or purging of DB, dependant on existence of $AutoLink_dir.
-  if (!is_dir($AutoLink_dir)) $do_what = 'Build';
+  # Offer building or purging of DB, dependant on existence of $Autolink_dir.
+  if (!is_dir($Autolink_dir)) $do_what = 'Build';
   else                        $do_what = 'Destroy';
 
   # Final HTML.
-  $input = '<p>'.$esc.'AutoLink'.$do_what.$esc.' AutoLink DB?</p>'.$nl.
+  $form = '<form method="post" '.
+                'action="'.$root_rel.'?action=write&amp;t=autolink_admin">'.$nl.
+           '<p>'.$esc.'Autolink_'.$do_what.$esc.' Autolink DB?</p>'.$nl.
            '<input name="auth" type="hidden" value="*" />'.$nl.
-           '<input type="hidden" name="do_what" value="'.$do_what.'" />';
-  $form = BuildPostForm($root_rel.'?action=write&amp;t=autolink_admin', $input);
-  $l['title'] = $esc.'AutoLinkAdmin'.$esc; $l['content'] = $form; 
+           '<input type="hidden" name="do_what" value="'.$do_what.'" />'.$nl.
+          'Admin '.$esc.'pw'.$esc.': <input name="pw" type="password" />'.
+                            '<input name="auth" type="hidden" value="*" />'.$nl.
+          '<input type="submit" value="OK" />'.$nl.
+          '</form>';
+  $l['title'] = $esc.'Autolink_Admin'.$esc;
+  $l['content'] = $form; 
   OutputHTML(); }
 
-function PrepareWrite_autolink_admin(&$task_write_list, &$redir)
-{ global $AutoLink_dir, $esc, $nl, $root_rel, $todo_urgent;
+function PrepareWrite_Autolink_admin(&$redir)
+# Add tasks to build or delete an Autolink DB from scratch.
+{ global $Autolink_dir, $esc, $nl, $root_rel, $todo_urgent;
   $action = $_POST['do_what'];
 
   if ('Build' == $action)
   { 
-    # Abort if $AutoLink_dir found, else prepare task to create it.
-    if (is_dir($AutoLink_dir))
-      ErrorFail($esc.'AutoLinkNoBuildDB'.$esc);
-    $task_write_list[$todo_urgent][] = array('mkdir', array($AutoLink_dir));
+    # Abort if $Autolink_dir found, else prepare task to create it.
+    if (is_dir($Autolink_dir))
+      ErrorFail($esc.'Autolink_NoBuildDB'.$esc);
+    $tasks = 'mkdir("'.$Autolink_dir.'");'.$nl;
 
     # Build page file creation, linking tasks.
     $titles = GetAllPageTitles();
     $string = '';
     foreach ($titles as $title)
-    { $task_write_list[$todo_urgent][] = array('AutoLink_CreateFile', array($title));
-      $task_write_list[$todo_urgent][] = array('AutoLink_TryLinkingAll', 
-                                          array($title)); } }
+    { $tasks .= 'Autolink_CreateFile("'.$title.'");'.$nl;
+      $tasks .= 'Autolink_TryLinkingAll("'.$title.'");'.$nl; } }
 
   elseif ('Destroy' == $action)
   {
-    # Abort if $AutoLink_dir found, else prepare task to create it.
-    if (!is_dir($AutoLink_dir))
-      ErrorFail($esc.'AutoLinkNoDestroyDB'.$esc);
+    # Abort if $Autolink_dir found, else prepare task to create it.
+    if (!is_dir($Autolink_dir))
+      ErrorFail($esc.'Autolink_NoDestroyDB'.$esc);
   
-    # Add unlink(), rmdir() tasks for $AutoLink_dir and its contents.
-    $p_dir = opendir($AutoLink_dir);
+    # Add unlink(), rmdir() tasks for $Autolink_dir and its contents.
+    $p_dir = opendir($Autolink_dir);
     while (FALSE !== ($fn = readdir($p_dir)))
-      if (is_file($AutoLink_dir.$fn))
-        $task_write_list[$todo_urgent][] = array('unlink', array($AutoLink_dir.$fn));
+      if (is_file($Autolink_dir.$fn))
+        $tasks .= 'unlink("'.$Autolink_dir.$fn.'");'.$nl;
     closedir($p_dir); 
-    $task_write_list[$todo_urgent][] = array('rmdir', array($AutoLink_dir)); }
+    $tasks .= 'rmdir("'.$Autolink_dir.'");'.$nl; }
 
   else
-    ErrorFail($esc.'AutoLinkInvalidDBAction'.$esc); }
+    ErrorFail($esc.'Autolink_InvalidDBAction'.$esc); 
+    
+  return $tasks; }
 
 ##########################################
 # DB writing tasks to be called by todo. #
 ##########################################
 
-function AutoLink_CreateFile($title)
-# Start AutoLink file of page $title, empty but for title regex.
-{ global $AutoLink_dir, $nl2;
-
-  $path    = $AutoLink_dir.$title;
-  $content = BuildRegex($title).$nl2;
-  $temp    = NewTemp();
-  if (!is_file($path))
-  { file_put_contents($temp, $content);
+function Autolink_CreateFile($title)
+# Start Autolink file of page $title, empty but for title regex.
+{ global $Autolink_dir, $nl2;
+  $path    = $Autolink_dir.$title;
+  if (!is_file($path)) {
+    $content = Autolink_BuildRegex($title).$nl2;
+    $temp    = NewTemp($content);
     rename($temp, $path); } }
 
-function AutoLink_TryLinking($title, $linkable)
-# $titles = $title_$linkable. Try auto-linking both pages, write to their files.
-{ global $AutoLink_dir, $nl, $pages_dir;
-
+function Autolink_TryLinking($title, $linkable)
+# Try auto-linking both pages, write to their files.
+{ global $Autolink_dir, $nl, $pages_dir;
   $page_txt       = file_get_contents($pages_dir.$title);
-  $regex_linkable = AutoLink_RetrieveRegexForTitle($linkable);
+  $regex_linkable = Autolink_RetrieveRegexForTitle($linkable);
   if (preg_match('/'.$regex_linkable.'/iu', $page_txt))
-  { AutoLink_ChangeLine($title, 1, 'in', $linkable);
-    AutoLink_ChangeLine($linkable, 2, 'in', $title); } }
+  { Autolink_ChangeLine($title, 1, 'add', $linkable);
+    Autolink_ChangeLine($linkable, 2, 'add', $title); } }
 
-function AutoLink_TryLinkingAll($title)
-{ global $legal_title, $AutoLink_dir; 
+function Autolink_TryLinkingAll($title)
+{ global $legal_title, $Autolink_dir; 
 
   $titles = array();
-  $p_dir = opendir($AutoLink_dir);
+  $p_dir = opendir($Autolink_dir);
   while (FALSE !== ($fn = readdir($p_dir)))
-    if (is_file($AutoLink_dir.$fn) and preg_match('/^'.$legal_title.'$/', $fn))
+    if (is_file($Autolink_dir.$fn) and preg_match('/^'.$legal_title.'$/', $fn))
       $titles[] = $fn;
   closedir($p_dir); 
 
   foreach ($titles as $linkable)
     if ($linkable != $title)
-    { AutoLink_TryLinking($title, $linkable); 
-      AutoLink_TryLinking($linkable, $title); } }
+    { Autolink_TryLinking($title, $linkable); 
+      Autolink_TryLinking($linkable, $title); } }
 
-function AutoLink_ChangeLine($title, $line_n, $action, $diff)
-# On $title's AutoLink file, on $line_n, move $diff in/out according to $action.
-{ global $AutoLink_dir, $nl;
-  $path = $AutoLink_dir.$title;
+function Autolink_ChangeLine($title, $line_n, $action, $diff)
+# On $title's Autolink file, on $line_n, move $diff in/out according to $action.
+{ global $Autolink_dir, $nl;
+  $path = $Autolink_dir.$title;
 
-  # Do $action with $diff on $title's file $line_n. Re-sort line for "in".
+  # Do $action with $diff on $title's file $line_n. Re-sort line for "add".
   $lines          = explode($nl, file_get_contents($path));
   $strings        = explode(' ', $lines[$line_n]);
-  if     ($action == 'in')
+  if     ($action == 'add')
   { if (!in_array($diff, $strings))
       $strings[]  = $diff;
-    usort($strings, 'AutoLink_SortByLengthAlphabetCase'); }
-  elseif ($action == 'out')
+    usort($strings, 'Autolink_SortByLengthAlphabetCase'); }
+  elseif ($action == 'del')
     $strings      = array_diff($strings, array($diff));  
   $new_line       = implode(' ', $strings);
   $lines[$line_n] = rtrim($new_line);
   $content        = implode($nl, $lines);
 
+  # No check for previous attempts; redundant runs of the above are harmless.
   $path_temp = NewTemp($content);
-  SafeWrite($path, $path_temp); }
+  rename($path_temp, $path); }
 
 ##########################
 # Minor helper functions #
 ##########################
 
-function AutoLink_GetFromFileLine($path, $line_n, $return_as_array = FALSE)
+function Autolink_GetFromFileLine($path, $line_n, $return_as_array = FALSE)
 # Return $line_n of file $path. $return_as_array string separated by ' ' if set.
 # From empty lines, explode() generates $x = array(''); return array() instead.
 { global $nl;
@@ -403,7 +417,7 @@ function AutoLink_GetFromFileLine($path, $line_n, $return_as_array = FALSE)
       return array();
   return $x; }
 
-function AutoLink_SortByLengthAlphabetCase($a, $b)
+function Autolink_SortByLengthAlphabetCase($a, $b)
 # Try to sort by stringlength, then follow sort() for uppercase vs. lowercase.
 { $strlen_a = strlen($a);
   $strlen_b = strlen($b);
@@ -415,28 +429,20 @@ function AutoLink_SortByLengthAlphabetCase($a, $b)
   if ($sort[0] == $a) return -1;
   else                return  1; }
 
-function AutoLink_RetrieveRegexForTitle($title)
-# Return regex matching $title according to its AutoLink file.
-{ global $AutoLink_dir;
-  $AutoLink_file = $AutoLink_dir.$title;
-  $regex = AutoLink_GetFromFileLine($AutoLink_file, 0);
+function Autolink_RetrieveRegexForTitle($title)
+# Return regex matching $title according to its Autolink file.
+{ global $Autolink_dir;
+  $Autolink_file = $Autolink_dir.$title;
+  $regex = Autolink_GetFromFileLine($Autolink_file, 0);
   return $regex; }
 
-function AutoLink_TitlesInLines($titles, $lines)
-# Return array of all $titles whose AutoLink regex matches $lines.
+function Autolink_TitlesInLines($titles, $lines)
+# Return array of all $titles whose Autolink regex matches $lines.
 { $titles_new = array();
   foreach ($titles as $title)
-  { $regex = AutoLink_RetrieveRegexForTitle($title);
+  { $regex = Autolink_RetrieveRegexForTitle($title);
     foreach ($lines as $line)
       if (preg_match('/'.$regex.'/iu', $line))
       { $titles_new[] = $title;
         break; } }
   return $titles_new; }
-
-function AutoLink_TasksLinksInOrOut($tasks, $dir, $title, $titles)
-# Add $tasks of moving $titles $dir ('in'/'out') of line 1 in $title's AutoLink
-# file and $title $dir ('in'/'out')of line 2 in $titles' AutoLink files.
-{ foreach ($titles as $pagename)
-  { $tasks[] = array('AutoLink_ChangeLine', array($title, 1, $dir, $pagename));
-    $tasks[] = array('AutoLink_ChangeLine', array($pagename, 2, $dir, $title));}
-  return $tasks; }
