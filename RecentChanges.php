@@ -37,10 +37,10 @@ function RecentChanges_Add($title, $time, $del, $tmp) {
 
   # Otherwise, get metadata from newest diff (highest id) from page's diff list. 
   else {
-	$diffs = DiffList($diff_dir.$title);
-	$id = count($diffs) - 1;
+	$diffs  = DiffList($diff_dir.$title);
+	$id     = count($diffs) - 1;
     $author = $diffs[$id]['author'];
-    $sum = $diffs[$id]['summary'];
+    $sum    = $diffs[$id]['summary'];
 
     # If the newest diff has id=0, the page was newly created, so prepend '+'.
     if ($id == 0) $title = '+'.$title; }
