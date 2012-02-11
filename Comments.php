@@ -1,7 +1,7 @@
 <?php
 # PlomWiki plugin: Comments
 # 
-# Provides comments; Action_comments_admin(), Action_RecentComments()
+# Provides comments; Action_Comments_admin(), Action_Comments()
 
 # Language- and formatting-specific variables.
 $l['Comments'] = 'Comments';
