@@ -22,9 +22,3 @@ function BuildPostForm($URL, $input, $ask_pw = NULL, $class = NULL)
   return '<form '.$class.'method="post" action="'.$URL.'">'.$nl.$input.$nl.
                                                                     $ask_pw.$nl.
          '<input type="submit" value="OK" />'.$nl.'</form>'; }
-
-function SafeWrite($path_original, $path_temp)
-# Avoid data corruption: Exit if no temp file. Rename, don't overwrite directly.
-{ if (!is_file($path_temp))    return;
-  if (is_file($path_original)) unlink($path_original); 
-  rename($path_temp, $path_original); }
