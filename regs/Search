@@ -1,0 +1,29 @@
+§
+Search§Search
+§
+Search_Results§Search results for
+§
+Search_ResultsNone§None
+§
+Search():title§§Search§
+§
+Search():content§<form method="get" action="§root_rel§">
+<input type="hidden" name="action" value="Search" />
+<input type="text" name="query" value="§Search_query§" />
+<input type="submit" value="§Search§!" />
+</form>
+§Search():results§ 
+§
+Search():results§
+
+<h2>§Search_Results§: §Search_queryNoHTML§</h2>
+
+
+§
+Search():match§<li><a href="§title_root§§i_title§">§i_title§</a></li>
+§
+Search():ResultsYes§<ul>
+§Search_Matches§
+</ul>
+§
+Search():ResultsNone§<p>§Search_ResultsNone§</p>
