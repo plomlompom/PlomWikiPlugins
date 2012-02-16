@@ -5,7 +5,7 @@
 # also hooks RecentChanges_Add() into WritePage() to protocol all page
 # changes in a RecentChanges.
 
-$l = ReadReg($plugin_regs_dir.'RecentChanges', $l);
+$s = ReadStringsFile($plugin_strings_dir.'RecentChanges', $s);
 
 # RecentChanges-specific global variables.
 $RecentChanges_dir  = $plugin_dir.'RecentChanges/';
@@ -55,7 +55,7 @@ function RecentChanges_Add($title, $time, $del, $tmp) {
 
 function Action_RecentChanges() {
 # Provide HTML output of RecentChanges file.
-  global $esc, $l, $nl, $RecentChanges_path;
+  global $esc, $s, $nl, $RecentChanges_path;
 
   # Format RecentChanges file content into HTML output.
   if (is_file($RecentChanges_path)) {
@@ -73,46 +73,46 @@ function Action_RecentChanges() {
       # a date line too, triggering one last "date changed" event.
       if  (1    == $i) {
         $datetime                      = date('Y-m-d H:i:s',(int)$line);
-        list($l['i_date'],$l['i_time'])= explode(' ', $datetime);
-        if ($l['i_old_date'] and $l['i_old_date'] != $l['i_date']) {
-          $l['RecentChanges_DayList'] .= ReplaceEscapedVars(
-                                 $l['Action_RecentChanges():DayEntry']);
-          $l['i_day'] = ''; }
-        $l['i_old_date'] = $l['i_date']; }
+        list($s['i_date'],$s['i_time'])= explode(' ', $datetime);
+        if ($s['i_old_date'] and $s['i_old_date'] != $s['i_date']) {
+          $s['RecentChanges_DayList'] .= ReplaceEscapedVars(
+                                 $s['Action_RecentChanges():DayEntry']);
+          $s['i_day'] = ''; }
+        $s['i_old_date'] = $s['i_date']; }
 
       # Get title from 2nd line. If 1st char is + or -, save to $state.
       elseif (2 == $i) {
-        $l['i_title'] = $line; 
-        if ('!' == $l['i_title'][0] or '+' == $l['i_title'][0]) {
-          $state        = $l['i_title'][0];
-          $l['i_title'] = substr($l['i_title'], 1); } 
-        $l['i_title_url'] = $l['title_root'].$l['i_title']; }
+        $s['i_title'] = $line; 
+        if ('!' == $s['i_title'][0] or '+' == $s['i_title'][0]) {
+          $state        = $s['i_title'][0];
+          $s['i_title'] = substr($s['i_title'], 1); } 
+        $s['i_title_url'] = $s['title_root'].$s['i_title']; }
         
       # Harvest remaining data from lines 3, 4 and 5.
       elseif (3 == $i)
-        $l['i_id'] = $line;
+        $s['i_id'] = $line;
       elseif (4 == $i)
-        $l['i_author'] = $line;
+        $s['i_author'] = $line;
       elseif (5 == $i) {
-        $l['i_summ'] = $line;
+        $s['i_summ'] = $line;
         
         # After reaching 5th line, build whole list entry for this diff.
-        $l['i_diff'] = ReplaceEscapedVars(
-                                     $l['Action_RecentChanges():Diff']);
+        $s['i_diff'] = ReplaceEscapedVars(
+                                     $s['Action_RecentChanges():Diff']);
         if     ('!' == $state) {
-          $l['i_title'] = ReplaceEscapedVars(
-                                 $l['Action_RecentChanges():DelTitle']);
-          $l['i_diff']  = ''; }
+          $s['i_title'] = ReplaceEscapedVars(
+                                 $s['Action_RecentChanges():DelTitle']);
+          $s['i_diff']  = ''; }
         elseif ('+' == $state)
-          $l['i_title'] = ReplaceEscapedVars(
-                                 $l['Action_RecentChanges():AddTitle']);
+          $s['i_title'] = ReplaceEscapedVars(
+                                 $s['Action_RecentChanges():AddTitle']);
         $state = '';
-        $l['i_day'] .= ReplaceEscapedVars(
-                            $l['Action_RecentChanges():DiffEntry']); } }
+        $s['i_day'] .= ReplaceEscapedVars(
+                            $s['Action_RecentChanges():DiffEntry']); } }
 
   # Either output formatted RC list, or message about its non-existence.
-    $l['content'] = $l['Action_RecentChanges():list']; }
+    $s['content'] = $s['Action_RecentChanges():list']; }
   else 
-    $l['content'] = $l['Action_RecentChanges():NoRecentChanges'];
-  $l['title'] = $l['Action_RecentChanges():title'];
+    $s['content'] = $s['Action_RecentChanges():NoRecentChanges'];
+  $s['title'] = $s['Action_RecentChanges():title'];
   OutputHTML(); }
