@@ -55,7 +55,7 @@ function RecentChanges_Add($title, $time, $del, $tmp) {
 
 function Action_RecentChanges() {
 # Provide HTML output of RecentChanges file.
-  global $esc, $s, $nl, $RecentChanges_path;
+  global $s, $nl, $RecentChanges_path;
 
   # Format RecentChanges file content into HTML output.
   if (is_file($RecentChanges_path)) {
