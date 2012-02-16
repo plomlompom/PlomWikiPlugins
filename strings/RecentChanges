@@ -1,0 +1,27 @@
+§
+RecentChanges§Recent Changes
+§
+NoRecentChanges§No RecentChanges file found.
+§
+Action_RecentChanges():title§§RecentChanges§
+§
+Action_RecentChanges():NoRecentChanges§<p>§NoRecentChanges§</p>
+§
+Action_RecentChanges():list§
+<ul>
+§RecentChanges_DayList§
+</ul>
+
+§
+Action_RecentChanges():DelTitle§<del>§i_title§</del>
+§
+Action_RecentChanges():AddTitle§<strong>§i_title§</strong>
+§
+Action_RecentChanges():Diff§ <a href="§i_title_url§&amp;action=page_history#§i_id§'">#</a>: §i_summ§ (§i_author§)
+§
+Action_RecentChanges():DiffEntry§        <li>§i_time§ <a href="§i_title_url§">§i_title§</a>§i_diff§
+
+§
+Action_RecentChanges():DayEntry§    <li><strong>§i_old_date§</strong>
+    <ul>
+§i_day§    </ul>
