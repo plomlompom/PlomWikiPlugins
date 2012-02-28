@@ -3,132 +3,92 @@
 # 
 # Provides comments; Action_Comments_admin(), Action_Comments()
 
-# Language- and formatting-specific variables.
-$l['Comments'] = 'Comments';
-$l['Comments_URL'] = 'Your URL';
-$l['Comments_Name'] = 'Your name';
-$l['Comments_None'] = 'No one commented on this page yet.';
-$l['Comments_Admin'] = 'Comments administration';
-$l['Comments_NoDir'] = 'Comments directory not yet built.';
-$l['Comments_Write'] = 'Write your own comment';
-$l['Comments_NoText'] = 'No comment written.';
-$l['Comments_Recent'] = 'Recent comments';
-$l['Comments_URLMax'] = 'URL must not exceed length (characters/bytes)';
-$l['Comments_TextMax'] = 'Text must not exceed length (characters/bytes)';
-$l['Comments_WriteNo'] = 'Commenting currently impossible: Captcha not set.';
-$l['Comments_BuildDir'] = 'Build comments directory.';
-$l['Comments_NoAuthor'] = 'Author field empty.';
-$l['Comments_RecentNo'] = 'No RecentComments file found.';
-$l['Comments_AuthorMax'] = 'Author name must not exceed length (chars/bytes)';
-$l['Comments_AskCaptcha'] = 'Captcha password needed! Write';
-$l['Comments_CurCaptcha'] = 'Current captcha';
-$l['Comments_InvalidURL'] = 'Invalid URL format.';
-$l['Comments_NewCaptcha'] = 'Set new captcha';
-$l['Comments_NoBuildDir'] = 'Do not build comments directory.';
-$l['Comments_NoCurCaptcha'] = 'No captcha set yet.';
-$l['Comments_TextareaRows'] = 10;
-$l['Comments_TextareaCols'] = 40;
-$l['Comments_CannotBuildDir'] = 'Cannot build Comments directory: '.
-                                'already exists.';
-$l['Comments_NewCaptchaExplain'] = 'Write "delete" to unset captcha. '.
-                                   'Commenting won\'t be possible then.';
+$s = ReadStringsFile($plugin_strings_dir.'Comments', $s);
 
 $Comments_dir              = $plugin_dir.'Comments/';
 $Comments_captcha_path     = $Comments_dir.'_captcha';
 $Comments_Recent_path      = $Comments_dir.'_RecentComments';
 
-$Comments_key              = '_comments_captcha';
-$legal_pw_key             .= '|'.$Comments_key;
-$permissions['Comments'][] = $Comments_key;
+$s['Comments_key']         = '_comments_captcha';
+$legal_pw_key             .= '|'.$s['Comments_key'];
+$permissions['Comments'][] = $s['Comments_key'];
+
+$hook_before_action .=
+'if ($action == "Action_page_view") $hook_OutputHTML .= \'
+$s["content"] .= Comments(); \';';
 
 #########################
 # Most commonly called. #
 #########################
 
-function Comments()
+function Comments() {
 # Return display of page comments and commenting form.
-{ global $Comments_captcha_path, $Comments_dir, $Comments_key, $esc, $nl, $nl2,
-         $pages_dir, $title, $title_url;
+  global $Comments_captcha_path, $Comments_dir, $pages_dir, $s;
 
   # Silently fail if $Comments_dir or page do not exist.
-  if (!is_dir($Comments_dir) or !is_file($pages_dir.$title))
+  if (!is_dir($Comments_dir) or !is_file($pages_dir.$s['page_title']))
     return;
 
-  # Build/format $comments display (or, if no comments, show a message on that).
-  $cur_page_file = $Comments_dir.$title;
-  if (is_file($cur_page_file))
-  { $comment_list = Comments_GetComments($cur_page_file);
-    foreach ($comment_list as $id => $x)
-    { $datetime         = date('Y-m-d H:i:s', (int) $x['datetime']);
-      $author           = '<strong>'.$x['author'].'</strong>';
-      $url              = $x['url'];
-      if ($url) $author = '<a href="'.$url.'">'.$author.'</a>';
-      $comment_text     = Comments_FormatText($x['text']);
-      $comments .= $nl2.
-                   '<article id="comment_'.$id.'">'.
-                      '<header class="Comments_head">'.
-                         '<a href="#comment_'.$id.'">#'.$id.'</a></header>'.$nl.
-                   '<div class="Comments_body">'.$comment_text.'</div>'.$nl.
-                   '<footer class="Comments_foot">'.$author.' / '.$datetime.
-                                                      '</footer></article>'; } }
-  if (!$comments)
-    $comments = $nl2.'<p>'.$esc.'Comments_None'.$esc.'</p>';
-
-  # Commenting $form. Allow commenting if $Comments_captcha_path file exists.
-  $write   = '<h2>'.$esc.'Comments_Write'.$esc.'</h2>'.$nl2;
-  if (is_file($Comments_captcha_path))
-  { $captcha = file_get_contents($Comments_captcha_path);
-    $form = '<form method="post"
-                  action="'.$title_url.'&amp;action=write&amp;t=Comments">'.$nl.
-            $esc.'Comments_Name'.$esc.': '.
-                 '<input class="Comments_InputName" name="author" /><br />'.$nl.
-            $esc.'Comments_URL'.$esc.': '.
-                           '<input class="Comments_InputURL" name="URL" />'.$nl.
-            '<pre><textarea name="text" class="Comments_Textarea" '.
-                               'rows="'.$esc.'Comments_TextareaRows'.$esc.'" '.
-                            'cols="'.$esc.'Comments_TextareaCols'.$esc.'">'.$nl.
-            $text.'</textarea></pre>'.$nl.
-            $esc.'Comments_AskCaptcha'.$esc.' "'.$captcha.'": '.
-                   '<input name="pw" class="Comments_InputCaptcha" size="5" />'.
-                   '<input name="auth" type="hidden" '.
-                                          'value='.'"'.$Comments_key.'" />'.$nl.
-            '<input type="submit" value="OK" />'.$nl.
-            '</form>';
-    $write .= $form; }
+  # Build comments display -- or show message about lack of comments.
+  $cur_page_file = $Comments_dir.$s['page_title'];
+  if (is_file($cur_page_file)) {
+    $comment_list = Comments_GetComments($cur_page_file);
+    foreach ($comment_list as $id => $x) {
+      $s['i_id']       = $id;
+      $s['i_datetime'] = date('Y-m-d H:i:s', (int) $x['datetime']);
+      $s['i_author']   = $x['author'];
+      $s['i_url']      = $x['url'];
+      if ($s['i_url'])
+        $s['i_author'] = ReplaceEscapedVars($s['Comments_AuthorURL']);
+      $s['i_text']     = Comments_FormatText($x['text']);
+      $s['Comments():Comments'] .= ReplaceEscapedVars(
+                                          $s['Comments():Comment']); } }
   else
-    $write .= '<p>'.$esc.'Comments_WriteNo'.$esc.'</p>';
+    $s['Comments():Comments'] = $s['Comments():None'];
+
+  # Output commenting $form --  if $Comments_captcha_path file exists.
+  $s['Comments():Input'] = $s['Comments():FormHead'];
+  if (is_file($Comments_captcha_path)) {
+    $s['Comments_captcha'] = file_get_contents($Comments_captcha_path);
+    $s['Comments():Input'] .= $s['Comments():form']; }
+  else
+    $s['Comments():Input'] .= $s['Comments():formNo'];
 
   # Finally, put everything together.
-  return $nl2.'<h2>'.$esc.'Comments'.$esc.'</h2>'.$comments.$nl2.$write; }
+  return $s['Comments():Output']; }
 
-function Comments_FormatText($text)
+function Comments_FormatText($text) {
 # Comment formatting: EscapeHTML, paragraphing / line breaks.
-{ global $nl;
+  global $nl;
   $text      = EscapeHTML($text);
   $lines     = explode($nl, $text);
   $last_line = '';
-  foreach ($lines as $n => $line)
-  { if     (''  == $last_line and '' !== $line) $lines[$n] = '<p>'.$line;
-    elseif ('' !== $last_line and ''  == $line) $lines[$n] = '</p>'.$nl;
-    elseif ('' !== $last_line and '' !== $line) $lines[$n] = '<br />'.$nl.$line;
+  foreach ($lines as $n => $line) {
+    if     (''  == $last_line and '' !== $line)
+      $lines[$n] = '<p>'.$line;
+    elseif ('' !== $last_line and ''  == $line)
+      $lines[$n] = '</p>'.$nl;
+    elseif ('' !== $last_line and '' !== $line)
+      $lines[$n] = '<br />'.$nl.$line;
     $last_line = $line; }
   $text = implode($lines);
-  if ('</p>' == substr($text, -4)) $text = $text.'</p>';
+  if ('</p>' == substr($text, -4))
+    $text = $text.'</p>';
   return $text; }
 
-function Comments_GetComments($comment_file)
+function Comments_GetComments($comment_file) {
 # Read $comment_file into more structured, readable array $comments.
-{ global $esc, $nl;
+  global $esc, $nl;
   $comments = array();
 
-  # Read comment info line by line,assume first lines each entry to be metadata.
+  # Read comment data line by line, read each entry's start as metadata.
   $file_txt = file_get_contents($comment_file);
-  foreach (explode($esc.$nl, $file_txt) as $entry_txt)
-  { if (!$entry_txt)
+  foreach (explode($esc.$nl, $file_txt) as $entry_txt) {
+    if (!$entry_txt)
       continue;
     $time = ''; $author = ''; $url = ''; $lines_comment = array();
-    foreach (explode($nl, $entry_txt) as $line_n => $line)
-    { if     ($line_n == 0)              $id              = $line;
+    foreach (explode($nl, $entry_txt) as $line_n => $line) {
+      if     ($line_n == 0)              $id              = $line;
       elseif ($line_n == 1)              $datetime        = $line;
       elseif ($line_n == 2)              $author          = $line;
       elseif ($line_n == 3) { if ($line) $url             = $line; }
@@ -141,104 +101,109 @@ function Comments_GetComments($comment_file)
 
   return $comments; }
 
-function PrepareWrite_Comments(&$redir)
-# Deliver to Action_write() all information needed for comment submission.
-{ global $Comments_dir, $esc, $nl, $title, $title_url, $todo_urgent;
-  $author = $_POST['author']; $url = $_POST['URL']; $text = $_POST['text'];
+function PrepareWrite_Comments(&$redir) {
+# Check for failure conditions, then prepare writing of comment to file.
+  global $Comments_dir, $esc, $nl, $s;
+  $author = $_POST['author'];
+  $url    = $_POST['URL'];
+  $text   = $_POST['text'];
 
   # Repair problematical characters in submitted texts.
   foreach (array('author', 'url', 'text') as $variable_name)
     $$variable_name = Sanitize($$variable_name);
-  $author = str_replace("\xE2\x80\xAE", '', $author); # Unicode:ForceRightToLeft
+  $author = str_replace("\xE2\x80\xAE", '', $author); # ForceRightToLeft
 
-  # Check for failure conditions: empty variables, too large or bad values.
-  if (!$author) ErrorFail($esc.'Comments_NoAuthor'.$esc);
-  if (!$text)   ErrorFail($esc.'Comments_NoText'.$esc);
-  $max_length_url = 2048; $max_length_author = 1000; $max_length_text = 10000;
-  if (strlen($author) > $max_length_author)
-    ErrorFail($esc.'Comments_AuthorMax'.$esc.': '.$max_length_author);
-  if (strlen($url) > $max_length_url)
-    ErrorFail($esc.'Comments_URLMax'.$esc.': '.$max_length_url);
-  if (strlen($text) > $max_length_text)
-    ErrorFail($esc.'Comments_TextMax'.$esc.': '.$max_length_text);
-  $legal_url = '[A-Za-z][A-Za-z0-9\+\.\-]*:([A-Za-z0-9\.\-_~:/\?#\[\]@!\$&\'\('.
-               '\)\*\+,;=]|%[A-Fa-f0-9]{2})+'; # Thx to @erlehmann
+  # Check for failure conditions: empty variables, too large/bad values.
+  if (!$author)
+    ErrorFail('Comments_NoAuthor');
+  if (!$text)
+    ErrorFail('Comments_NoText');
+  if (strlen($author) > $s['Comments_AuthorMax'])
+    ErrorFail('Comments_AuthorMaxMsg');
+  if (strlen($url) > $s['Comments_URLMax'])
+    ErrorFail('Comments_URLMaxMsg');
+  if (strlen($text) > $s['Comments_TextMax'])
+    ErrorFail('Comments_TextMaxMsg');
+  $legal_url = '[A-Za-z][A-Za-z0-9\+\.\-]*:([A-Za-z0-9\.\-_~:/\?#\[\]@!'
+              .'\$&\'\(\)\*\+,;=]|%[A-Fa-f0-9]{2})+'; # Thx to erlehmann
   if ($url and !preg_match('{^'.$legal_url.'$}', $url))
-    ErrorFail($esc.'Comments_InvalidURL'.$esc);
+    ErrorFail('Comments_InvalidURL');
 
-  # Collect from $cur_page_file $old text and $highest_id, to top with $new_id.
-  $cur_page_file = $Comments_dir.$title;
-  $highest_id    = -1;
-  if (is_file($cur_page_file))
-  { $old = file_get_contents($cur_page_file);
-    $previous_comments = Comments_GetComments($cur_page_file);
-    foreach ($previous_comments as $id => $stuff)
-      if ($id > $highest_id)
-        $highest_id = $id; }
-  $new_id = $highest_id + 1;
-  $redir = $title_url.'#comment_'.$new_id;
+  # Look into $cur_page_file for $old text and to generate $new_id.
+  $cur_page_file = $Comments_dir.$s['page_title'];
+  $new_id        = 0;
+  if (is_file($cur_page_file)) {
+    $old           = file_get_contents($cur_page_file);
+    $prev_comments = Comments_GetComments($cur_page_file);
+    $new_id        = count($prev_comments); }
+  $redir = $s['title_url'].'#comment_'.$new_id;
 
-  # Put everything together into $add, add $old to get new comments file text.
-  $timestamp = time();
-  $add = $new_id.$nl.$timestamp.$nl.$author.$nl.$url.$nl.$text.$nl.$esc.$nl;
+  # Put all together into $add, add $old to get new comments file text.
+  $time = time();
+  $add = $new_id.$nl.$time.$nl.$author.$nl.$url.$nl.$text.$nl.$esc.$nl;
 
-  # Return tasks for safe writing/update of Comments/RecentComments files.
-  $tmp_Comms = NewTemp($old.$add);
+  # Return tasks for writing/update of Comments/RecentComments files.
+  $tmp_Comms       = NewTemp($old.$add);
   $tmp_AddToRecent = NewTemp();
-  $tmp_author = NewTemp($author);
+  $tmp_author      = NewTemp($author);
   return 'if (is_file("'.$tmp_Comms.'")) rename("'.$tmp_Comms.'", "'
-                                                      .$cur_page_file.'");'.$nl.
-         'Comments_AddToRecent("'.$title.'", '.$new_id.', '.$timestamp.', "'.
-                                    $tmp_AddToRecent.'", "'.$tmp_author.'");'; }
+                                              .$cur_page_file.'");'.$nl.
+           'Comments_AddToRecent("'.$s['page_title'].'", '.$new_id.', '.
+                $time.', "'.$tmp_AddToRecent.'", "'.$tmp_author.'");'; }
 
 ###################
 # Recent Comments #
 ###################
 
-function Action_Comments()
+function Action_Comments() {
 # Provide HTML output of RecentComments file.
-{ global $esc, $l, $Comments_Recent_path, $nl, $title_root;
+ global $nl, $s, $Comments_Recent_path;
 
-  $output = '';
-  if (is_file($Comments_Recent_path))
-  { $txt      = file_get_contents($Comments_Recent_path);
+  # Format RecentComments file content into HTML output.
+  if (is_file($Comments_Recent_path)) {
+    $txt      = file_get_contents($Comments_Recent_path);
     $lines    = explode($nl, $txt);
-    $i        = 0;
-    $date_old = '';
-    foreach ($lines as $line)
-    { $i++;
-      if ('%%' == $line)
-        $i = 0;
-      elseif (1 == $i) 
-      { $datetime   = date('Y-m-d H:i:s', (int) $line);
-        list($date, $time) = explode(' ', $datetime); }
-      elseif (2 == $i)
-        $author = $line;
-      elseif (3 == $i)
-        $title = $line;
-      elseif (4 == $i)
-      { $id = $line;
-        $string = '               <li>'.$time.': '.$author.' <a href="'.
-                  $title_root.$title.'#comment_'.$id.'">on '.$title.'</a></li>';
-        if ($date != $date_old)
-        { $string = substr($string, 15);
-          $string = '          </ul>'.$nl.'     </li>'.$nl.'     <li>'.$date.$nl
-                                                     .'          <ul> '.$string;
-          $date_old = $date; } 
-        $list[] = $string; } }
-    $list[0] = substr($list[0], 15);
-    $output = '<ul>'.implode($nl, $list).$nl.'          </ul>'.$nl.'     </li>'.
-                                                                  $nl.'</ul>'; }   
-  else 
-    $output = '<p>'.$esc.'Comments_RecentNo'.$esc.'</p>';
+    
+    # Count lines of each entry in RC file, starting anew at '%%'.
+    foreach ($lines as $line) {
+      $i++;
+      if ('%%' == $line) $i = 0;
+      
+      # From 1st line, get date and time. If new date, finalize / output
+      # previous day's entry list. Don't count the new date of the 1st
+      # entry as new. The empty last line of RC file will be handled as
+      # a date line too, triggering one last "date changed" event.
+      elseif (1 == $i) {
+        $datetime                      = date('Y-m-d H:i:s',(int)$line);
+        list($s['i_date'],$s['i_time'])= explode(' ', $datetime);
+        if ($s['i_old_date'] and $s['i_old_date'] != $s['i_date']) {
+          $s['Comments_DayList'] .= ReplaceEscapedVars(
+                                      $s['Action_Comments():DayEntry']);
+          $s['i_day'] = ''; }
+        $s['i_old_date'] = $s['i_date']; }
 
-  $l['title']   = $esc.'Comments_Recent'.$esc;
-  $l['content'] = $output;
+      # Harvest remaining data from lines 2 and 3.
+      elseif (2 == $i)
+        $s['i_author'] = $line;
+      elseif (3 == $i)
+        $s['i_title']  = $line;
+        
+      # After reaching 4th line, build whole list entry for this diff.
+      elseif (4 == $i) {
+        $s['i_id']   = $line;
+        $s['i_day'] .= ReplaceEscapedVars(
+                                     $s['Action_Comments():Entry']); } }
+
+  # Either output formatted RC list, or message about its non-existence.
+    $s['content'] = $s['Action_Comments():list']; }
+  else
+    $s['content'] = $s['Action_Comments():NoRecentComments'];
+  $s['title']   = $s['Action_Comments():title'];
   OutputHTML(); }
 
-function Comments_AddToRecent($title, $id, $timestamp, $tmp, $path_author)
+function Comments_AddToRecent($title, $id, $time, $tmp, $path_author) {
 # Add info of comment addition to RecentComments file.
-{ global $Comments_Recent_path, $nl;
+  global $Comments_Recent_path, $nl;
   $author = file_get_contents($path_author);
 
   # Get old text of RecentComments file, if it exists.
@@ -247,12 +212,12 @@ function Comments_AddToRecent($title, $id, $timestamp, $tmp, $path_author)
     $Comments_Recent_txt = file_get_contents($Comments_Recent_path);
 
   # Add new entry to RecentComments file text.
-  $add = $timestamp.$nl.$author.$nl.$title.$nl.$id.$nl;
+  $add = $time.$nl.$author.$nl.$title.$nl.$id.$nl;
   $Comments_Recent_txt = $add.'%%'.$nl.$Comments_Recent_txt;
 
   # Safe writing of RecentComments file.
-  if (is_file($tmp))
-  { file_put_contents($tmp, $Comments_Recent_txt); 
+  if (is_file($tmp)) {
+    file_put_contents($tmp, $Comments_Recent_txt); 
     rename($tmp, $Comments_Recent_path); }
   
   # Clean up.
@@ -262,74 +227,41 @@ function Comments_AddToRecent($title, $id, $timestamp, $tmp, $path_author)
 # Comments administration #
 ###########################
 
-function Action_Comments_admin()
+function Action_CommentsAdmin() {
 # Administration menu for comments.
-{ global $Comments_captcha_path, $Comments_dir, $esc, $l, $nl, $nl2, $root_rel;
+  global $Comments_captcha_path, $Comments_dir, $s;
+  $s['title']   = $s['Action_CommentsAdmin():title'];
 
-  # If no $Comments_dir, offer creating it.
-  $build_dir = '';
+  # If no $Comments_dir exists, offer to create it.
   if (!is_dir($Comments_dir))
-    $build_dir = '<p>'.$nl.
-                 '<strong>'.$esc.'Comments_NoDir'.$esc.'</strong><br />'.$nl.
-                 '<input type="radio" name="build_dir" value="yes" checked='.
-                          '"checked">'.$esc.'Comments_BuildDir'.$esc.'<br>'.$nl.
-                 '<input type="radio" name="build_dir" value="no">'.$esc.
-                                          'Comments_NoBuildDir'.$esc.'<br>'.$nl.
-                 '</p>'.$nl;
+    $s['content'] = $s['Action_CommentsAdmin():Build'];
 
   # Captcha setting.
-  if (is_file($Comments_captcha_path))
-    $cur_captcha = $esc.'Comments_CurCaptcha'.$esc.': "'.
-                   file_get_contents($Comments_captcha_path).'".';
-  else
-    $cur_captcha = $esc.'Comments_NoCurCaptcha'.$esc;
-  $captcha = '<p><strong>'.$cur_captcha.'</strong></p>'.$nl.
-             '<p>'.$esc.'Comments_NewCaptcha'.$esc.': <input name="captcha" />'.
-                        ' ('.$esc.'Comments_NewCaptchaExplain'.$esc.')</p>'.$nl;
+  else {
+    if (is_file($Comments_captcha_path)) {
+      $s['Comments_captcha']=file_get_contents($Comments_captcha_path);
+      $s['Comments_Captcha']=$s['Action_CommentsAdmin():YesCaptcha']; }
+    else
+      $s['Comments_Captcha']=$s['Action_CommentsAdmin():NoCaptcha'];
+    $s['content'] = $s['Action_CommentsAdmin():SetCaptcha']; }
 
-  # Final HTML.
-  $form = '<form method="post" '.
-                'action="'.$root_rel.'?action=write&amp;t=Comments_admin">'.$nl.
-          $build_dir.$captcha.$nl.
-          'Admin '.$esc.'pw'.$esc.': <input name="pw" type="password" />'.
-                            '<input name="auth" type="hidden" value="*" />'.$nl.
-          '<input type="submit" value="OK" />'.$nl.
-          '</form>';
-  $l['title'] = $esc.'Comments_Admin'.$esc;
-  $l['content'] = $form;
   OutputHTML(); }
-  
-function PrepareWrite_Comments_admin(&$redir)
-# Return to Action_write() all information needed for comments administration.
-{ global $Comments_captcha_path, $Comments_dir, $Comments_key, $esc, $nl, 
-         $pw_path, $root_rel, $title_url, $todo_urgent;
-  $new_pw    = $_POST['captcha'];
-  $build_dir = $_POST['build_dir'];
 
-  # Directory building.
-  if ($build_dir == 'yes')
-  { if (is_dir($Comments_dir))
-      ErrorFail($esc.'Comments_CannotBuildDir'.$esc);
-    else
-      $tasks = 'mkdir("'.$Comments_dir.'");'.$nl; }
+function PrepareWrite_CommentsDirBuild() {
+# Prepare building of comments directory.
+  global $Comments_dir, $nl;
+  if (is_dir($Comments_dir))
+    ErrorFail('Comments_CannotBuildDir');
+  else
+    $tasks = 'mkdir("'.$Comments_dir.'");'.$nl;
+  return $tasks; }
 
-  # If $new_pw is "delete", unset captcha. Else, $new_pw becomes new captcha.
-  if ($new_pw)
-  { $passwords    = ReadPasswordList($pw_path);
-    $salt         = $passwords['$salt'];
-    $pw_file_text = $salt.$nl;
-    if ('delete' == $new_pw) 
-    { unset($passwords[$Comments_key]);
-      if (is_file($Comments_captcha_path))
-        $tasks .= 'unlink("'.$Comments_captcha_path.'");'.$nl; }
-    else
-    { $passwords[$Comments_key] = hash('sha512', $salt.$new_pw);
-      $tmp_captcha = NewTemp($new_pw);
-      $tasks .= 'if (is_file("'.$tmp_captcha.'")) rename("'.$tmp_captcha.'", '.
-                                         '"'.$Comments_captcha_path.'");'.$nl; }
-    foreach ($passwords as $key => $pw)
-      $pw_file_text .= $key.':'.$pw.$nl;
-    $tmp_pws = NewTemp($pw_file_text);
-    $tasks .= 'if (is_file("'.$tmp_pws.'")) rename("'.$tmp_pws.'", '.
-                                                           '"'.$pw_path.'");'; }
+function PrepareWrite_CommentsSetCaptcha() {
+# Prepare setting captcha.
+  global $Comments_captcha_path, $nl, $s;
+  $_POST['new_auth'] = $s['Comments_key'];
+  $tasks = PrepareWrite_admin_sets_pw();
+  $tmp_captcha = NewTemp($_POST['new_pw']);
+  $tasks .= 'if (is_file("'.$tmp_captcha.'")) rename("'.$tmp_captcha.
+                                '", "'.$Comments_captcha_path.'");'.$nl; 
   return $tasks; }

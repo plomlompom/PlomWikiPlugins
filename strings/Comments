@@ -1,0 +1,117 @@
+§
+Comments§Comments
+§
+Comments():None§
+
+<p>§Comments_None§</p>
+§
+Comments_None§No one commented on this page yet.
+§
+Comments_AuthorURL§<a href="§i_url§">§i_author§</a>
+§
+Comments():Comment§
+
+<article style="padding:10px;" id="comment_§i_id§"><header class="Comments_head"><a href="#comment_§i_id§">#§i_id§</a></header>
+<div class="Comments_body">§i_text§</div>
+<footer class="Comments_foot"><strong>§i_author§</strong> / §i_datetime§</footer></article>
+§
+Comments():FormHead§<h2>§Comments_Write§</h2>
+
+
+§
+Comments_Write§Write your own comment
+§
+Comments():formNo§<p>§Comments_WriteNo§</p>
+§
+Comments_WriteNo§Commenting currently impossible: Captcha not set.
+§
+Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
+§Comments_Name§: <input class="Comments_InputName" name="author" /><br />
+§Comments_URL§: <input class="Comments_InputURL" name="URL" />
+<pre><textarea name="text" class="Comments_Textarea" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§">
+</textarea></pre>
+§Comments_AskCaptcha§ "§Comments_captcha§": <input name="pw" class="Comments_InputCaptcha" size="5" /><input name="auth" type="hidden" value="§Comments_key§" />
+<input type="submit" value="OK" />
+</form>
+§
+Comments_Name§Your name
+§
+Comments_URL§Your URL
+§
+Comments_AskCaptcha§Captcha password needed! Write
+§
+Comments_TextareaRows§10
+§
+Comments_TextareaCols§40
+§
+Comments_AuthorMax§1000
+§
+Comments_URLMax§2048
+§
+Comments_TextMax§10000
+§
+Comments_NoText§No comment written.
+§
+Comments_NoAuthor§Author field empty.
+§
+Comments_AuthorMaxMsg§Author name must not exceed length (chars/bytes): §Comments_AuthorMax§
+§
+Comments_URLMaxMsg§URL must not exceed length (characters/bytes): §Comments_URLMax§
+§
+Comments_TextMaxMsg§Text must not exceed length (characters/bytes): §Comments_TextMax§
+§
+Comments_InvalidURL§Invalid URL format.
+§
+Comments():Output§
+
+<h2>§Comments§</h2>§Comments():Comments§
+
+§Comments():Input§
+§
+Action_Comments():title§Recent comments
+§
+Action_Comments():NoRecentComments§<p>§Comments_RecentNo§</p>
+§
+Comments_RecentNo§No RecentComments file found.
+§
+Action_Comments():list§
+<ul>
+§Comments_DayList§
+</ul>
+
+§
+Action_Comments():DayEntry§    <li><strong>§i_old_date§</strong>
+    <ul>
+§i_day§    </ul>
+§
+Action_Comments():Entry§        <li>§i_time§: §i_author§ <a href="§title_root§§i_title§#comment_§i_id§">on §i_title§</a></li>
+
+§
+Action_CommentsAdmin():title§Comments administration
+§
+Comments_BuildDir§Comments directory not yet built. Build it?
+§
+Action_CommentsAdmin():Build§<form method="post" action="§root_rel§?action=write&amp;t=CommentsDirBuild">
+<p>
+<strong>§Comments_BuildDir§</strong><br />
+</p>
+Admin §pw§: <input name="pw" type="password" /><input name="auth" type="hidden" value="*" />
+<input type="submit" value="Yes!" />
+</form>
+§
+Comments_CurCaptcha§Current captcha
+§
+Comments_CannotBuildDir§Cannot build Comments directory: already exists.
+§
+Action_CommentsAdmin():YesCaptcha§§Comments_CurCaptcha§: "§Comments_captcha§".
+§
+Action_CommentsAdmin():NoCaptcha§No captcha set yet.
+§
+Comments_NewCaptcha§Set new captcha
+§
+Action_CommentsAdmin():SetCaptcha§<form method="post" action="§root_rel§?action=write&amp;t=CommentsSetCaptcha">
+<p><strong>§Comments_Captcha§</strong></p>
+<p>§Comments_NewCaptcha§: <input name="new_pw" /></p>
+Admin §pw§: <input name="pw" type="password" /><input name="auth" type="hidden" value="*" />
+<input type="submit" value="OK" />
+</form>
