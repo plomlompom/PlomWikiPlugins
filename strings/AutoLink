@@ -1,0 +1,35 @@
+§
+Action_AutolinkAdmin():title§Autolink administration
+§
+Action_AutolinkAdmin():form§<form method="post" action="§root_rel§?action=write&amp;t=autolink_admin">
+<p>§Action_AutolinkAdmin():question§</p>
+<input name="auth" type="hidden" value="*" />
+<input type="hidden" name="do_what" value="§Action_AutolinkAdmin():do_what§" />
+Admin §pw§: <input name="pw" type="password" /><input name="auth" type="hidden" value="*" />
+<input type="submit" value="OK" />
+</form>
+§
+Autolink_Build§Build Autolink DB?
+§
+Autolink_Destroy§Destroy Autolink DB?
+§
+Autolink_NoBuildDB§Not building Autolink DB. Directory already exists.
+§
+Autolink_NoDestroyDB§Not destroying Autolink DB. Directory does not exist.
+§
+Autolink_InvalidDBAction§Invalid Autolink DB action.
+§
+Autolink_Toggle§Toggle Autolink display
+§
+Autolink_Backlinks()§
+
+<h2>§Autolink_Backlinks§</h2>
+<p>§Autolink_Backlinks():links§</p>
+§
+Autolink_Backlinks():link§<a rel="nofollow" href="§root_rel§title=§i_title§">§i_title§</a>
+§
+Autolink_Backlinks§Autolink BackLinks
+§
+Autolink_NoBacklinks§No Autolink backlinks found for this page.
+§
+Autolink_SetLink()§<a rel="nofollow" style="text-decoration: none;" href="§root_rel§?title=§i_title§">§i_string§</a>
