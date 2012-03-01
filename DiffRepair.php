@@ -1,4 +1,12 @@
 <?php
+# DEPRECATED.
+#
+# This is a precursor to DiffCheck.php the code of which is only kept
+# because some of its functionalities have not yet been ported to it.
+# DiffRepair's components not yet ported to DiffCheck.php have not been
+# compared to a large number of changes to plomwiki.php and may
+# therefore not work as expected.
+
 
 # PlomWiki plugin "DiffRepair"
 # Provides Action_DiffRepair_Check(), Action_page_DiffRepair_Check(),
@@ -85,7 +93,7 @@ function DiffRepair_CheckEmptyDiffs($title)
     if (empty($diff_data['text']))
     { $has_empty_diffs = TRUE;
       break; }
-  return $has_empty_diffs;  }
+  return $has_empty_diffs; }
 
 function DiffRepair_CheckBrokenLine($title)
 { global $diff_dir, $pages_dir;
