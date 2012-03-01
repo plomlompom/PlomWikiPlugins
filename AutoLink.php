@@ -5,6 +5,8 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'AutoLink', $s);
 
+$s['ActionLinks_Plugins'] .= $s['Autolink_ActionLinks'];
+
 # Directory for Autolink DB.
 $Autolink_dir = $plugin_dir.'Autolink/';
 
@@ -20,9 +22,14 @@ if (!$diff_add) {
 $txt_PluginsTodo .= $nl.Autolink_Update($title, $text, $diff_add);';
 
 # Autolink display toggling.
+$s['ActionLinks_page_Plugins'] .= $s['Autolink_ActionLinks_page'];
 $s['Autolink_show_neg'] = 'yes';
 if ('yes' == $_GET['Autolink_show'])
   $s['Autolink_show_neg'] = 'no'; 
+
+$hook_before_action .=
+'if ($action == "Action_page_view") $hook_OutputHTML .= \'
+$s["content"] .= Autolink_Backlinks(); \';';
 
 ##########
 # Markup #
@@ -35,7 +42,7 @@ function Autolink_Markup($text) {
   # Autolink display toggling.
   if ('yes' !== $_GET['Autolink_show'])
     return $text;
-  
+
   # Don't do anything if there's no Autolink file for the page displayed.
   $cur_page_file = $Autolink_dir.$title;
   if (!is_file($cur_page_file))
@@ -92,7 +99,7 @@ function Autolink_Backlinks() {
   global $Autolink_dir, $s;
 
   # Don't do anything if there's no Autolink file for the page displayed
-  $cur_page_file = $Autolink_dir.$title;
+  $cur_page_file = $Autolink_dir.$s['page_title'];
   if (!is_file($cur_page_file))
     return; 
 
@@ -155,8 +162,8 @@ function Autolink_BuildRegex($title) {
 
       # $replace_tolerance: largest-possible mirror of $suffix_tolerance
       # fitting into $ln_flexible and not larger than 1/3 of $ln_part.
-      $replace_tolerance = $suffix_tolerance; {
-      while ($replace_tolerance > 0)
+      $replace_tolerance = $suffix_tolerance;
+      while ($replace_tolerance > 0) {
         if (    ($ln_flexible >= $replace_tolerance) 
             and ($ln_part >= 2 * $replace_tolerance)) {
           $part = substr($part, 0, -$replace_tolerance);
@@ -246,13 +253,11 @@ function Autolink_Update($title, $text, $diff) {
 
     # Deletion severs links between files before $cur_page_file deletion
     if ($text == 'delete') {
-      foreach ($links_out as $pagename)
-        $t .= 'Autolink_ChangeLine("'.$pagename.'",2,"del","'.$title.
-                                                              '");'.$nl;
+      foreach ($links_out as $page)
+        $t .= 'Autolink_ChLine("'.$page.'",2,"del","'.$title.'");'.$nl;
       $links_in = Autolink_GetFromFileLine($cur_page_file, 2, TRUE);
-      foreach ($links_in as $pagename)
-        $t .= 'Autolink_ChangeLine("'.$pagename.'",1,"del","'.$title.
-                                                              '");'.$nl;
+      foreach ($links_in as $page)
+        $t .= 'Autolink_ChLine("'.$page.'",1,"del","'.$title.'");'.$nl;
       $t .= 'unlink("'.$cur_page_file.'")'.$nl; }
 
     # For mere page change, determine tasks comparing $diff:$links_out.
@@ -267,8 +272,8 @@ function Autolink_Update($title, $text, $diff) {
       # Compare unlinked titles' regexes against $diff_add for new links
       $not_linked = array_diff($all_other_titles, $links_out);
       foreach (Autolink_TitlesInLines($not_linked, $diff_add) as $pn) {
-        $t.='Autolink_ChangeLine("'.$title.'",1,"add","'.$pn.'");'.$nl;
-        $t.='Autolink_ChangeLine("'.$pn.'",2,"add","'.$title.'");'.$nl;}
+        $t.='Autolink_ChLine("'.$title.'",1,"add","'.$pn.'");'.$nl;
+        $t.='Autolink_ChLine("'.$pn.'",2,"add","'.$title.'");'.$nl; }
  
       # Threaten $links_out by matches in $diff_del. Remove threat if
       # regexes still matched in $diff_add or whole page $text. Else,
@@ -285,10 +290,8 @@ function Autolink_Update($title, $text, $diff) {
                                                            as $pagename)
         $links_rm = array_diff($links_rm, array($pagename));
       foreach ($links_rm as $pn) {
-        $t .= 'Autolink_ChangeLine("'.$title.'",1,"del","'.$pn.'");'.
-                                                                    $nl;
-        $t .= 'Autolink_ChangeLine("'.$pn.'",2,"del","'.$title.'");'.
-                                                              $nl; } } }
+        $t .= 'Autolink_ChLine("'.$title.'",1,"del","'.$pn.'");'.$nl;
+        $t .= 'Autolink_ChLine("'.$pn.'",2,"del","'.$title.'");'.$nl;}}}
 
   return $t; }
 
@@ -301,10 +304,10 @@ function Action_AutolinkAdmin() {
     $s['Action_AutolinkAdmin():do_what']  = 'build'; }
   else {
     $s['Action_AutolinkAdmin():question'] = $s['Autolink_Destroy'];
-    $s['Action_AutolinkAdmin():do_what']  = 'Destroy'; }
+    $s['Action_AutolinkAdmin():do_what']  = 'destroy'; }
 
-  $l['title'] = $s['Action_AutolinkAdmin():title'];
-  $l['content'] = $s['Action_AutolinkAdmin():form']; 
+  $s['title']   = $s['Action_AutolinkAdmin():title'];
+  $s['content'] = $s['Action_AutolinkAdmin():form']; 
   OutputHTML(); }
 
 function PrepareWrite_Autolink_admin(&$redir) {
@@ -352,7 +355,7 @@ function PrepareWrite_Autolink_admin(&$redir) {
 function Autolink_CreateFile($title) {
 # Start Autolink file of page $title, empty but for title regex.
   global $Autolink_dir, $nl;
-  $path    = $Autolink_dir.$title;
+  $path = $Autolink_dir.$title;
   if (!is_file($path)) {
     $content = Autolink_BuildRegex($title).$nl.$nl;
     $temp    = NewTemp($content);
@@ -364,8 +367,8 @@ function Autolink_TryLinking($title, $linkable) {
   $page_txt       = file_get_contents($pages_dir.$title);
   $regex_linkable = Autolink_RetrieveRegexForTitle($linkable);
   if (preg_match('/'.$regex_linkable.'/iu', $page_txt)) {
-    Autolink_ChangeLine($title, 1, 'add', $linkable);
-    Autolink_ChangeLine($linkable, 2, 'add', $title); } }
+    Autolink_ChLine($title, 1, 'add', $linkable);
+    Autolink_ChLine($linkable, 2, 'add', $title); } }
 
 function Autolink_TryLinkingAll($title) {
   global $legal_title, $Autolink_dir; 
@@ -383,7 +386,7 @@ function Autolink_TryLinkingAll($title) {
       Autolink_TryLinking($title, $linkable); 
       Autolink_TryLinking($linkable, $title); } }
 
-function Autolink_ChangeLine($title, $line_n, $action, $diff) {
+function Autolink_ChLine($title, $line_n, $action, $diff) {
 # On $title's Autolink file, on $line_n, move $diff in/out by $action.
   global $Autolink_dir, $nl;
   $path = $Autolink_dir.$title;

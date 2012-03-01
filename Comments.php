@@ -5,6 +5,8 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'Comments', $s);
 
+$s['ActionLinks_Plugins'] .= $s['Comments_ActionLinks'];
+
 $Comments_dir              = $plugin_dir.'Comments/';
 $Comments_captcha_path     = $Comments_dir.'_captcha';
 $Comments_Recent_path      = $Comments_dir.'_RecentComments';

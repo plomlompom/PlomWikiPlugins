@@ -6,6 +6,8 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'Search', $s);
 
+$s['ActionLinks_Plugins'] .= $s['Search_ActionLinks'];
+
 function Action_Search() {
 # Case-insensitive search through all pages' texts and titles.
   global $s, $nl, $pages_dir;

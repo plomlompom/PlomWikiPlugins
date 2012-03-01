@@ -7,6 +7,8 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'RecentChanges', $s);
 
+$s['ActionLinks_Plugins'] .= $s['RecentChanges_ActionLinks'];
+
 # RecentChanges-specific global variables.
 $RecentChanges_dir  = $plugin_dir.'RecentChanges/';
 $RecentChanges_path = $RecentChanges_dir.'RecentChanges';
@@ -65,13 +67,13 @@ function Action_RecentChanges() {
     # Count lines of each entry in RC file, starting anew at '%%'.
     foreach ($lines as $n => $line) {
       $i++;
-      if  ('%%' == $line) $i = 0;
+      if ('%%' == $line) $i = 0;
 
       # From 1st line, get date and time. If new date, finalize / output
       # previous day's entry list. Don't count the new date of the 1st
       # entry as new. The empty last line of RC file will be handled as
       # a date line too, triggering one last "date changed" event.
-      if  (1    == $i) {
+      elseif (1 == $i) {
         $datetime                      = date('Y-m-d H:i:s',(int)$line);
         list($s['i_date'],$s['i_time'])= explode(' ', $datetime);
         if ($s['i_old_date'] and $s['i_old_date'] != $s['i_date']) {

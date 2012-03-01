@@ -7,6 +7,8 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'PwPages', $s);
 
+$s['ActionLinks_page_Plugins'] .= $s['PwPages_ActionLinks'];
+
 # Extend $legal_pw_key keys to page titles prefixed with 'PwPages_'.
 $PwPages_prefix               = 'PwPages_';
 $legal_pw_key                .= '|'.$PwPages_prefix.$legal_title;

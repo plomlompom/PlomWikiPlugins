@@ -1,0 +1,204 @@
+§
+#§#######################################################
+  # Phrases for initialization and main design template #
+  #######################################################
+§
+JumpStart§Zur Start-Seite
+§
+SetAdminPW§Admin-Passwort setzen
+§
+View§Ansicht
+§
+Edit§Bearbeiten
+§
+History§Versions-Geschichte
+§
+IllegalPageTitle§Unerlaubter Seiten-Titel. Nur alphanumerische Zeichen und "-" erlaubt.
+§
+#§######################
+  # Action_page_view() #
+  ######################
+§
+PageDontExist§Seite nicht vorhanden.
+§
+PageCreate?§Seite erzeugen?
+§
+#§######################
+  # Action_page_edit() #
+  ######################
+§
+Action_page_edit():title§§Editing§: "§page_title§"
+§
+Editing§Bearbeiten
+§
+Author§Autor
+§
+Summary§Zusammenfassung
+§
+pw§Passwort
+§
+#§#########################
+  # Action_page_history() #
+  #########################
+§
+Action_page_history():none§Seite hat keine Versions-Geschichte.
+§
+revert§rückgängig machen
+§
+#§########################
+  # Action_page_revert() #
+  ########################
+§
+Action_page_revert():title§§RevertToBefore§ §time§?
+§
+RevertToBefore§Version wiederherstellen von vorm
+§
+Action_page_revert():invalid§Ungültiger Wiederherstellungs-Zeitpunkt.
+§
+#§##################
+  # Action_write() #
+  ##################
+§
+Action_write():AuthFail§Authentifizierung misslungen.
+§
+Action_write():InvalidTarget§Ungültiges Target.
+§
+Lock():locked§Abgehalten von einer Lock-Datei mit zu kurz zurückliegendem Zeitstempel. Einfach einen Augenblick später nochmal probieren. Lock deaktiviert in spätestens §lock_dur§ Sekunden.
+§
+#§#########################
+  # Action_set_pw_admin() #
+  #########################
+§
+ChangePWfor§Passwort verändern für
+§
+admin§Administrator
+§
+Action_set_pw_admin():EmptyAuth§Für was soll das Passwort gesetzt werden?
+§
+Action_set_pw_admin():EmptyPW§Leeres Passwort nicht erlaubt.
+§
+Action_set_pw_admin():InvalidPWKey§Ungültiger Passwort-Schlüssel.
+§
+NewPWfor§Neues Passwort für
+§
+OldAdmin§Altes Admin
+§
+#§###############################
+  # More general password stuff #
+  ###############################
+§
+ReadPasswordList():NoPWfile§Keine gültige Passwort-Datei gefunden.
+§
+#§#######################
+  # PrepareWrite_page() #
+  #######################
+§
+PrepareWrite_page():MaxLinesText§Text darf nicht länger als §page_max_lines§ Zeilen sein.
+§
+PrepareWrite_page():MaxSizeText§Text darf nicht größer als §page_max_length§ Zeichen/Bytes sein.
+§
+PrepareWrite_page():NoEmptyPage§Leere Seiten sind nicht erlaubt! Solltest du die Seite löschen wollen, reduziere den Seitentext auf "delete" (ohne Anführungszeichen).
+§
+PrepareWrite_page():NothingChanged§Du hast nichts verändert!
+§
+#§###############
+  # ErrorFail() #
+  ###############
+§
+ErrorFail():title§Fehler
+§
+#§#########################
+  # Plugin: RecentChanges #
+  #########################
+§
+RecentChanges§Letzte Änderungen
+§
+NoRecentChanges§Keine Datei letzter Änderungen gefunden.
+§
+#§##################
+  # Plugin: Search #
+  ##################
+§
+Search§Suche
+§
+Search_Results§Such-Ergebnisse für
+§
+Search_ResultsNone§Keine.
+§
+#§###################
+  # Plugin: PwPages #
+  ###################
+§
+PwPages_PWfor§Passwort für
+§
+PwPages_page§Seite
+§
+PwPages_set§Seiten-Passwort setzen
+§
+#§####################
+  # Plugin: Comments #
+  ####################
+§
+Comments§Kommentare
+§
+Action_CommentsAdmin():title§Kommentar-Einstellungen
+§
+Comments_None§Noch hat diese Seite niemand kommentiert.
+§
+Comments_Write§Schreibe deinen eigenen Kommentar
+§
+Comments_WriteNo§Kommentar-Schreiben derzeit nicht möglich: Kein Captcha gesetzt.
+§
+Comments_Name§Dein Name
+§
+Comments_URL§Deine URL
+§
+Comments_AskCaptcha§Captcha-Passwort benötigt! Schreibe
+§
+Comments_NoText§Kein Kommentar geschrieben.
+§
+Comments_NoAuthor§Autoren-Feld leer.
+§
+Comments_AuthorMaxMsg§Autoren-Name darf nicht länger sein als §Comments_AuthorMax§ Zeichen/Bytes.
+§
+Comments_URLMaxMsg§URL darf nicht länger sein als §Comments_URLMax§ Zeichen/Bytes.
+§
+Comments_TextMaxMsg§Text darf nicht länger sein als §Comments_TextMax§ Zeichen/Bytes.
+§
+Comments_InvalidURL§Ungültiges URL-Format.
+§
+Comments_BuildDir§Kommentar-Verzeichnis noch nicht gebaut. Bauen?
+§
+Comments_Yes§Ja!
+§
+Comments_CannotBuildDir§Kann Kommentar-Verzeichnis nicht bauen: Existiert bereits.
+§
+Comments_CurCaptcha§Derzeitiges Captcha
+§
+Action_CommentsAdmin():NoCaptcha§Kein Captcha gesetzt.
+§
+Comments_NewCaptcha§Setze neues Captcha
+§
+Action_Comments():title§Neueste Kommentare
+§
+Comments_RecentNo§Keine Datei letzter Kommentare gefunden.
+§
+#§####################
+  # Plugin: Autolink #
+  ####################
+§
+Action_AutolinkAdmin():title§Autolink-Einstellungen
+§
+Autolink_NoBacklinks§Keine Autolink-Rückverweise zu dieser Seite gefunden.
+§
+Autolink_Build§Baue Autolink-Datenbank?
+§
+Autolink_Destroy§Zerstöre Autolink-Datenbank?
+§
+Autolink_NoBuildDB§Baue nicht Autolink-Datenbank: Verzeichnis existiert bereits.
+§
+Autolink_NoDestroyDB§Zerstöre nicht Autolink-Datenbank: Verzeichnis existiert nicht.
+§
+Autolink_InvalidDBAction§Ungültige Autolink-Datenbank-Handlung.
+§
+Autolink_Toggle§AutoLink-Anzeige ein-/ausschalten

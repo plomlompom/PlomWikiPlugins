@@ -28,3 +28,5 @@ Admin §pw§:<br />
 <input type="password" name="pw">
 <input type="submit"   value="OK" />
 </form>
+§
+PwPages_ActionLinks§<a href="§title_url§&amp;action=page_PwPages">§PwPages_set§</a>

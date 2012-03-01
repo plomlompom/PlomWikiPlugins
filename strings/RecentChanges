@@ -25,3 +25,5 @@ Action_RecentChanges():DiffEntry§        <li>§i_time§ <a href="§i_title_url�
 Action_RecentChanges():DayEntry§    <li><strong>§i_old_date§</strong>
     <ul>
 §i_day§    </ul>
+§
+RecentChanges_ActionLinks§<a href="§root_rel§?action=RecentChanges">§RecentChanges§</a> 

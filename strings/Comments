@@ -96,8 +96,10 @@ Action_CommentsAdmin():Build§<form method="post" action="§root_rel§?action=wr
 <strong>§Comments_BuildDir§</strong><br />
 </p>
 Admin §pw§: <input name="pw" type="password" /><input name="auth" type="hidden" value="*" />
-<input type="submit" value="Yes!" />
+<input type="submit" value="§Comments_Yes§" />
 </form>
+§
+Comments_Yes§Yes!
 §
 Comments_CurCaptcha§Current captcha
 §
@@ -115,3 +117,5 @@ Action_CommentsAdmin():SetCaptcha§<form method="post" action="§root_rel§?acti
 Admin §pw§: <input name="pw" type="password" /><input name="auth" type="hidden" value="*" />
 <input type="submit" value="OK" />
 </form>
+§
+Comments_ActionLinks§<a href="§root_rel§?action=Comments">§Action_Comments():title§</a> <a href="§root_rel§?action=CommentsAdmin">§Action_CommentsAdmin():title§</a> 
