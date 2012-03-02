@@ -179,7 +179,7 @@ Action_CommentsAdmin():NoCaptcha§Kein Captcha gesetzt.
 §
 Comments_NewCaptcha§Setze neues Captcha
 §
-Action_Comments():title§Neueste Kommentare
+Action_Comments():title§Letzte Kommentare
 §
 Comments_RecentNo§Keine Datei letzter Kommentare gefunden.
 §

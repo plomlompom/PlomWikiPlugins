@@ -27,10 +27,6 @@ $s['Autolink_show_neg'] = 'yes';
 if ('yes' == $_GET['Autolink_show'])
   $s['Autolink_show_neg'] = 'no'; 
 
-$hook_before_action .=
-'if ($action == "Action_page_view") $hook_OutputHTML .= \'
-$s["content"] .= Autolink_Backlinks(); \';';
-
 ##########
 # Markup #
 ##########
@@ -113,7 +109,7 @@ function Autolink_Backlinks() {
   # No backlinks.
   if (!$links_in)
     $s['Autolink_Backlinks():links'] = $s['Autolink_NoBacklinks'];
-  
+ 
   return $s['Autolink_Backlinks()']; }
 
 ####################

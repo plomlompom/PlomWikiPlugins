@@ -11,13 +11,9 @@ $Comments_dir              = $plugin_dir.'Comments/';
 $Comments_captcha_path     = $Comments_dir.'_captcha';
 $Comments_Recent_path      = $Comments_dir.'_RecentComments';
 
-$s['Comments_key']         = '_comments_captcha';
+$s['Comments_key']         = 'Comments_captcha';
 $legal_pw_key             .= '|'.$s['Comments_key'];
 $permissions['Comments'][] = $s['Comments_key'];
-
-$hook_before_action .=
-'if ($action == "Action_page_view") $hook_OutputHTML .= \'
-$s["content"] .= Comments(); \';';
 
 #########################
 # Most commonly called. #
