@@ -15,9 +15,7 @@ Search():content§<form method="get" action="§root_rel§">
 §Search():results§ 
 §
 Search():results§
-
 <h2>§Search_Results§: §Search_queryNoHTML§</h2>
-
 
 §
 Search():match§<li><a href="§title_root§§i_title§">§i_title§</a></li>
