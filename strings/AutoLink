@@ -40,7 +40,7 @@ Autolink_Backlinks§Autolink BackLinks
 §
 Autolink_NoBacklinks§No Autolink backlinks found for this page.
 §
-Autolink_SetLink()§<a rel="nofollow" href="§root_rel§?title=§i_title§">§i_string§</a>
+Autolink_SetLink()§<a rel="nofollow" style="text-decoration: none;" href="§root_rel§?title=§i_title§">§i_string§</a>
 §
 Autolink_ActionLinks_page§
 <a href="§title_url§&amp;action=page_view&amp;Autolink_show=§Autolink_show_neg§">§Autolink_Toggle§</a>
