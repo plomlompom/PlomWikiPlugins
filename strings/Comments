@@ -2,7 +2,6 @@
 Comments§Comments
 §
 Comments():None§
-
 <p>§Comments_None§</p>
 §
 Comments_None§No one commented on this page yet.
@@ -11,12 +10,12 @@ Comments_AuthorURL§<a href="§i_url§">§i_author§</a>
 §
 Comments():Comment§
 
-<article style="padding:10px;" id="comment_§i_id§"><header class="Comments_head"><a href="#comment_§i_id§">#§i_id§</a></header>
-<div class="Comments_body">§i_text§</div>
-<footer class="Comments_foot"><strong>§i_author§</strong> / §i_datetime§</footer></article>
+<article id="comment_§i_id§" class="Comments">
+<header><a href="#comment_§i_id§">#§i_id§</a></header>
+§i_text§<footer><strong>§i_author§</strong> / §i_datetime§</footer>
+</article>
 §
 Comments():FormHead§<h2>§Comments_Write§</h2>
-
 
 §
 Comments_Write§Write your own comment
@@ -26,11 +25,13 @@ Comments():formNo§<p>§Comments_WriteNo§</p>
 Comments_WriteNo§Commenting currently impossible: Captcha not set.
 §
 Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
-§Comments_Name§: <input class="Comments_InputName" name="author" /><br />
-§Comments_URL§: <input class="Comments_InputURL" name="URL" />
-<pre><textarea name="text" class="Comments_Textarea" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§">
-</textarea></pre>
-§Comments_AskCaptcha§ "§Comments_captcha§": <input name="pw" class="Comments_InputCaptcha" size="5" /><input name="auth" type="hidden" value="§Comments_key§" />
+§Comments_Name§: <input name="author" /><br />
+§Comments_URL§: <input name="URL" /><br />
+<textarea name="text" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§" />
+</textarea><br />
+§Comments_AskCaptcha§ "§Comments_captcha§": 
+<input name="pw"size="5" />
+<input name="auth" type="hidden" value="§Comments_key§" />
 <input type="submit" value="OK" />
 </form>
 §
@@ -114,8 +115,21 @@ Comments_NewCaptcha§Set new captcha
 Action_CommentsAdmin():SetCaptcha§<form method="post" action="§root_rel§?action=write&amp;t=CommentsSetCaptcha">
 <p><strong>§Comments_Captcha§</strong></p>
 <p>§Comments_NewCaptcha§: <input name="new_pw" /></p>
-Admin §pw§: <input name="pw" type="password" /><input name="auth" type="hidden" value="*" />
+Admin §pw§:
+<input name="pw" type="password" />
+<input name="auth" type="hidden" value="*" />
 <input type="submit" value="OK" />
 </form>
 §
-Comments_ActionLinks§<a href="§root_rel§?action=Comments">§Action_Comments():title§</a> <a href="§root_rel§?action=CommentsAdmin">§Action_CommentsAdmin():title§</a> 
+Comments_ActionLinks§
+<a href="§root_rel§?action=Comments">§Action_Comments():title§</a>
+<a href="§root_rel§?action=CommentsAdmin">§Action_CommentsAdmin():title§</a> 
+§
+Comments_HookBeforeAction§
+if ($action == "Action_page_view") {
+  $hook_OutputHTML .= '$s["content"] .= Comments();';
+  $s['css'] .= $s['Comments_css']; }
+§
+Comments_css§
+.Comments header { margin-bottom: -15px; }
+.Comments footer { margin-top: -15px; margin-bottom: 20px; }

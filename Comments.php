@@ -15,6 +15,9 @@ $s['Comments_key']         = 'Comments_captcha';
 $legal_pw_key             .= '|'.$s['Comments_key'];
 $permissions['Comments'][] = $s['Comments_key'];
 
+$s['code'] .= '
+$hook_before_action .= $s["Comments_HookBeforeAction"]; ';
+
 #########################
 # Most commonly called. #
 #########################
