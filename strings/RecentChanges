@@ -7,11 +7,9 @@ Action_RecentChanges():title§§RecentChanges§
 §
 Action_RecentChanges():NoRecentChanges§<p>§NoRecentChanges§</p>
 §
-Action_RecentChanges():list§
-<ul>
+Action_RecentChanges():list§<ul>
 §RecentChanges_DayList§
 </ul>
-
 §
 Action_RecentChanges():DelTitle§<del>§i_title§</del>
 §
@@ -26,4 +24,5 @@ Action_RecentChanges():DayEntry§    <li><strong>§i_old_date§</strong>
     <ul>
 §i_day§    </ul>
 §
-RecentChanges_ActionLinks§<a href="§root_rel§?action=RecentChanges">§RecentChanges§</a> 
+RecentChanges_ActionLinks§
+<a href="§root_rel§?action=RecentChanges">§RecentChanges§</a> 
