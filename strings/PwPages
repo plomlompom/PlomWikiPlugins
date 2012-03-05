@@ -16,6 +16,8 @@ PwPages_ErsatzForm§<form method="post" action="§title_url§&amp;action=write&a
 </select>: <input type="password" name="pw">
 <input type="submit" value="OK" />
 </form>
+
+§markup_help§
 §
 Action_PwPages():title§§PwPages_set§ "§page_title§"
 §
