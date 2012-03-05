@@ -41,7 +41,7 @@ pw§Passwort
   # Action_page_history() #
   #########################
 §
-Action_page_history():none§Seite hat keine Versions-Geschichte.
+PageNoHistory§Seite hat keine Versions-Geschichte.
 §
 revert§rückgängig machen
 §
