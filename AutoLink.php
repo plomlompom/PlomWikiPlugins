@@ -5,6 +5,9 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'AutoLink', $s);
 
+$s['code'] .= '
+$hook_before_action .= $s["Autolink_HookBeforeAction"]; ';
+
 $s['ActionLinks_Plugins'] .= $s['Autolink_ActionLinks'];
 
 # Directory for Autolink DB.
@@ -67,7 +70,7 @@ function Autolink_Markup($text) {
 
 function Autolink_SetLink($string, $titles) {
 # In $titles choose best title regex match to $string, return HTML link.
-  global $s, $root_rel;
+  global $s;
 
   # Store each title's levenshtein distance to $string in $titles_ranked
   $titles_ranked = array();

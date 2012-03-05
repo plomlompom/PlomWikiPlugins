@@ -34,17 +34,20 @@ Autolink_Backlinks()§
 <h2>§Autolink_Backlinks§</h2>
 <p>§Autolink_Backlinks():links§</p>
 §
-Autolink_Backlinks():link§<a rel="nofollow" href="§root_rel§?title=§i_title§">§i_title§</a>
+Autolink_Backlinks():link§<a rel="nofollow" href="§root_rel§?title=§i_title§">§i_title§</a> 
 §
 Autolink_Backlinks§Autolink BackLinks
 §
 Autolink_NoBacklinks§No Autolink backlinks found for this page.
 §
-Autolink_SetLink()§<a rel="nofollow" style="text-decoration: none;" href="§root_rel§?title=§i_title§">§i_string§</a>
+Autolink_SetLink()§<a rel="nofollow" href="§root_rel§?title=§i_title§">§i_string§</a>
 §
 Autolink_ActionLinks_page§
 <a href="§title_url§&amp;action=page_view&amp;Autolink_show=§Autolink_show_neg§">§Autolink_Toggle§</a>
-
 §
 Autolink_ActionLinks§
 <a href="§root_rel§?action=AutolinkAdmin">§Action_AutolinkAdmin():title§</a>
+§
+Autolink_HookBeforeAction§
+if ($action == "Action_page_view")
+  $hook_OutputHTML .= '$s["content"] .= Autolink_Backlinks();';
