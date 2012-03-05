@@ -71,7 +71,7 @@ Lock():locked§Abgehalten von einer Lock-Datei mit zu kurz zurückliegendem Zeit
 §
 ChangePWfor§Passwort verändern für
 §
-admin§Administrator
+admin§Admin
 §
 Action_set_pw_admin():EmptyAuth§Für was soll das Passwort gesetzt werden?
 §
