@@ -26,4 +26,5 @@ Search():ResultsYes§<ul>
 §
 Search():ResultsNone§<p>§Search_ResultsNone§</p>
 §
-Search_ActionLinks§<a href="§root_rel§?action=Search">§Search§</a> 
+Search_ActionLinks§
+<a href="§root_rel§?action=Search">§Search§</a> 
