@@ -1,113 +1,87 @@
 §
+code§
+§
+#§#################
+  # Main template #
+  #################
+§
 design§<!DOCTYPE html>
 <meta charset="UTF-8">
 <style type="text/css">
 body { background-color: #F2F2F2; font-family: sans-serif; }
 .head { margin:0px; margin-top:10px; margin-bottom: 10px; padding:10px; border:1px solid #C0C0C0; background-color:#FAFAFA;}
-.head h1 { margin:0px; margin-bottom:0px; padding:0px; background-color:white; }
+.head h1 { margin:0px; margin-bottom:0px; padding:0px; background-color:#FFFFFF; }
 .default { border: 1px solid #C0C0C0; background-color: #FAFAFA; padding: 10px; }
-.article { padding-top: 0px; }
-.Comments { background-color: #FAFAFA; margin: 0px; margin-top: 10px; padding:10px; padding-top: 0px; width: 46%; min-width: 275px; float: left; }
-.Comments_InputName { width:100%; max-width: 250px; }
-.Comments_InputURL { width:100%; max-width: 250px; }
-.Comments_InputCaptcha { width:100%; max-width: 100px; }
-.Comments_Textarea { width:100%; max-width: 500px; }
-.Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
-.Comments_head { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
-.Comments_foot { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
-.BackLinks { background-color: #FAFAFA; margin: 0px; margin-top: 10px; padding:10px; padding-top: 0px; width: 46%; min-width: 275px; float: right; }
-.edit textarea { width:100%; }
-.history pre { white-space: pre-wrap; text-indent:-12pt; margin-top:0px; margin-bottom:0px; background-color: #FFFFFF; padding-left: 20px; }
-.diff_text { margin-left:12pt; }
-.diff_desc { padding: 10px; text-indent:-8pt; }
-.fail { padding:10px; font-weight: bold; background-color: #FFC0C0; }
+§css§
 </style>
 <title>§title§</title>
+
 <div style="float:left;">PlomWiki BETA: 
-<a href="§root_rel§?title=Start">§JumpStart§</a>
-§Search_ActionLinks§ 
-§RecentChanges_ActionLinks§
+<a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§ §RecentChanges_ActionLinks§
 <a href="§root_rel§?action=Comments">§Action_Comments():title§</a>
 <script type="text/javascript"> var flattr_url = "http://www.plomlompom.de"; var flattr_btn="compact"; </script> <script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
 </div>
-<div style="text-align: right;"><a href="http://meta.plomlompom.de/impressum.html">Impressum</a> 
-<a href="http://meta.plomlompom.de/datenschutz.html">Datenschutz-Erklärung</a></div>
-<div class="head" ><h1>§title§</h1>
-§ActionLinks_page§
+<div style="text-align: right;">
+<a href="http://meta.plomlompom.de/impressum.html">Impressum</a> 
+<a href="http://meta.plomlompom.de/datenschutz.html">Datenschutz-Erklärung</a>
 </div>
+
+<div class="head" ><h1>§title§</h1>§ActionLinks_page§
+</div>
+
 <div class="§css_class§">§content§</div>
 §
-#§######################################################################
+#§#######
+  # CSS #
+  #######
 §
-Action_page_history():diff_meta§<pre style="background-color: #fafafa;">§line§</pre>
-
+css_class§default
 §
-Action_page_history():diff_ins§<pre style="background-color: #55ff55;">+ §line§</pre>
-
-§
-Action_page_history():diff_del§<pre style="background-color: #ffc0c0;">- §line§</pre>
-
-§
-ActionLinks_page§<a href="plomwiki.php?title=§page_title§&amp;action=page_view">§View§</a> 
-<a href="plomwiki.php?title=§page_title§&amp;action=page_edit">§Edit§</a> 
-<a href="plomwiki.php?title=§page_title§&amp;action=page_history">§History§</a>
-§ActionLinks_page_Plugins§
-§
-code§
-§
-Autolink_ActionLinks§
-§
-designl§<!DOCTYPE html>
-<meta charset="UTF-8">
-<style type="text/css">
-body { background-color: #F2F2F2; font-family: sans-serif; }
-textarea { font-family: monospace; }
-.head { padding: 0px; border: 1px solid #C0C0C0; background-color: #FAFAFA;; margin-top: 10px; margin-bottom: 10px; }
-.head h1 { margin:0px; background-color: white; padding:10px; }
-.ActionLinks_page { padding:10px; padding-top: 5px; padding-bottom: 5px; }
-.default { border: 1px solid #C0C0C0; background-color: #FAFAFA; padding: 10px; padding-top: 0px; }
-.default form { margin-top: 10px; }
-.fail { padding-top:10px; font-weight: bold; background-color: #FFC0C0; }
-.view { padding-bottom:0px; background-color: #FFFFFF; }
-.empty { background-color: #FAFAFA; padding:10px; }
-.edit textarea { width:100%; }
-.history pre { white-space: pre-wrap; text-indent:-12pt; margin-top:0px; margin-bottom:0px; background-color: #FFFFFF; padding-left: 20px; }
-.diff_text { margin-left:12pt; }
-.diff_desc { padding: 10px; text-indent:-8pt; }
-.Comments { background-color: #FAFAFA; margin: 0px; margin-top: 10px; padding:10px; padding-top: 0px; width: 46%; min-width: 275px; float: left; }
+css_pageview§.pageview { background-color: #FFFFFF; }
+.Comments { width: 46%; min-width: 275px; float: left; margin: 0px; margin-top: 10px; padding-top: 0px; }
+.Comments textarea { width:100%; max-width: 500px; }
+.Comments header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
+.Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
+.Comments footer { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
 .Comments_InputName { width:100%; max-width: 250px; }
 .Comments_InputURL { width:100%; max-width: 250px; }
 .Comments_InputCaptcha { width:100%; max-width: 100px; }
-.Comments_Textarea { width:100%; max-width: 500px; }
-.Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
-.Comments_head { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
-.Comments_foot { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
-.BackLinks { background-color: #FAFAFA; margin: 0px; margin-top: 10px; padding:10px; padding-top: 0px; width: 46%; min-width: 275px; float: right; }
-</style>
-<title>§title§</title>
-<div style="float:left;">PlomWiki BETA: 
-<a href="§root_rel§?title=Start">§JumpStart§</a> 
-§ActionLinks_Plugins§ 
-<!-- <script type="text/javascript"> var flattr_url = "http://www.plomlompom.de"; var flattr_btn="compact"; </script> <script src="http://api.flattr.com/button/load.js" type="text/javascript"></script> --></div>
-<div style="text-align: right;"><a href="http://meta.plomlompom.de/impressum.html">Impressum</a> 
-<a href="http://meta.plomlompom.de/datenschutz.html">Datenschutz-Erklärung</a></div>
-
-<div class="head" ><h1>§title§</h1>
-§ActionLinks_page§
-
-</div>
-<div class="§css_class§">§content§</div>
+.Autolink_backlinks { width: 46%; min-width: 275px; float: right; margin: 0px; margin-top: 10px; padding-top: 0px; }
+§
+css_fail§.default { font-weight: bold; }
+§
+#§###########
+  # Plugins #
+  ###########
 §
 Comments():Output§
-<div class="Comments default">
+<div class="default Comments">
 <h2>§Comments§</h2>
 §Comments():Comments§
 §Comments():Input§
 </div>
 §
 Autolink_Backlinks()§
-<div class="BackLinks default">
+<div class="default Autolink_backlinks">
 <h2>§Autolink_Backlinks§</h2>
 <p>§Autolink_Backlinks():links§</p>
 </div>
 §
+Comments():Comment§
+
+<article style="padding:10px;" id="comment_§i_id§">
+<header ><a href="#comment_§i_id§">#§i_id§</a></header>
+<div class="Comments_body">
+§i_text§</div>
+<footer><strong>§i_author§</strong> / §i_datetime§</footer>
+</article>
+§
+Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
+§Comments_Name§: <input class="Comments_InputName" name="author" /><br />
+§Comments_URL§: <input class="Comments_InputURL" name="URL" />
+<textarea name="text" class="Comments_Textarea" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§"></textarea>
+§Comments_AskCaptcha§ "§Comments_captcha§": 
+<input name="pw" class="Comments_InputCaptcha" size="5" />
+<input name="auth" type="hidden" value="§Comments_key§" />
+<input type="submit" value="OK" />
+</form>
