@@ -25,10 +25,11 @@ if (!$diff_add) {
 $txt_PluginsTodo .= $nl.Autolink_Update($title, $text, $diff_add);';
 
 # Autolink display toggling.
+$Autolink_CookieDur = $now + 30000000;
 $s['ActionLinks_page_Plugins'] .= $s['Autolink_ActionLinks_page'];
 if ('yes' == $_GET['Autolink_show'] and !$_COOKIE['Autolink_show']) {
   $s['Autolink_show_neg'] = 'no';
-  setcookie('Autolink_show', TRUE); }
+  setcookie('Autolink_show', TRUE, $Autolink_CookieDur); }
 else if ($_COOKIE['Autolink_show'] and !$_GET['Autolink_show']) {
   $s['Autolink_show_neg'] = 'no';
   $_GET['Autolink_show'] = 'yes'; }
