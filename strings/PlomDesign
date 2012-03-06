@@ -78,8 +78,8 @@ Comments():Comment§
 §
 Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
 §Comments_Name§: <input class="Comments_InputName" name="author" /><br />
-§Comments_URL§: <input class="Comments_InputURL" name="URL" />
-<textarea name="text" class="Comments_Textarea" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§"></textarea>
+§Comments_URL§: <input class="Comments_InputURL" name="URL" /><br />
+<textarea name="text" class="Comments_Textarea" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§"></textarea><br />
 §Comments_AskCaptcha§ "§Comments_captcha§": 
 <input name="pw" class="Comments_InputCaptcha" size="5" />
 <input name="auth" type="hidden" value="§Comments_key§" />
