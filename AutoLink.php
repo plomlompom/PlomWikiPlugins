@@ -26,9 +26,16 @@ $txt_PluginsTodo .= $nl.Autolink_Update($title, $text, $diff_add);';
 
 # Autolink display toggling.
 $s['ActionLinks_page_Plugins'] .= $s['Autolink_ActionLinks_page'];
-$s['Autolink_show_neg'] = 'yes';
-if ('yes' == $_GET['Autolink_show'])
-  $s['Autolink_show_neg'] = 'no'; 
+if ('yes' == $_GET['Autolink_show'] and !$_COOKIE['Autolink_show']) {
+  $s['Autolink_show_neg'] = 'no';
+  setcookie('Autolink_show', TRUE); }
+else if ($_COOKIE['Autolink_show'] and !$_GET['Autolink_show']) {
+  $s['Autolink_show_neg'] = 'no';
+  $_GET['Autolink_show'] = 'yes'; }
+else if ('no' == $_GET['Autolink_show'] and $_COOKIE['Autolink_show'])
+  setcookie('Autolink_show', FALSE);
+if ('yes' !== $_GET['Autolink_show'])
+  $s['Autolink_show_neg'] = 'yes';
 
 ##########
 # Markup #
