@@ -13,6 +13,7 @@ Atom_Entry§
   <entry>
     <id>http://§Atom_RootURL§/§title_root§§i_title§#comment_§i_id§</id>
     <updated>§i_datetime§</updated>
+    <link href="http://§Atom_RootURL§/§title_root§§i_title§#comment_§i_id§" />
     <title>§i_author§ on: "§i_title§"</title>
     <author><name>§i_author§</name></author>
     <content type="html">§i_text§</content>
