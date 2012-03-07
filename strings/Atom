@@ -1,0 +1,21 @@
+§
+Action_Atom():output§<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://§Atom_RootURL§/§root_rel§?action=Comments</id>
+  <updated>§Atom_UpDate§</updated>
+  <title>PlomWiki comments feed</title>
+  <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=Atom" />
+  §Atom_Entries§
+
+</feed>
+§
+Atom_Entry§
+  <entry>
+    <id>http://§Atom_RootURL§/§title_root§§i_title§#comment_§i_id§</id>
+    <updated>§i_datetime§</updated>
+    <title>§i_author§ on: "§i_title§"</title>
+    <author><name>§i_author§</name></author>
+    <content type="html">§i_text§</content>
+  </entry>
+§
+Atom_NoFeed§No feed found.
