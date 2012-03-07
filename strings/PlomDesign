@@ -55,13 +55,15 @@ css_fail§.default { font-weight: bold; }
   ###########
 §
 Comments():Output§
+
 <div class="default Comments">
-<h2>§Comments§</h2>
-§Comments():Comments§
+<h2>§Comments§</h2>§Comments():Comments§
+
 §Comments():Input§
 </div>
 §
 Autolink_Backlinks()§
+
 <div class="default Autolink_backlinks">
 <h2>§Autolink_Backlinks§</h2>
 <p>§Autolink_Backlinks():links§</p>
@@ -69,7 +71,7 @@ Autolink_Backlinks()§
 §
 Comments():Comment§
 
-<article style="padding:10px;" id="comment_§i_id§">
+<article id="comment_§i_id§">
 <header ><a href="#comment_§i_id§">#§i_id§</a></header>
 <div class="Comments_body">
 §i_text§</div>
