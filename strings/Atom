@@ -1,7 +1,9 @@
 §
+Atom_ID_pattern§tag:§Atom_Domain§,§Atom_now§:Comments
+§
 Action_Atom():output§<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>http://§Atom_RootURL§/§root_rel§?action=Comments</id>
+  <id>§Atom_ID§</id>
   <updated>§Atom_UpDate§</updated>
   <title>PlomWiki comments feed</title>
   <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=AtomComments" />
@@ -11,7 +13,7 @@ Action_Atom():output§<?xml version="1.0" encoding="utf-8"?>
 §
 Atom_Entry§
   <entry>
-    <id>http://§Atom_RootURL§/§title_root§§i_title§#comment_§i_id§</id>
+    <id>tag:§Atom_Domain§,§i_date§:§i_title§/comment/§i_id§</id>
     <updated>§i_datetime§</updated>
     <link href="http://§Atom_RootURL§/§title_root§§i_title§#comment_§i_id§" />
     <title>§i_author§ on: "§i_title§"</title>
