@@ -16,8 +16,9 @@ function Action_AtomComments() {
 
   if (is_file($Comments_Recent_path)) {
     $s['Atom_Domain']  = $_SERVER['SERVER_NAME'];
-    $s['Atom_RootURL'] = $s['Atom_Domain'].
-                                       dirname($_SERVER['REQUEST_URI']);
+    $RootDir           = dirname($_SERVER['REQUEST_URI']);
+    $s['Atom_RootURL'] = $s['Atom_Domain'].$RootDir;
+                                       
     if (is_file($Atom_path))
       $s['Atom_ID'] = file_get_contents($Atom_path);
     else {

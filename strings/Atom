@@ -8,7 +8,6 @@ Action_Atom():output§<?xml version="1.0" encoding="utf-8"?>
   <title>PlomWiki comments feed</title>
   <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=AtomComments" />
   §Atom_Entries§
-
 </feed>
 §
 Atom_Entry§
@@ -20,5 +19,6 @@ Atom_Entry§
     <author><name>§i_author§</name></author>
     <content type="html">§i_text§</content>
   </entry>
+
 §
 Atom_NoFeed§No feed found.
