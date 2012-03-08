@@ -4,7 +4,7 @@ Action_Atom():output§<?xml version="1.0" encoding="utf-8"?>
   <id>http://§Atom_RootURL§/§root_rel§?action=Comments</id>
   <updated>§Atom_UpDate§</updated>
   <title>PlomWiki comments feed</title>
-  <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=Atom" />
+  <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=AtomComments" />
   §Atom_Entries§
 
 </feed>

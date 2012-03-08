@@ -40,7 +40,8 @@ function Action_AtomComments() {
       else if (4 == $i)
         $s['i_id']       = $line; }
 
-    $s['design'] = $s['Action_Atom():output']; }
+    $s['design'] = $s['Action_Atom():output']; 
+    header('Content-Type: application/atom+xml; charset=utf-8'); }
 
   else ErrorFail('Atom_NoFeed');
 
