@@ -43,7 +43,7 @@ function Atom_InitializeS(&$s, $string) {
     file_put_contents($path_FeedName, $s[$key_FeedName]);
 
   $days = $_GET['days'];
-  if (!$days) $s['Atom_TimeLimit'] = 0;
+  if (!$days) $s['Atom_TimeLimit'] = $now - (30    * 24 * 60 * 60);
   else        $s['Atom_TimeLimit'] = $now - ($days * 24 * 60 * 60); }
 
 function Atom_SetDate(&$s, $line) {
