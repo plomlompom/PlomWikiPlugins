@@ -49,6 +49,16 @@ Atom_DiffEntry§
   </entry>
 
 §
+Atom_DiffAdd§New page: 
+§
+Atom_DiffDel§Page deleted: 
+§
+Atom_DiffDelID§none
+§
+Atom_DiffDelAuthor§unknown
+§
+Atom_DiffDelSumm§Page was deleted.
+§
 Atom_NoFeed§No feed found.
 §
 Action_AtomAdmin():title§Atom feed administration

@@ -72,20 +72,20 @@ function Action_AtomDiffs() {
         if ((int) $line < $s['Atom_TimeLimit']) break;
         Atom_SetDate($s, $line); }
       else if (2 == $i) {
-        if      ('+' == $line[0]) $state = 'ADDED: ';
-        else if ('!' == $line[0]) $state = 'DELETED: '; 
+        if      ('+' == $line[0]) $state        = $s['Atom_DiffAdd'];
+        else if ('!' == $line[0]) $state        = $s['Atom_DiffDel'];
         if      (''  == $state  ) $s['i_title'] = $line;
         else                      $s['i_title'] = substr($line, 1);
         $s['i_title_formatted'] = $state.$s['i_title']; }
       else if (3 == $i)
-        if ('DELETED: ' == $state) $s['i_id']     = 'none';
-        else                       $s['i_id']     = $line; 
+        if ($s['Atom_DiffDel']==$state) $s['i_id']    =$s['Atom_DiffDelID'];
+        else                            $s['i_id']    =$line; 
       else if (4 == $i)
-        if ('DELETED: ' == $state) $s['i_author'] = 'unknown';
-        else                       $s['i_author'] = EscapeHTML($line); 
+        if ($s['Atom_DiffDel']==$state) $s['i_author']=$s['Atom_DiffDelAuthor'];
+        else                            $s['i_author']=EscapeHTML($line); 
       else if (5 == $i)
-        if ('DELETED: ' == $state) $s['summ']     = 'unknown';
-        else                       $s['i_summ']   = EscapeHTML($line); }
+        if ($s['Atom_DiffDel']==$state) $s['i_summ']  =$s['Atom_DiffDelSumm'];
+        else                            $s['i_summ']  =EscapeHTML($line); }
 
     $s['design'] = $s['Action_AtomDiffs():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }

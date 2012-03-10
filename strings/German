@@ -221,4 +221,12 @@ Action_AtomAdmin():NameOfDiffsFeed§Name des Diffs-Feeds
 §
 Action_AtomComments():on§zu
 §
+Atom_DiffAdd§Neue Seite: 
+§
+Atom_DiffDel§Seite gelöscht: 
+§
+Atom_DiffDelAuthor§unbekannt
+§
+Atom_DiffDelSumm§Seite wurde gelöscht.
+§
 #§
