@@ -91,7 +91,7 @@ function DiffCheck_BadStart($title) {
   else              return ':-)'; }
 
 function DiffCheck_Chronology($title) {
-# Check if 
+# Check if timestamps are chronological.
   global $diff_dir, $pages_dir;
   $page_path = $pages_dir.$title;
   $diff_path = $diff_dir.$title;

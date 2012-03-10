@@ -1,8 +1,8 @@
 <?php
 # PlomWiki plugin: Atom
 # 
-# Provides Atom feeds. (Currently only for the comments of the Comments
-# plugin; via Action_AtomComments().)
+# Provides Atom feeds for comments via Action_AtomComments() and for page edits
+# via Action_AtomDiffs().
 
 $s = ReadStringsFile($plugin_strings_dir.'Atom', $s);
 
@@ -92,7 +92,7 @@ function Action_AtomDiffs() {
   else ErrorFail('Atom_NoFeed');
   OutputHTML(); }
 
-# Atom feed for comments
+# Atom feed for comments.
 
 function Action_AtomComments() {
 # Output Atom feed of recent comments.
@@ -121,6 +121,8 @@ function Action_AtomComments() {
     header('Content-Type: application/atom+xml; charset=utf-8'); }
   else ErrorFail('Atom_NoFeed');
   OutputHTML(); }
+
+# Admin.
 
 function Action_AtomAdmin() {
   global $Atom_path_DiffsFeedName, $Atom_path_CommentsFeedName, $s;
