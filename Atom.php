@@ -66,16 +66,16 @@ function Action_AtomDiffs() {
       $i++;
       if ('%%' == $line) {
         $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_DiffEntry']);
-        $i = 0; }
+        $i                  = 0; }
       else if (1 == $i) {
         if ((int) $line < $s['Atom_TimeLimit']) break;
         Atom_SetDate($s, $line); }
       else if (2 == $i)
         if ('+' == $line[0]) {
-          $s['i_title'] == substr($line, 1);
+          $s['i_title'] = substr($line, 1);
           $s['i_title_formatted'] = 'ADDED: '.$s['i_title']; }
         else if ('!' == $line[0]) {
-          $s['i_title'] == substr($line, 1);
+          $s['i_title'] = substr($line, 1);
           $s['i_title_formatted'] = 'DELETED: '.$s['i_title']; }
         else {
           $s['i_title'] = $line;
@@ -103,11 +103,11 @@ function Action_AtomComments() {
     foreach ($lines as $line) {
       $i++;
       if ('%%' == $line) {
-        $comments = Comments_GetComments($Comments_dir.$s['i_title']);
-        $text = Comments_FormatText($comments[$s['i_id']]['text']);
-        $s['i_text'] = EscapeHTML($text);
-        $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_CommentEntry']);
-        $i = 0; }
+        $comments          = Comments_GetComments($Comments_dir.$s['i_title']);
+        $text              = Comments_FormatText($comments[$s['i_id']]['text']);
+        $s['i_text']       = EscapeHTML($text);
+        $s['Atom_Entries'].= ReplaceEscapedVars($s['Atom_CommentEntry']);
+        $i                 = 0; }
       else if (1 == $i) {
         if ((int) $line < $s['Atom_TimeLimit']) break;
         Atom_SetDate($s, $line); }
