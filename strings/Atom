@@ -45,7 +45,7 @@ Atom_DiffEntry§
     <link href="http://§Atom_RootURL§/§title_root§§i_title§&amp;action=page_history#§i_id§" />
     <title>§i_title_formatted§</title>
     <author><name>§i_author§</name></author>
-    <content type="html">§i_summ§</content>
+    <content>§i_summ§</content>
   </entry>
 
 §
