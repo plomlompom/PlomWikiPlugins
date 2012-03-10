@@ -209,11 +209,15 @@ Autolink_Toggle§AutoLink-Anzeige ein-/ausschalten
 §
 Atom_FeedCommentsName§PlomWiki-Kommentare-Feed
 §
+Atom_FeedDiffsName§PlomWiki-Diffs-Feed
+§
 Atom_NoFeed§Kein Feed gefunden.
 §
 Action_AtomAdmin():title§Atom-Feeds-Administration
 §
 Action_AtomAdmin():NameOfCommentsFeed§Name des Kommentar-Feeds
+§
+Action_AtomAdmin():NameOfDiffsFeed§Name des Diffs-Feeds
 §
 Action_AtomComments():on§zu
 §

@@ -94,9 +94,9 @@ function Action_RecentChanges() {
       elseif (3 == $i)
         $s['i_id'] = $line;
       elseif (4 == $i)
-        $s['i_author'] = $line;
+        $s['i_author'] = EscapeHTML($line);
       elseif (5 == $i) {
-        $s['i_summ'] = $line;
+        $s['i_summ'] = EscapeHTML($line);
         
         # After reaching 5th line, build whole list entry for this diff.
         $s['i_diff'] = ReplaceEscapedVars(

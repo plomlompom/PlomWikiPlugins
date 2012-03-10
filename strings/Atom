@@ -1,7 +1,11 @@
 §
 Atom_FeedCommentsName§PlomWiki comments feed
 §
+Atom_FeedDiffsName§PlomWiki diffs feed
+§
 Atom_FeedCommentsID_pattern§tag:§Atom_Domain§,§Atom_now§:§Atom_RootDir§/§root_rel§?action=AtomComments
+§
+Atom_FeedDiffsID_pattern§tag:§Atom_Domain§,§Atom_now§:§Atom_RootDir§/§root_rel§?action=AtomDiffs
 §
 Action_AtomComments():output§<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -12,9 +16,18 @@ Action_AtomComments():output§<?xml version="1.0" encoding="utf-8"?>
   §Atom_Entries§
 </feed>
 §
+Action_AtomDiffs():output§<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>§Atom_FeedDiffsID§</id>
+  <updated>§Atom_UpDate§</updated>
+  <title>§Atom_FeedDiffsName§</title>
+  <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=AtomDiffs" />
+  §Atom_Entries§
+</feed>
+§
 Action_AtomComments():on§on
 §
-Atom_Entry§
+Atom_CommentEntry§
   <entry>
     <id>tag:§Atom_Domain§,§i_date§:§Atom_RootDir§/§title_root§§i_title§/comment_§i_id§</id>
     <updated>§i_datetime§</updated>
@@ -25,13 +38,27 @@ Atom_Entry§
   </entry>
 
 §
+Atom_DiffEntry§
+  <entry>
+    <id>tag:§Atom_Domain§,§i_date§:§Atom_RootDir§/§title_root§§i_title§&amp;action=page_history/§i_id§</id>
+    <updated>§i_datetime§</updated>
+    <link href="http://§Atom_RootURL§/§title_root§§i_title§&amp;action=page_history#§i_id§" />
+    <title>§i_title_formatted§</title>
+    <author><name>§i_author§</name></author>
+    <content type="html">§i_summ§</content>
+  </entry>
+
+§
 Atom_NoFeed§No feed found.
 §
 Action_AtomAdmin():title§Atom feed administration
 §
 Action_AtomAdmin():NameOfCommentsFeed§Name of Comments feed
 §
+Action_AtomAdmin():NameOfCommentsFeed§Name of diffs feed
+§
 Action_AtomAdmin():form§<form method="post" action="§root_rel§?action=write&amp;t=AtomAdmin">
+<p>§Action_AtomAdmin():NameOfDiffsFeed§: <input name="NameDiffsFeed" value="§Atom_FeedDiffsName§" /></p>
 <p>§Action_AtomAdmin():NameOfCommentsFeed§: <input name="NameCommentsFeed" value="§Atom_FeedCommentsName§" /></p>
 Admin §pw§:
 <input name="pw" type="password" />
