@@ -202,3 +202,19 @@ Autolink_NoDestroyDB§Zerstöre nicht Autolink-Datenbank: Verzeichnis existiert 
 Autolink_InvalidDBAction§Ungültige Autolink-Datenbank-Handlung.
 §
 Autolink_Toggle§AutoLink-Anzeige ein-/ausschalten
+§
+#§################
+  # Plugin: Atom #
+  ################
+§
+Atom_FeedCommentsName§PlomWiki-Kommentare-Feed
+§
+Atom_NoFeed§Kein Feed gefunden.
+§
+Action_AtomAdmin():title§Atom-Feeds-Administration
+§
+Action_AtomAdmin():NameOfCommentsFeed§Name des Kommentar-Feeds
+§
+Action_AtomComments():on§zu
+§
+#§

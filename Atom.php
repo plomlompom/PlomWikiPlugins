@@ -6,26 +6,35 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'Atom', $s);
 
-$Atom_dir  = $plugin_dir.'Atom/';
-$Atom_path = $Atom_dir.'AtomID';
+$Atom_dir                   = $plugin_dir.'Atom/';
+$Atom_path_CommentsFeedID   = $Atom_dir.'AtomComments_ID';
+$Atom_path_CommentsFeedName = $Atom_dir.'AtomComments_Name';
+
+if (!is_dir($Atom_dir)) mkdir($Atom_dir);
 
 function Action_AtomComments() {
 # Output Atom feed of recent comments.
-  global $Atom_dir, $Atom_path, $nl, $now, $s, $Comments_dir,
-         $Comments_Recent_path;
+  global $Atom_dir, $Atom_path_CommentsFeedID, $Atom_path_CommentsFeedName, $nl,
+         $now, $s, $Comments_dir, $Comments_Recent_path;
 
   if (is_file($Comments_Recent_path)) {
     $s['Atom_Domain']  = $_SERVER['SERVER_NAME'];
-    $RootDir           = dirname($_SERVER['REQUEST_URI']);
-    $s['Atom_RootURL'] = $s['Atom_Domain'].$RootDir;
+    $s['Atom_RootDir'] = dirname($_SERVER['REQUEST_URI']);
+    $s['Atom_RootURL'] = $s['Atom_Domain'].$s['Atom_RootDir'];
                                        
-    if (is_file($Atom_path))
-      $s['Atom_ID'] = file_get_contents($Atom_path);
+    if (is_file($Atom_path_CommentsFeedID))
+      $s['Atom_FeedCommentsID'] = file_get_contents($Atom_path_CommentsFeedID);
     else {
-      mkdir($Atom_dir);
-      $s['Atom_now'] = date('Y-m-d', (int) $now);
-      $s['Atom_ID']  = ReplaceEscapedVars($s['Atom_ID_pattern']);
-      file_put_contents($Atom_path, $s['Atom_ID']); }
+      $s['Atom_now']  = date('Y-m-d', (int) $now);
+      $s['Atom_FeedCommentsID'] = ReplaceEscapedVars(
+                                             $s['Atom_FeedCommentsID_pattern']);
+      file_put_contents($Atom_path_CommentsFeedID, $s['Atom_FeedCommentsID']); }
+    if (is_file($Atom_path_CommentsFeedName))
+      $s['Atom_FeedCommentsName'] =
+                                 file_get_contents($Atom_path_CommentsFeedName);
+    else {
+      file_put_contents($Atom_path_CommentsFeedName,
+                                                 $s['Atom_FeedCommentsName']); }
 
     $max_entries = 20;
     $i_entries   = 0;
@@ -54,9 +63,24 @@ function Action_AtomComments() {
       else if (4 == $i)
         $s['i_id']       = $line; }
 
-    $s['design'] = $s['Action_Atom():output']; 
+    $s['design'] = $s['Action_AtomComments():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }
 
   else ErrorFail('Atom_NoFeed');
 
   OutputHTML(); }
+
+function Action_AtomAdmin() {
+  global $s;
+  $s['content'] = $s['Action_AtomAdmin():form'];
+  $s['title']   = $s['Action_AtomAdmin():title'];
+  OutputHTML(); }
+
+function PrepareWrite_AtomAdmin() {
+  global $Atom_path_CommentsFeedName, $nl, $s;
+  if (is_file($Atom_path_CommentsFeedName))
+    $s['Atom_FeedCommentsName']=file_get_contents($Atom_path_CommentsFeedName);
+  $tmp = NewTemp($_POST['NameCommentsFeed']);
+  $tasks .= 'if (is_file("'.$tmp.'")) rename("'.$tmp.'", "'.
+                                          $Atom_path_CommentsFeedName.'");'.$nl; 
+  return $tasks; }

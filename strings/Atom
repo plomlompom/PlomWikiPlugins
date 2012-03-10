@@ -1,24 +1,40 @@
 §
-Atom_ID_pattern§tag:§Atom_Domain§,§Atom_now§:Comments
+Atom_FeedCommentsName§PlomWiki comments feed
 §
-Action_Atom():output§<?xml version="1.0" encoding="utf-8"?>
+Atom_FeedCommentsID_pattern§tag:§Atom_Domain§,§Atom_now§:§Atom_RootDir§/§root_rel§?action=AtomComments
+§
+Action_AtomComments():output§<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>§Atom_ID§</id>
+  <id>§Atom_FeedCommentsID§</id>
   <updated>§Atom_UpDate§</updated>
-  <title>PlomWiki comments feed</title>
+  <title>§Atom_FeedCommentsName§</title>
   <link rel="self" href="http://§Atom_RootURL§/§root_rel§?action=AtomComments" />
   §Atom_Entries§
 </feed>
 §
+Action_AtomComments():on§on
+§
 Atom_Entry§
   <entry>
-    <id>tag:§Atom_Domain§,§i_date§:§i_title§/comment/§i_id§</id>
+    <id>tag:§Atom_Domain§,§i_date§:§Atom_RootDir§/§title_root§§i_title§/comment_§i_id§</id>
     <updated>§i_datetime§</updated>
     <link href="http://§Atom_RootURL§/§title_root§§i_title§#comment_§i_id§" />
-    <title>§i_author§ on: "§i_title§"</title>
+    <title>§i_author§ §Action_AtomComments():on§: "§i_title§"</title>
     <author><name>§i_author§</name></author>
     <content type="html">§i_text§</content>
   </entry>
 
 §
 Atom_NoFeed§No feed found.
+§
+Action_AtomAdmin():title§Atom feed administration
+§
+Action_AtomAdmin():NameOfCommentsFeed§Name of Comments feed
+§
+Action_AtomAdmin():form§<form method="post" action="§root_rel§?action=write&amp;t=AtomAdmin">
+<p>§Action_AtomAdmin():NameOfCommentsFeed§: <input name="NameCommentsFeed" value="§Atom_FeedCommentsName§" /></p>
+Admin §pw§:
+<input name="pw" type="password" />
+<input name="auth" type="hidden" value="*" />
+<input type="submit" value="OK" />
+</form>
