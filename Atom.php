@@ -66,27 +66,29 @@ function Action_AtomDiffs() {
       $i++;
       if ('%%' == $line) {
         $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_DiffEntry']);
-        $i                  = 0; }
+        $i                  = 0; 
+        $state              = ''; }
       else if (1 == $i) {
         if ((int) $line < $s['Atom_TimeLimit']) break;
         Atom_SetDate($s, $line); }
-      else if (2 == $i)
-        if ('+' == $line[0]) {
-          $s['i_title'] = substr($line, 1);
-          $s['i_title_formatted'] = 'ADDED: '.$s['i_title']; }
-        else if ('!' == $line[0]) {
-          $s['i_title'] = substr($line, 1);
-          $s['i_title_formatted'] = 'DELETED: '.$s['i_title']; }
-        else {
-          $s['i_title'] = $line;
-          $s['i_title_formatted'] = $line; }
-      else if (3 == $i) $s['i_id']     = $line; 
-      else if (4 == $i) $s['i_author'] = EscapeHTML($line); 
-      else if (5 == $i) $s['i_summ']   = EscapeHTML($line); }
+      else if (2 == $i) {
+        if      ('+' == $line[0]) $state = 'ADDED: ';
+        else if ('!' == $line[0]) $state = 'DELETED: '; 
+        if      (''  == $state  ) $s['i_title'] = $line;
+        else                      $s['i_title'] = substr($line, 1);
+        $s['i_title_formatted'] = $state.$s['i_title']; }
+      else if (3 == $i)
+        if ('DELETED: ' == $state) $s['i_id']     = 'none';
+        else                       $s['i_id']     = $line; 
+      else if (4 == $i)
+        if ('DELETED: ' == $state) $s['i_author'] = 'unknown';
+        else                       $s['i_author'] = EscapeHTML($line); 
+      else if (5 == $i)
+        if ('DELETED: ' == $state) $s['summ']     = 'unknown';
+        else                       $s['i_summ']   = EscapeHTML($line); }
 
     $s['design'] = $s['Action_AtomDiffs():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }
-
   else ErrorFail('Atom_NoFeed');
   OutputHTML(); }
 
@@ -117,7 +119,6 @@ function Action_AtomComments() {
 
     $s['design'] = $s['Action_AtomComments():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }
-
   else ErrorFail('Atom_NoFeed');
   OutputHTML(); }
 
