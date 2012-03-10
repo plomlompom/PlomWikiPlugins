@@ -12,6 +12,8 @@ $Atom_path_CommentsFeedName = $Atom_dir.'AtomComments_Name';
 
 if (!is_dir($Atom_dir)) mkdir($Atom_dir);
 
+# Atom feed for comments
+
 function Action_AtomComments() {
 # Output Atom feed of recent comments.
   global $Atom_dir, $Atom_path_CommentsFeedID, $Atom_path_CommentsFeedName, $nl,
@@ -36,10 +38,13 @@ function Action_AtomComments() {
       file_put_contents($Atom_path_CommentsFeedName,
                                                  $s['Atom_FeedCommentsName']); }
 
-    $max_entries = 20;
-    $i_entries   = 0;
-    $txt      = file_get_contents($Comments_Recent_path);
-    $lines    = explode($nl, $txt);
+    $days       = $_GET['days'];
+    if (!$days)
+      $time_limit = 0;
+    else
+      $time_limit = $now - ($days * 24 * 60 * 60);
+    $txt        = file_get_contents($Comments_Recent_path);
+    $lines      = explode($nl, $txt);
     foreach ($lines as $line) {
       $i++;
       if ('%%' == $line) {
@@ -47,11 +52,10 @@ function Action_AtomComments() {
         $text = Comments_FormatText($comments[$s['i_id']]['text']);
         $s['i_text'] = EscapeHTML($text);
         $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_Entry']);
-        $i_entries++;
-        if ($i_entries == $max_entries)
-          break;
         $i = 0; }
       else if (1 == $i) {
+        if ((int) $line < $time_limit)
+          break;
         $s['i_datetime'] = date(DATE_ATOM, (int) $line);
         $s['i_date']     = date('Y-m-d', (int) $line);
         if (!$s['Atom_UpDate'])
