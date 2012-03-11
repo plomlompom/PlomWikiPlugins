@@ -36,7 +36,7 @@ function Atom_InitializeS(&$s, $string) {
   else {
     $s['Atom_now']  = date('Y-m-d', (int) $now);
     $s[$key_FeedID]=ReplaceEscapedVars($s[$key_FeedID_pattern]);
-    file_put_contents($path_FeedID, $s[$key_FeedName]); }
+    file_put_contents($path_FeedID, $s[$key_FeedID]); }
   if (is_file($path_FeedName))
     $s[$key_FeedName] = file_get_contents($path_FeedName);
   else
@@ -65,6 +65,8 @@ function Action_AtomDiffs() {
     foreach ($lines as $line) {
       $i++;
       if ('%%' == $line) {
+        if ($s['Atom_DiffDel'] == $state) $s['i_content'] = $s['i_summ'];
+        else                              Atom_DiffContent($s);
         $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_DiffEntry']);
         $i                  = 0; 
         $state              = ''; }
@@ -91,6 +93,30 @@ function Action_AtomDiffs() {
     header('Content-Type: application/atom+xml; charset=utf-8'); }
   else ErrorFail('Atom_NoFeed');
   OutputHTML(); }
+
+function Atom_DiffContent(&$s) {
+  global $diff_dir, $nl;
+  $diff_path = $diff_dir.$s['i_title'];
+  if (!is_file($diff_path)) {
+    $s['i_content'] = $s['Atom_NoDiff'];
+    return; }
+  $diff_data = DiffList($diff_path);
+  $diff_text = $diff_data[$s['i_id']]['text'];
+  if (!$diff_text) {
+    $s['i_content'] = $s['Atom_NoDiff'];
+    return; }
+  $s['i_content'] = '';
+  foreach (explode($nl, $diff_text) as $line_n => $line) {
+    if     ($line[0] == '>')
+      $theme = 'Atom_diff_ins';
+    elseif ($line[0] == '<')
+      $theme = 'Atom_diff_del';
+    else
+      $theme = 'Atom_diff_meta';
+    if ($line[0] == '<' or $line[0] == '>') 
+      $line = EscapeHTML(substr($line, 1));
+    $s['line'] = $line;
+    $s['i_content'] .= EscapeHTML(ReplaceEscapedVars($s[$theme])); } }
 
 # Atom feed for comments.
 
