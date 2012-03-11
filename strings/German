@@ -167,6 +167,8 @@ Comments_TextMaxMsg§Text darf nicht länger sein als §Comments_TextMax§ Zeich
 §
 Comments_InvalidURL§Ungültiges URL-Format.
 §
+Comments_Double§Nicht erlaubt: zweimal derselbe Kommentar-Text hintereinander.
+§
 Comments_BuildDir§Kommentar-Verzeichnis noch nicht gebaut. Bauen?
 §
 Comments_Yes§Ja!

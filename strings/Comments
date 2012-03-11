@@ -63,6 +63,8 @@ Comments_TextMaxMsg§Text must not exceed length (characters/bytes): §Comments_
 §
 Comments_InvalidURL§Invalid URL format.
 §
+Comments_Double§Repeating text of last comment not allowed.
+§
 Comments():Output§
 
 <h2>§Comments§</h2>§Comments():Comments§

@@ -98,7 +98,7 @@ function Comments_GetComments($comment_file) {
     $comments[$id]['author']   = $author;
     $comments[$id]['datetime'] = $datetime;
     $comments[$id]['url']      = $url;
-    $comments[$id]['text']     = implode($nl, $lines_comment); }
+    $comments[$id]['text'] = substr(implode($nl,$lines_comment),0,-1); }
 
   return $comments; }
 
@@ -138,6 +138,11 @@ function PrepareWrite_Comments(&$redir) {
     $prev_comments = Comments_GetComments($cur_page_file);
     $new_id        = count($prev_comments); }
   $redir = $s['title_url'].'#comment_'.$new_id;
+
+  # Check for error condition: same text as last comment.
+  if (is_file($cur_page_file))
+    if ($text == $prev_comments[$new_id - 1]['text'])
+      ErrorFail('Comments_Double');
 
   # Put all together into $add, add $old to get new comments file text.
   $time = time();
