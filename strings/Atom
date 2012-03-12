@@ -46,7 +46,7 @@ Atom_DiffEntry§
     <title>§i_title_formatted§</title>
     <author><name>§i_author§</name></author>
     <summary>§i_summ§</summary>
-    <content type="html">§i_content§</content>
+    <content type="§Atom_DiffEntryType§">§i_content§</content>
   </entry>
 
 §
@@ -59,6 +59,16 @@ Atom_DiffDelID§none
 Atom_DiffDelAuthor§unknown
 §
 Atom_DiffDelSumm§Page was deleted.
+§
+Atom_diff_meta§<pre style="background-color: #bbbbbb; white-space: pre-wrap; margin-top: 10px; margin-bottom: 0px;" >§line§</pre>
+
+§
+Atom_diff_ins§<pre style="background-color: #55ff55; white-space: pre-wrap; margin-top:1px; margin-bottom: 1px;">+ §line§</pre>
+
+§
+Atom_diff_del§<pre style="background-color: #ff5555; white-space: pre-wrap; margin-top:1px; margin-bottom: 1px;">- §line§</pre>
+§
+Atom_NoDiff§Cannot show this diff: Maybe this version of the page was deleted later on, together with its diff history?
 §
 Atom_NoFeed§No feed found.
 §
@@ -76,13 +86,3 @@ Admin §pw§:
 <input name="auth" type="hidden" value="*" />
 <input type="submit" value="OK" />
 </form>
-§
-Atom_diff_meta§<pre style="background-color: #bbbbbb; white-space: pre-wrap; margin-top: 10px; margin-bottom: 0px;" >§line§</pre>
-
-§
-Atom_diff_ins§<pre style="background-color: #55ff55; white-space: pre-wrap; margin-top:0px; margin-bottom: 0px;">+ §line§</pre>
-
-§
-Atom_diff_del§<pre style="background-color: #ff5555; white-space: pre-wrap; margin-top:0px; margin-bottom: 0px;">- §line§</pre>
-§
-Atom_NoDiff§Cannot show this diff: Maybe this version of the page was deleted later on, together with its diff history?

@@ -1,8 +1,8 @@
 <?php
 # PlomWiki plugin: Atom
 # 
-# Provides Atom feeds for comments via Action_AtomComments() and for page edits
-# via Action_AtomDiffs().
+# Provides Atom feeds for comments via Action_AtomComments() and for
+# page edits via Action_AtomDiffs().
 
 $s = ReadStringsFile($plugin_strings_dir.'Atom', $s);
 
@@ -17,6 +17,7 @@ if (!is_dir($Atom_dir)) mkdir($Atom_dir);
 # Functions common to all feed functions.
 
 function Atom_InitializeS(&$s, $string) {
+# Set important variables for feed generation: URLs, ID, name, length.
   global $Atom_path_DiffsFeedID,   $Atom_path_CommentsFeedID,
          $Atom_path_DiffsFeedName, $Atom_path_CommentsFeedName, $now;
 
@@ -43,7 +44,7 @@ function Atom_InitializeS(&$s, $string) {
     file_put_contents($path_FeedName, $s[$key_FeedName]);
 
   $days = $_GET['days'];
-  if (!$days) $s['Atom_TimeLimit'] = $now - (30    * 24 * 60 * 60);
+  if (!$days) $s['Atom_TimeLimit'] = $now - (10    * 24 * 60 * 60);
   else        $s['Atom_TimeLimit'] = $now - ($days * 24 * 60 * 60); }
 
 function Atom_SetDate(&$s, $line) {
@@ -58,6 +59,12 @@ function Action_AtomDiffs() {
 # Output Atom feed of recent diffs.
   global $nl, $s, $RecentChanges_dir, $RecentChanges_path;
 
+  # Determine format for diff display.
+  $format = $_GET['format'];
+  $s['Atom_DiffEntryType'] = 'text';
+  if ('color' == $format or 'linebreaks' == $format)
+    $s['Atom_DiffEntryType'] = 'html';
+
   if (is_file($RecentChanges_path)) {
     Atom_InitializeS($s, 'Diffs');
     $txt        = file_get_contents($RecentChanges_path);
@@ -65,8 +72,8 @@ function Action_AtomDiffs() {
     foreach ($lines as $line) {
       $i++;
       if ('%%' == $line) {
-        if ($s['Atom_DiffDel'] == $state) $s['i_content'] = $s['i_summ'];
-        else                              Atom_DiffContent($s);
+        if ($s['Atom_DiffDel']==$state) $s['i_content'] = $s['i_summ'];
+        else                            Atom_DiffContent($s, $format);
         $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_DiffEntry']);
         $i                  = 0; 
         $state              = ''; }
@@ -80,21 +87,28 @@ function Action_AtomDiffs() {
         else                      $s['i_title'] = substr($line, 1);
         $s['i_title_formatted'] = $state.$s['i_title']; }
       else if (3 == $i)
-        if ($s['Atom_DiffDel']==$state) $s['i_id']    =$s['Atom_DiffDelID'];
-        else                            $s['i_id']    =$line; 
+        if ($s['Atom_DiffDel']==$state)
+          $s['i_id']     = $s['Atom_DiffDelID'];
+        else
+          $s['i_id']     = $line; 
       else if (4 == $i)
-        if ($s['Atom_DiffDel']==$state) $s['i_author']=$s['Atom_DiffDelAuthor'];
-        else                            $s['i_author']=EscapeHTML($line); 
+        if ($s['Atom_DiffDel']==$state)
+          $s['i_author'] = $s['Atom_DiffDelAuthor'];
+        else
+          $s['i_author'] = EscapeHTML($line); 
       else if (5 == $i)
-        if ($s['Atom_DiffDel']==$state) $s['i_summ']  =$s['Atom_DiffDelSumm'];
-        else                            $s['i_summ']  =EscapeHTML($line); }
+        if ($s['Atom_DiffDel']==$state)
+          $s['i_summ']   = $s['Atom_DiffDelSumm'];
+        else
+          $s['i_summ']   = EscapeHTML($line); }
 
     $s['design'] = $s['Action_AtomDiffs():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }
   else ErrorFail('Atom_NoFeed');
   OutputHTML(); }
 
-function Atom_DiffContent(&$s) {
+function Atom_DiffContent(&$s, $format = '') {
+# Build $s['i_content'] based on $format and existence of diff entry.
   global $diff_dir, $nl;
   $diff_path = $diff_dir.$s['i_title'];
   if (!is_file($diff_path)) {
@@ -106,17 +120,29 @@ function Atom_DiffContent(&$s) {
     $s['i_content'] = $s['Atom_NoDiff'];
     return; }
   $s['i_content'] = '';
-  foreach (explode($nl, $diff_text) as $line_n => $line) {
-    if     ($line[0] == '>')
-      $theme = 'Atom_diff_ins';
-    elseif ($line[0] == '<')
-      $theme = 'Atom_diff_del';
-    else
-      $theme = 'Atom_diff_meta';
-    if ($line[0] == '<' or $line[0] == '>') 
-      $line = EscapeHTML(substr($line, 1));
-    $s['line'] = $line;
-    $s['i_content'] .= EscapeHTML(ReplaceEscapedVars($s[$theme])); } }
+
+  # Colorful display of diffs as used by Action_page_history().
+  if ('color' == $format)
+    foreach (explode($nl, $diff_text) as $line_n => $line) {
+      if     ($line[0] == '>')
+        $theme = 'Atom_diff_ins';
+      elseif ($line[0] == '<')
+        $theme = 'Atom_diff_del';
+      else
+        $theme = 'Atom_diff_meta';
+      if ($line[0] == '<' or $line[0] == '>') 
+        $line = EscapeHTML(substr($line, 1));
+      $s['line'] = $line;
+      $s['i_content'] .= EscapeHTML(ReplaceEscapedVars($s[$theme])); }
+
+  # Format $diff_text newlines to HTML <br />s.
+  else if ('linebreaks' == $format) {
+    $diff_text      = str_replace($nl, '<br />'.$nl, $diff_text);
+    $s['i_content'] = EscapeHTML($diff_text); }
+
+  # Fallback: raw output of $diff_text.
+  else 
+    $s['i_content'] = EscapeHTML($diff_text); }
 
 # Atom feed for comments.
 
@@ -131,11 +157,11 @@ function Action_AtomComments() {
     foreach ($lines as $line) {
       $i++;
       if ('%%' == $line) {
-        $comments          = Comments_GetComments($Comments_dir.$s['i_title']);
-        $text              = Comments_FormatText($comments[$s['i_id']]['text']);
-        $s['i_text']       = EscapeHTML($text);
-        $s['Atom_Entries'].= ReplaceEscapedVars($s['Atom_CommentEntry']);
-        $i                 = 0; }
+        $comments = Comments_GetComments($Comments_dir.$s['i_title']);
+        $text = Comments_FormatText($comments[$s['i_id']]['text']);
+        $s['i_text'] = EscapeHTML($text);
+        $s['Atom_Entries'].=ReplaceEscapedVars($s['Atom_CommentEntry']);
+        $i = 0; }
       else if (1 == $i) {
         if ((int) $line < $s['Atom_TimeLimit']) break;
         Atom_SetDate($s, $line); }
@@ -153,9 +179,11 @@ function Action_AtomComments() {
 function Action_AtomAdmin() {
   global $Atom_path_DiffsFeedName, $Atom_path_CommentsFeedName, $s;
   if (is_file($Atom_path_DiffsFeedName))
-    $s['Atom_FeedDiffsName']   = file_get_contents($Atom_path_DiffsFeedName);
+    $s['Atom_FeedDiffsName']    = file_get_contents(
+                                              $Atom_path_DiffsFeedName);
   if (is_file($Atom_path_CommentsFeedName))
-    $s['Atom_FeedCommentsName']= file_get_contents($Atom_path_CommentsFeedName);
+    $s['Atom_FeedCommentsName'] = file_get_contents(
+                                           $Atom_path_CommentsFeedName);
   $s['content'] = $s['Action_AtomAdmin():form'];
   $s['title']   = $s['Action_AtomAdmin():title'];
   OutputHTML(); }
@@ -164,8 +192,8 @@ function PrepareWrite_AtomAdmin() {
   global $Atom_path_DiffsFeedName, $Atom_path_CommentsFeedName, $nl, $s;
   $tmp = NewTemp($_POST['NameDiffsFeed']);
   $tasks .= 'if (is_file("'.$tmp.'")) rename("'.$tmp.'", "'.
-                                          $Atom_path_DiffsFeedName.'");'.$nl;
+                                     $Atom_path_DiffsFeedName.'");'.$nl;
   $tmp = NewTemp($_POST['NameCommentsFeed']);
   $tasks .= 'if (is_file("'.$tmp.'")) rename("'.$tmp.'", "'.
-                                          $Atom_path_CommentsFeedName.'");'.$nl;
+                                  $Atom_path_CommentsFeedName.'");'.$nl;
   return $tasks; }
