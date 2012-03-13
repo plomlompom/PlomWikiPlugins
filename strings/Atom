@@ -27,7 +27,7 @@ Action_AtomDiffs():output§<?xml version="1.0" encoding="utf-8"?>
 §
 Action_AtomComments():on§on
 §
-Atom_CommentEntry§
+Atom_CommEntry§
   <entry>
     <id>tag:§Atom_Domain§,§i_date§:§Atom_RootDir§/§title_root§§i_title§/comment_§i_id§</id>
     <updated>§i_datetime§</updated>

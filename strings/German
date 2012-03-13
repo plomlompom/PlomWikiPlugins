@@ -143,7 +143,7 @@ Comments§Kommentare
 §
 Action_CommentsAdmin():title§Kommentar-Einstellungen
 §
-Comments_None§Noch hat diese Seite niemand kommentiert.
+Comments_None§Keine Kommentare zu dieser Seite.
 §
 Comments_Write§Schreibe deinen eigenen Kommentar
 §
@@ -184,6 +184,12 @@ Comments_NewCaptcha§Setze neues Captcha
 Action_Comments():title§Letzte Kommentare
 §
 Comments_RecentNo§Keine Datei letzter Kommentare gefunden.
+§
+Comments_Hidden_msg§§Comments_ignored§ versteckte Kommentare zu dieser Seite.
+§
+Comments_NoneHidden§Keine versteckten Kommentare zu dieser Seite.
+§
+Action_page_Comments_hidden:title§Versteckte Kommentare zur Seite "§page_title§"
 §
 #§####################
   # Plugin: Autolink #

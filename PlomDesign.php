@@ -14,6 +14,8 @@ else if ($action == "Action_page_edit")
   $s["css"]         .= $s["css_edit"];
 else if (substr($action, 7, 5) !== "page_")
   $s["ActionLinks_page"] = "";
+if ($action == "Action_page_Comments_hidden")
+  $s["css"] .= $s["css_hidden_comments"];
 ';
 
 $hook_ErrorFail .= '

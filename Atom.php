@@ -157,17 +157,21 @@ function Action_AtomComments() {
     foreach ($lines as $line) {
       $i++;
       if ('%%' == $line) {
-        $comments = Comments_GetComments($Comments_dir.$s['i_title']);
-        $text = Comments_FormatText($comments[$s['i_id']]['text']);
-        $s['i_text'] = EscapeHTML($text);
-        $s['Atom_Entries'].=ReplaceEscapedVars($s['Atom_CommentEntry']);
+        if (!$ignore) {
+          $comments = Comments_GetComments($Comments_dir.$s['i_title']);
+          $text = Comments_FormatText($comments[$s['i_id']]['text']);
+          $s['i_text'] = EscapeHTML($text);
+          $s['Atom_Entries'].=ReplaceEscapedVars($s['Atom_CommEntry']);}
+        $ignore = FALSE;
         $i = 0; }
-      else if (1 == $i) {
+      else if (1 == $i and 0 != $line)
+        $ignore = TRUE;
+      else if (2 == $i and !$ignore) {
         if ((int) $line < $s['Atom_TimeLimit']) break;
         Atom_SetDate($s, $line); }
-      else if (2 == $i) $s['i_author'] = EscapeHTML($line);
-      else if (3 == $i) $s['i_title']  = $line;
-      else if (4 == $i) $s['i_id']     = $line; }
+      else if (3 == $i and !$ignore) $s['i_author'] = EscapeHTML($line);
+      else if (4 == $i and !$ignore) $s['i_title']  = $line;
+      else if (5 == $i and !$ignore) $s['i_id']     = $line; }
 
     $s['design'] = $s['Action_AtomComments():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }
