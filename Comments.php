@@ -18,9 +18,9 @@ $permissions['Comments'][] = $s['Comments_key'];
 $s['code'] .= '
 $hook_before_action .= $s["Comments_HookBeforeAction"]; ';
 
-#########################
-# Most commonly called. #
-#########################
+###########################
+# Common comments display #
+###########################
 
 function Comments() {
 # Return display of page comments and commenting form.
@@ -52,33 +52,20 @@ function Comments() {
   # Finally, put everything together.
   return $s['Comments():Output']; }
 
-function Action_page_Comments_hidden() {
-# Show the hidden comments for a page.
-  global $Comments_dir, $pages_dir, $s;
-  $cur_page_file = $Comments_dir.$s['page_title'];
-
-  if (!is_dir($Comments_dir) or !is_file($pages_dir.$s['page_title'])
-      or !is_file($cur_page_file)) {
-    $s['Comments_None'] = $s['Comments_NoneHidden'];
-    $s['content']       = $s['Comments():None']; }
-
-  if (is_file($cur_page_file)) {
-    $comment_list = Comments_GetComments($cur_page_file, 1);
-    $s['content'] = Comments_BuildCommentsList($comment_list); }
-  $s['title'] = $s['Action_page_Comments_hidden:title'];
-  OutputHTML(); }
-
 function Comments_BuildCommentsList($comment_list) {
+# From comment_list build $s['Comments():Comment']-formatted output.
   global $s;
   foreach ($comment_list as $id => $x) {
-    $s['i_id']       = $id;
-    $s['i_datetime'] = date('Y-m-d H:i:s', (int) $x['datetime']);
-    $s['i_author']   = $x['author'];
-    $s['i_url']      = $x['url'];
+    $s['i_id']         = $id;
+    $s['i_visibility'] = $x['visibility'];
+    $s['i_mod']        = ReplaceEscapedVars($s['Comments_Mod']);
+    $s['i_datetime']   = date('Y-m-d H:i:s', (int) $x['datetime']);
+    $s['i_author']     = $x['author'];
+    $s['i_url']        = $x['url'];
     if ($s['i_url'])
-      $s['i_author'] = ReplaceEscapedVars($s['Comments_AuthorURL']);
-    $s['i_text']     = Comments_FormatText($x['text']);
-    $list           .= ReplaceEscapedVars($s['Comments():Comment']); }
+      $s['i_author']   = ReplaceEscapedVars($s['Comments_AuthorURL']);
+    $s['i_text']       = Comments_FormatText($x['text']);
+    $list             .= ReplaceEscapedVars($s['Comments():Comment']); }
   return $list; }
 
 function Comments_FormatText($text) {
@@ -100,7 +87,7 @@ function Comments_FormatText($text) {
     $text = $text.'</p>';
   return $text; }
 
-function Comments_GetComments($comment_file, $show = 0, &$ignored=NULL ) {
+function Comments_GetComments($comment_file, $show=0, &$ignored=NULL ) {
 # Read $comment_file into more structured, readable array $comments.
   global $nl;
   $comments = array();
@@ -113,23 +100,104 @@ function Comments_GetComments($comment_file, $show = 0, &$ignored=NULL ) {
       continue;
     $time=''; $author=''; $url=''; $lines_comment=array(); $ignore=0;
     foreach (explode($nl, $entry_txt) as $line_n => $line) {
-      if ($line_n == 0 and $show != $line) {     # Break loop and set
-          $ignore = 1;                           # $ignore if visibility
-          $ignored++;                            # value is wrong.
-          break; }                               # 
+      if ($line_n == 0)
+        if ('all' === $show or $show == $line)
+          $visibility = $line;
+        else {
+          $ignore = 1;
+          $ignored++;
+          break; }
       elseif ($line_n==1)           $id              = $line;
       elseif ($line_n==2)           $datetime        = $line;
       elseif ($line_n==3)           $author          = $line;
       elseif ($line_n==4 and $line) $url             = substr($line,1);
       else                          $lines_comment[] = substr($line,1);}
-    if (1 == $ignore)                      # Ignore entry if $ignore was
-      continue;                            # was visibility value check.
-    $comments[$id]['author']   = $author;
-    $comments[$id]['datetime'] = $datetime;
-    $comments[$id]['url']      = $url;
-    $comments[$id]['text']     = implode($nl, $lines_comment); }
+    if (1 == $ignore)                   # Ignore entry if $ignore was
+      continue;                         # set by visibility value check.
+    $comments[$id]['visibility'] = $visibility;
+    $comments[$id]['author']     = $author;
+    $comments[$id]['datetime']   = $datetime;
+    $comments[$id]['url']        = $url;
+    $comments[$id]['text']       = implode($nl, $lines_comment); }
 
   return $comments; }
+
+#######################
+# Comments moderation #
+#######################
+
+function Action_page_Comments_mod() {
+# Show comments to moderate for a page.
+  global $s;
+  $s['Comments_Mod'] = $s['Comments_ModYes'];
+  $s['title']        = $s['Action_page_Comments_mod():title'];
+  Comments_DisplayPage('all'); }
+
+function Action_page_Comments_hidden() {
+# Show the hidden comments for a page.
+  global $s;
+  $s['title']         = $s['Action_page_Comments_hidden:title'];
+  $s['Comments_None'] = $s['Comments_NoneHidden'];
+  Comments_DisplayPage('all'); }
+
+function Comments_DisplayPage($what = 0) {
+# Use a list of comments to current page for current HTML output.
+  global $Comments_dir, $pages_dir, $s;
+  $cur_page_file = $Comments_dir.$s['page_title'];
+  if (!is_dir($Comments_dir) or !is_file($pages_dir.$s['page_title'])
+      or !is_file($cur_page_file))
+    $s['content'] = $s['Comments():None'];
+  if (is_file($cur_page_file)) {
+    $comment_list = Comments_GetComments($cur_page_file, $what);
+    $s['content'] = Comments_BuildCommentsList($comment_list); }
+  OutputHTML(); }
+
+function Action_page_Comments_ModToggle() {
+# Display form asking whether to toggle visibility to page comment id=.
+  global $s;
+  $s['Comments_ID'] = $_GET['id'];
+  $s['content']     = $s['Action_page_Comments_ModToggle():form'];
+  $s['title']       = $s['Action_page_Comments_ModToggle():title'];
+  OutputHTML(); }
+
+function PrepareWrite_Comments_ToggleVisibility(&$redir) {
+# Prepare visibility toggling of comment #id to page "title".
+  global $Comments_dir, $Comments_Recent_path, $nl, $pages_dir, $s;
+  $id = $_POST['id']; $title = $_POST['title'];
+
+  $comment_file   = $Comments_dir.$title;
+  $comment_list   = Comments_GetComments($comment_file, 'all');
+  $new_visibility = 1;
+  if (1 == $comment_list[$id]['visibility'])
+    $new_visibility = 0;
+  $comment_list[$id]['visibility'] = $new_visibility;
+  foreach ($comment_list as $_id => $x)
+    $txt_Comments .= Comments_FileEntry($x['visibility'], $_id, 
+                      $x['datetime'],$x['author'],$x['url'],$x['text']);
+  $tmp_Comments = NewTemp($txt_Comments);
+
+  $recent_comments = Comments_GetRecentComments();
+  foreach ($recent_comments as $n => $entry)
+    if ($title == $entry['title'] and $id == $entry['id']) {
+      $recent_comments[$n]['visibility'] = $new_visibility;
+      break; }
+  foreach ($recent_comments as $n => $y) if ($y['id'] !== '')
+    $txt_Recent .= $y['visibility'].$nl.$y['datetime'].$nl.$y['author'].
+                              $nl.$y['title'].$nl.$y['id'].$nl.'%%'.$nl; 
+  $txt_Recent .= $nl;
+  $tmp_Recent = NewTemp($txt_Recent);
+
+  # Build $redir and task text.  
+  $suffix = '&amp;action=page_Comments_mod#comment_'.$id;
+  $redir  = $s['title_root'].$title.$suffix;
+  return 'if (is_file("'.$tmp_Comments.'")) '.
+          'rename("'.$tmp_Comments.'","'.$comment_file.'");'.$nl.
+         'if (is_file("'.$tmp_Recent.'")) '.
+          'rename("'.$tmp_Recent.'","'.$Comments_Recent_path.'");'.$nl;}
+
+####################
+# Comments writing #
+####################
 
 function PrepareWrite_Comments(&$redir) {
 # Check for failure conditions, then prepare writing of comment to file.
@@ -174,12 +242,8 @@ function PrepareWrite_Comments(&$redir) {
       ErrorFail('Comments_Double');
   
   # Put all together into $add, add $old to get new comments file text.
-  # Prefix ':' to lines that could be empty, as empty lines = separator.
-  $lines = explode($nl, $text);
-  $text = ':'.implode($nl.':', $lines);
   $time = time();
-  $add = '0'.$nl.$new_id.$nl.$time.$nl.$author.$nl.':'.$url.$nl.$text.
-                                                                $nl.$nl;
+  $add = Comments_FileEntry('0', $new_id, time(), $author, $url, $text);
 
   # Return tasks for writing/update of Comments/RecentComments files.
   $tmp_Comms       = NewTemp($old.$add);
@@ -190,9 +254,39 @@ function PrepareWrite_Comments(&$redir) {
            'Comments_AddToRecent("'.$s['page_title'].'", '.$new_id.', '.
              $time.', "'.$tmp_AddToRecent.'", "'.$tmp_author.'", 0);'; }
 
+function Comments_FileEntry($vis, $id, $time, $who, $url, $txt) {
+# Format comment data into multi-line entry to comment file.
+  global $nl;
+  $lines = explode($nl, $txt);         # Prefix : to lines that could be
+  $txt = ':'.implode($nl.':', $lines); # empty; empty line is separator.
+  $time = time();
+  return $vis.$nl.$id.$nl.$time.$nl.$who.$nl.':'.$url.$nl.$txt.$nl.$nl;}
+
 ###################
 # Recent Comments #
 ###################
+
+function Comments_GetRecentComments() {
+# Read $Comments_Recent_path into structured array $recent_comments.
+  global $Comments_Recent_path, $nl;
+  $lines = explode($nl, file_get_contents($Comments_Recent_path));
+  $n = 0;
+  foreach ($lines as $line) {
+    $i++;
+    if ('%%'==$line) {
+      $recent_comments[$n]['visibility'] = $vis;
+      $recent_comments[$n]['datetime']   = $datetime;
+      $recent_comments[$n]['author']     = $author;
+      $recent_comments[$n]['title']      = $title; 
+      $recent_comments[$n]['id']         = $id; 
+      $i = 0;
+      $n++; }
+    elseif (1 == $i) $vis      = $line;
+    elseif (2 == $i) $datetime = $line;
+    elseif (3 == $i) $author   = $line;
+    elseif (4 == $i) $title    = $line;
+    elseif (5 == $i) $id       = $line; }
+  return $recent_comments; }
 
 function Action_Comments() {
 # Provide HTML output of RecentComments file.
@@ -200,47 +294,27 @@ function Action_Comments() {
 
   # Format RecentComments file content into HTML output.
   if (is_file($Comments_Recent_path)) {
-    $txt      = file_get_contents($Comments_Recent_path);
-    $lines    = explode($nl, $txt);
-    
-    # Count lines of each entry in RC file, starting anew at '%%'.
-    foreach ($lines as $line) {
-      $i++;
-      if ('%%' == $line) {
-        $i      = 0;
-        $ignore = FALSE; }
+    $recent_comments = Comments_GetRecentComments();
 
-      # Trigger ignorance of entry depending on visibility value.
-      elseif (1 == $i) {
-        if (0 != $line)
-          $ignore = TRUE; }
-
-      # From 1st line, get date and time. If new date, finalize / output
-      # previous day's entry list. Don't count the new date of the 1st
-      # entry as new. The empty last line of RC file will be handled as
-      # a date line too, triggering one last "date changed" event.
-      elseif (2 == $i) {
-        $datetime                      = date('Y-m-d H:i:s',(int)$line);
-        list($s['i_date'],$s['i_time'])= explode(' ', $datetime);
-        if ($s['i_old_date'] and $s['i_old_date'] != $s['i_date']
-            and $s['i_day']) {
-          $s['Comments_DayList'] .= ReplaceEscapedVars(
+    # Output a finished day only after entries for a new day were found;
+    # therefore, add a virtual last day to trigger last day list event.
+    $recent_comments[] = array();
+    foreach ($recent_comments as $n => $entry) {
+      $date = date('Y-m-d', (int) $entry['datetime']);
+      if ($s['i_old_date'] && $s['i_old_date'] != $date && $s['i_day']){
+        $s['Comments_DayList'] .= ReplaceEscapedVars(
                                       $s['Action_Comments():DayEntry']);
-          $s['i_day'] = ''; }
-        if (!$ignore)
-          $s['i_old_date'] = $s['i_date']; }
+        $s['i_day'] = ''; }
 
-      # Harvest remaining data from lines 2 and 3.
-      elseif (3 == $i and !$ignore)
-        $s['i_author'] = $line;
-      elseif (4 == $i and !$ignore)
-        $s['i_title']  = $line;
-        
-      # After reaching 4th line, build whole list entry for this diff.
-      elseif (5 == $i and !$ignore) {
-        $s['i_id']   = $line;
-        $s['i_day'] .= ReplaceEscapedVars(
-                                     $s['Action_Comments():Entry']); } }
+      # Add data of entry to day list only if visibility is set.
+      if (0 != $entry['visibility'])
+        continue;
+      $s['i_old_date'] = $date;   # Update day only for visible entries.
+      $s['i_time']     = date('H:i:s', (int) $entry['datetime']);
+      $s['i_author']   = EscapeHTML($entry['author']);
+      $s['i_title']    = $entry['title'];
+      $s['i_id']       = $entry['id'];
+      $s['i_day'] .= ReplaceEscapedVars($s['Action_Comments():Entry']);}
 
   # Either output formatted RC list, or message about its non-existence.
     $s['content'] = $s['Action_Comments():list']; }

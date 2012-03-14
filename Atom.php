@@ -152,26 +152,20 @@ function Action_AtomComments() {
 
   if (is_file($Comments_Recent_path)) {
     Atom_InitializeS($s, 'Comments');
-    $txt        = file_get_contents($Comments_Recent_path);
-    $lines      = explode($nl, $txt);
-    foreach ($lines as $line) {
-      $i++;
-      if ('%%' == $line) {
-        if (!$ignore) {
-          $comments = Comments_GetComments($Comments_dir.$s['i_title']);
-          $text = Comments_FormatText($comments[$s['i_id']]['text']);
-          $s['i_text'] = EscapeHTML($text);
-          $s['Atom_Entries'].=ReplaceEscapedVars($s['Atom_CommEntry']);}
-        $ignore = FALSE;
-        $i = 0; }
-      else if (1 == $i and 0 != $line)
-        $ignore = TRUE;
-      else if (2 == $i and !$ignore) {
-        if ((int) $line < $s['Atom_TimeLimit']) break;
-        Atom_SetDate($s, $line); }
-      else if (3 == $i and !$ignore) $s['i_author'] = EscapeHTML($line);
-      else if (4 == $i and !$ignore) $s['i_title']  = $line;
-      else if (5 == $i and !$ignore) $s['i_id']     = $line; }
+    $recent_comments = Comments_GetRecentComments();
+    foreach ($recent_comments as $n => $entry) {
+      if ( (int) $entry['datetime'] < $s['Atom_TimeLimit'])
+        break;
+      if (0 != $entry['visibility'])
+        continue;
+      $s['i_author'] = EscapeHTML($entry['author']);
+      $s['i_title']  = $entry['title'];
+      $s['i_id']     = $entry['id'];
+      Atom_SetDate($s, $entry['datetime']);
+      $comments    = Comments_GetComments($Comments_dir.$s['i_title']);
+      $text        = Comments_FormatText($comments[$s['i_id']]['text']);
+      $s['i_text'] = EscapeHTML($text);
+      $s['Atom_Entries'] .= ReplaceEscapedVars($s['Atom_CommEntry']); }
 
     $s['design'] = $s['Action_AtomComments():output']; 
     header('Content-Type: application/atom+xml; charset=utf-8'); }
