@@ -1,7 +1,7 @@
 <?php
 # PlomWiki plugin: Comments
 # 
-# Provides comments; Action_Comments_admin(), Action_Comments()
+# Provides moderated comments.
 
 $s = ReadStringsFile($plugin_strings_dir.'Comments', $s);
 
@@ -302,8 +302,8 @@ function Action_Comments() {
     foreach ($recent_comments as $n => $entry) {
       $date = date('Y-m-d', (int) $entry['datetime']);
       if ($s['i_old_date'] && $s['i_old_date'] != $date && $s['i_day']){
-        $s['Comments_DayList'] .= ReplaceEscapedVars(
-                                      $s['Action_Comments():DayEntry']);
+        $daylist = ReplaceEscapedVars($s['Action_Comments():DayEntry']);
+        $s['Comments_DayList'] .= $daylist;
         $s['i_day'] = ''; }
 
       # Add data of entry to day list only if visibility is set.
