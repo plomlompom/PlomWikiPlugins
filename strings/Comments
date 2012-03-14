@@ -1,4 +1,8 @@
 §
+#§###############################
+  # Comments(): comment display #
+  ###############################
+§
 Comments§Comments
 §
 Comments():None§
@@ -6,11 +10,27 @@ Comments():None§
 §
 Comments_None§No comments on this page.
 §
+Comments():Output§
+
+<h2>§Comments§</h2>§Comments():Comments§
+
+§Comments():Input§
+§
+#§#################################
+  # Action_page_Comments_hidden() #
+  #################################
+§
 Comments_Hidden§<p>(<a rel="nofollow" href="§title_root§§page_title§&amp;action=page_Comments_hidden">§Comments_Hidden_msg§</a>)</p>
 §
 Comments_Hidden_msg§§Comments_ignored§ hidden comments for this page.
 §
 Comments_NoneHidden§No hidden comments on this page.
+§
+Action_page_Comments_hidden:title§Hidden comments to page "§page_title§"
+§
+#§#####################
+  # Comments() / form #
+  #####################
 §
 Comments_AuthorURL§<a href="§i_url§">§i_author§</a>
 §
@@ -51,6 +71,10 @@ Comments_TextareaRows§10
 §
 Comments_TextareaCols§40
 §
+#§###########################
+  # PrepareWrite_Comments() #
+  ###########################
+§
 Comments_AuthorMax§1000
 §
 Comments_URLMax§2048
@@ -71,13 +95,9 @@ Comments_InvalidURL§Invalid URL format.
 §
 Comments_Double§Repeating text of last comment not allowed.
 §
-Comments():Output§
-
-<h2>§Comments§</h2>§Comments():Comments§
-
-§Comments():Input§
-§
-Action_page_Comments_hidden:title§Hidden comments to page "§page_title§"
+#§#####################
+  # Action_Comments() #
+  #####################
 §
 Action_Comments():title§Recent comments
 §
@@ -97,6 +117,10 @@ Action_Comments():DayEntry§    <li><strong>§i_old_date§</strong>
 §
 Action_Comments():Entry§        <li>§i_time§: §i_author§ <a href="§title_root§§i_title§#comment_§i_id§">on §i_title§</a></li>
 
+§
+#§##########################
+  # Action_CommentsAdmin() #
+  ##########################
 §
 Action_CommentsAdmin():title§Comments administration
 §
@@ -130,6 +154,10 @@ Admin §pw§:
 <input name="auth" type="hidden" value="*" />
 <input type="submit" value="OK" />
 </form>
+§
+#§##########
+  # Design #
+  ##########
 §
 Comments_ActionLinks§
 <a href="§root_rel§?action=Comments">§Action_Comments():title§</a>

@@ -34,16 +34,7 @@ function Comments() {
   $cur_page_file = $Comments_dir.$s['page_title'];
   if (is_file($cur_page_file)) {
     $comment_list = Comments_GetComments($cur_page_file, 0, $ignored);
-    foreach ($comment_list as $id => $x) {
-      $s['i_id']       = $id;
-      $s['i_datetime'] = date('Y-m-d H:i:s', (int) $x['datetime']);
-      $s['i_author']   = $x['author'];
-      $s['i_url']      = $x['url'];
-      if ($s['i_url'])
-        $s['i_author'] = ReplaceEscapedVars($s['Comments_AuthorURL']);
-      $s['i_text']     = Comments_FormatText($x['text']);
-      $s['Comments():Comments'] .= ReplaceEscapedVars(
-                                          $s['Comments():Comment']); }
+    $s['Comments():Comments']=Comments_BuildCommentsList($comment_list);
     if (0 < $ignored) {
       $s['Comments_ignored']     = $ignored;
       $s['Comments():Comments'] .= $s['Comments_Hidden']; } }
@@ -66,7 +57,6 @@ function Action_page_Comments_hidden() {
   global $Comments_dir, $pages_dir, $s;
   $cur_page_file = $Comments_dir.$s['page_title'];
 
-  # Silently fail if $Comments_dir or page do not exist.
   if (!is_dir($Comments_dir) or !is_file($pages_dir.$s['page_title'])
       or !is_file($cur_page_file)) {
     $s['Comments_None'] = $s['Comments_NoneHidden'];
@@ -74,18 +64,22 @@ function Action_page_Comments_hidden() {
 
   if (is_file($cur_page_file)) {
     $comment_list = Comments_GetComments($cur_page_file, 1);
-    foreach ($comment_list as $id => $x) {
-      $s['i_id']       = $id;
-      $s['i_datetime'] = date('Y-m-d H:i:s', (int) $x['datetime']);
-      $s['i_author']   = $x['author'];
-      $s['i_url']      = $x['url'];
-      if ($s['i_url'])
-        $s['i_author'] = ReplaceEscapedVars($s['Comments_AuthorURL']);
-      $s['i_text']     = Comments_FormatText($x['text']);
-      $s['content'] .= ReplaceEscapedVars($s['Comments():Comment']); } }
-
+    $s['content'] = Comments_BuildCommentsList($comment_list); }
   $s['title'] = $s['Action_page_Comments_hidden:title'];
   OutputHTML(); }
+
+function Comments_BuildCommentsList($comment_list) {
+  global $s;
+  foreach ($comment_list as $id => $x) {
+    $s['i_id']       = $id;
+    $s['i_datetime'] = date('Y-m-d H:i:s', (int) $x['datetime']);
+    $s['i_author']   = $x['author'];
+    $s['i_url']      = $x['url'];
+    if ($s['i_url'])
+      $s['i_author'] = ReplaceEscapedVars($s['Comments_AuthorURL']);
+    $s['i_text']     = Comments_FormatText($x['text']);
+    $list           .= ReplaceEscapedVars($s['Comments():Comment']); }
+  return $list; }
 
 function Comments_FormatText($text) {
 # Comment formatting: EscapeHTML, paragraphing / line breaks.
