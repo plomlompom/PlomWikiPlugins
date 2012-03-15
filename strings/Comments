@@ -42,7 +42,11 @@ Action_page_Comments_hidden:title§Hidden comments to page "§page_title§"
 §
 Action_page_Comments_mod():title§Moderate comments for page "§page_title§"
 §
-Comments_ModYes§ / visibility: §i_visibility§ (<a href="§title_url§&amp;action=page_Comments_ModToggle&amp;id=§i_id§">toggle</a>)
+Comments_ModYes§ / §Comments_invisibility§: §i_visibility§ (<a href="§title_url§&amp;action=page_Comments_ModToggle&amp;id=§i_id§">§Comments_toggle§</a>)
+§
+Comments_toggle§toggle
+§
+Comments_invisibility§invisibility
 §
 #§####################################
   # Action_page_Comments_ModToggle() #

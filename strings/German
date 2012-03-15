@@ -191,6 +191,14 @@ Comments_NoneHidden§Keine versteckten Kommentare zu dieser Seite.
 §
 Action_page_Comments_hidden:title§Versteckte Kommentare zur Seite "§page_title§"
 §
+Action_page_Comments_mod():title§Kommentare zur Seite "§page_title§" moderieren
+§
+Comments_toggle§umschalten
+§
+Comments_invisibility§Unsichtbarkeit
+§
+Action_page_Comments_ModToggle():title§Sichtbarkeit von Kommentar #§Comments_ID§ zu Seite "§page_title§" umschalten?
+§
 #§####################
   # Plugin: Autolink #
   ####################

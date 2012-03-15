@@ -138,7 +138,7 @@ function Action_page_Comments_hidden() {
   global $s;
   $s['title']         = $s['Action_page_Comments_hidden:title'];
   $s['Comments_None'] = $s['Comments_NoneHidden'];
-  Comments_DisplayPage('all'); }
+  Comments_DisplayPage(1); }
 
 function Comments_DisplayPage($what = 0) {
 # Use a list of comments to current page for current HTML output.

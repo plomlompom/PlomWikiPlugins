@@ -48,7 +48,7 @@ css_pageview§.pageview { background-color: #FFFFFF; }
 .Comments_InputCaptcha { width:100%; max-width: 100px; }
 .Autolink_backlinks { width: 46%; min-width: 275px; float: right; margin: 0px; margin-top: 10px; padding-top: 0px; }
 §
-css_hidden_comments§header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
+css_comments§header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
 .Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
 footer { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
 §
@@ -76,7 +76,7 @@ Autolink_Backlinks()§
 Comments():Comment§
 
 <article id="comment_§i_id§">
-<header ><a href="#comment_§i_id§">#§i_id§</a></header>
+<header ><a href="#comment_§i_id§">#§i_id§</a>§i_mod§</header>
 <div class="Comments_body">
 §i_text§</div>
 <footer><strong>§i_author§</strong> / §i_datetime§</footer>
