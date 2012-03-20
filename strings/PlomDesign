@@ -19,6 +19,7 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 .head { margin:0px; margin-top:10px; margin-bottom: 10px; padding:10px; border:1px solid #C0C0C0; background-color:#FAFAFA;}
 .head h1 { margin:0px; margin-bottom:0px; padding:0px; background-color:#FFFFFF; }
 .default { border: 1px solid #C0C0C0; background-color: #FAFAFA; padding: 10px; }
+.license { padding-top: 10px; }
 §PlomDesign_css§</style>
 <title>§title§</title>
 
@@ -38,6 +39,8 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 <div class="default§css_class§">
 §content§
 </div>
+
+<div class="license">§LicensePhrase§</div>
 §
 PlomDesign_ActionLinks§
 <a href="plomwiki.php?title=§page_title§&amp;action=page_view">§View§</a> 
