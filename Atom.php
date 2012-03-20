@@ -1,10 +1,11 @@
 <?php
-# PlomWiki plugin: Atom
+# PlomWiki plugin: Atom. Feeds for comments and page edits.
 # 
-# Provides Atom feeds for comments via Action_AtomComments() and for
-# page edits via Action_AtomDiffs().
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
 $s = ReadStringsFile($plugin_strings_dir.'Atom', $s);
+$s['ActionLinks_Plugins']  .= $s['Atom_ActionLinks'];
 
 $Atom_dir                   = $plugin_dir.'Atom/';
 $Atom_path_CommentsFeedID   = $Atom_dir.'AtomComments_ID';
