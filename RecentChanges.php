@@ -1,9 +1,10 @@
 <?php
-# PlomWiki plugin: RecentChanges
+# PlomWiki plugin: RecentChanges. Provides Action_RecentChanges() to
+# output a "Recent Changes" list; also hooks RecentChanges_Add() into
+# WritePage() to protocol all page changes in a RecentChanges.
 # 
-# Provides Action_RecentChanges() to output a "Recent Changes" list;
-# also hooks RecentChanges_Add() into WritePage() to protocol all page
-# changes in a RecentChanges.
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
 $s = ReadStringsFile($plugin_strings_dir.'RecentChanges', $s);
 
