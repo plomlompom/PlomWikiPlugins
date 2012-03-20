@@ -19,7 +19,7 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 .head { margin:0px; margin-top:10px; margin-bottom: 10px; padding:10px; border:1px solid #C0C0C0; background-color:#FAFAFA;}
 .head h1 { margin:0px; margin-bottom:0px; padding:0px; background-color:#FFFFFF; }
 .default { border: 1px solid #C0C0C0; background-color: #FAFAFA; padding: 10px; }
-.license { padding-top: 10px; }
+.license { clear:both; padding-top: 10px; }
 §PlomDesign_css§</style>
 <title>§title§</title>
 
@@ -58,7 +58,7 @@ PlomDesign_css_pageview§.pageview { background-color: #FFFFFF; }
 .Comments_InputName { width:100%; max-width: 250px; }
 .Comments_InputURL { width:100%; max-width: 250px; }
 .Comments_InputCaptcha { width:100%; max-width: 100px; }
-§PlomDesign_css_Comments§
+
 §
 PlomDesign_css_Comments§.Comments header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
 .Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
