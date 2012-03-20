@@ -232,7 +232,7 @@ function PrepareWrite_Comments(&$redir) {
   $new_id        = 0;
   if (is_file($cur_page_file)) {
     $old           = file_get_contents($cur_page_file);
-    $prev_comments = Comments_GetComments($cur_page_file);
+    $prev_comments = Comments_GetComments($cur_page_file, 'all');
     $new_id        = count($prev_comments); }
   $redir = $s['title_url'].'#comment_'.$new_id;
 
