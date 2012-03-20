@@ -1,7 +1,8 @@
 <?php
-# PlomWiki plugin: PwPages
+# PlomWiki plugin: PwPages. Use, set (via action=page_PwPages) page PWs.
 # 
-# Provides page passwords, to be set by admin via Action_page_PwPages().
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 #
 # To do: how to /remove/ page passwords.
 
