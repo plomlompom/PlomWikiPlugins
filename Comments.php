@@ -60,7 +60,7 @@ function Comments_BuildCommentsList($comment_list) {
     $s['i_visibility'] = $x['visibility'];
     $s['i_mod']        = ReplaceEscapedVars($s['Comments_Mod']);
     $s['i_datetime']   = date('Y-m-d H:i:s', (int) $x['datetime']);
-    $s['i_author']     = $x['author'];
+    $s['i_author']     = EscapeHTML($x['author']);
     $s['i_url']        = $x['url'];
     if ($s['i_url'])
       $s['i_author']   = ReplaceEscapedVars($s['Comments_AuthorURL']);
