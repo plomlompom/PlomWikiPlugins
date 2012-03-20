@@ -6,17 +6,17 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'Comments', $s);
 
-$s['ActionLinks_Plugins'] .= $s['Comments_ActionLinks'];
+$Comments_dir                   = $plugin_dir.'Comments/';
+$Comments_captcha_path          = $Comments_dir.'_captcha';
+$Comments_Recent_path           = $Comments_dir.'_RecentComments';
 
-$Comments_dir              = $plugin_dir.'Comments/';
-$Comments_captcha_path     = $Comments_dir.'_captcha';
-$Comments_Recent_path      = $Comments_dir.'_RecentComments';
+$s['Comments_key']              = 'Comments_captcha';
+$legal_pw_key                  .= '|'.$s['Comments_key'];
+$permissions['Comments'][]      = $s['Comments_key'];
 
-$s['Comments_key']         = 'Comments_captcha';
-$legal_pw_key             .= '|'.$s['Comments_key'];
-$permissions['Comments'][] = $s['Comments_key'];
-
-$hook_before_action .= $s['Comments_HookBeforeAction'];
+$s['ActionLinks_Plugins']      .= $s['Comments_ActionLinks'];
+$s['ActionLinks_page_Plugins'] .= $s['Comments_page_ActionLinks'];
+$hook_before_action            .= $s['Comments_HookBeforeAction'];
 
 ###########################
 # Common comments display #
@@ -144,12 +144,12 @@ function Comments_DisplayPage($what = 0) {
 # Use a list of comments to current page for current HTML output.
   global $Comments_dir, $pages_dir, $s;
   $cur_page_file = $Comments_dir.$s['page_title'];
-  if (!is_dir($Comments_dir) or !is_file($pages_dir.$s['page_title'])
-      or !is_file($cur_page_file))
-    $s['content'] = $s['Comments():None'];
-  if (is_file($cur_page_file)) {
+  if (is_file($cur_page_file))
     $comment_list = Comments_GetComments($cur_page_file, $what);
-    $s['content'] = Comments_BuildCommentsList($comment_list); }
+  if (array() == $comment_list or !is_file($pages_dir.$s['page_title']))
+    $s['content'] = $s['Comments():None'];
+  else
+    $s['content'] = Comments_BuildCommentsList($comment_list);
   OutputHTML(); }
 
 function Action_page_Comments_ModToggle() {
