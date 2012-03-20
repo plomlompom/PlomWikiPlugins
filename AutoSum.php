@@ -1,8 +1,8 @@
 <?php
-# PlomWiki plugin: AutoSum
+# PlomWiki plugin: AutoSum. Excerpts diff text to create summary text.
 # 
-# Provides to the diff summary field an automatic summary of what was
-# changed, by excerpting the actual diff text.
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
 # Hook into WritePage() to fill up an empty $summary with AutoSum().
 $hook_WritePage_diff .= 'if (!$summary) $summary = AutoSum($diff_add);';
@@ -42,8 +42,8 @@ function AutoSum($diff_add) {
   $string_del = substr($string_del, 6);
 
   # Build summary string by adding everything; reduce to 100 UTF8 chars.
-  $summary = 'AutoSum: '.$prefix_add.$string_add.$sep_to_minus.
-                                                $prefix_del.$string_del;
+  $diff = $prefix_add.$string_add.$sep_to_minus.$prefix_del.$string_del;
+  $summary = 'AutoSum: '.$diff;
   if (100 < strlen($summary))
     $summary = mb_substr($summary, 0, 99, 'UTF-8').'…';
   
