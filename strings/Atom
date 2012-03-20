@@ -94,8 +94,12 @@ Admin §pw§:
 <input type="submit" value="OK" />
 </form>
 §
+Atom_ActionLinkText_Diffs§Diffs feed
+§
+Atom_ActionLinkText_Comments§Comments feed
+§
 Atom_ActionLinks§
-<a href="§root_rel§?action=AtomDiffs">Diffs feed</a>
-<a href="§root_rel§?action=AtomComments">Comments feed</a> 
+<a href="§root_rel§?action=AtomDiffs">§Atom_ActionLinkText_Diffs§</a>
+<a href="§root_rel§?action=AtomComments">§Atom_ActionLinkText_Comments§</a> 
 §
 #§

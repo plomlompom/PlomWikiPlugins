@@ -202,9 +202,13 @@ Comments_ActionLinks§
 <a href="§root_rel§?action=Comments">§Action_Comments():title§</a>
 <a href="§root_rel§?action=CommentsAdmin">§Action_CommentsAdmin():title§</a> 
 §
+Comments_ActionLinkText_Hidden§Show hidden comments
+§
+Comments_ActionLinkText_Mod§Moderate comments
+§
 Comments_page_ActionLinks§
-<a href="§title_url§&amp;action=page_Comments_hidden">Show hidden comments</a>
-<a href="§title_url§&amp;action=page_Comments_mod">Moderate comments</a>
+<a href="§title_url§&amp;action=page_Comments_hidden">§Comments_ActionLinkText_Hidden§</a>
+<a href="§title_url§&amp;action=page_Comments_mod">§Comments_ActionLinkText_Mod§</a>
 §
 Comments_HookBeforeAction§
 if ($action == 'Action_page_view')

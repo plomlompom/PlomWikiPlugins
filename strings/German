@@ -199,6 +199,10 @@ Comments_invisibility§Unsichtbarkeit
 §
 Action_page_Comments_ModToggle():title§Sichtbarkeit von Kommentar #§Comments_ID§ zu Seite "§page_title§" umschalten?
 §
+Comments_ActionLinkText_Hidden§Versteckte Kommentare zeigen
+§
+Comments_ActionLinkText_Mod§Kommentare moderieren
+§
 #§####################
   # Plugin: Autolink #
   ####################
@@ -246,3 +250,9 @@ Atom_DiffDelAuthor§unbekannt
 Atom_DiffDelSumm§Seite wurde gelöscht.
 §
 Atom_NoDiff§Kann diese Seiten-Veränderung nicht im Detail zeigen: Vielleicht wurde die Seite später gelöscht, zusammen mit ihrer Versions-Geschichte?
+§
+Atom_ActionLinkText_Diffs§Feed Seitenveränderungen
+§
+Atom_ActionLinkText_Comments§Feed Kommentare
+§
+#§
