@@ -1,4 +1,11 @@
 §
+#§######################################################################
+  # Comments plugin strings file.                                      #
+  #                                                                    #
+  # Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/> #
+  # License: AGPLv3 or any later version. See file LICENSE for details.#
+  ######################################################################
+§
 #§###############################
   # Comments(): comment display #
   ###############################
@@ -11,7 +18,10 @@ Comments():None§
 Comments_None§No comments on this page.
 §
 Comments():Output§
+</div>
 
+<hr />
+<div class="main">
 <h2>§Comments§</h2>§Comments():Comments§
 
 §Comments():Input§
@@ -198,6 +208,5 @@ if (   $action == 'Action_page_view'
     or $action == 'Action_page_Comments_mod')
   $s['css'] .= $s['Comments_css'];
 §
-Comments_css§
-.Comments header { margin-bottom: -15px; }
+Comments_css§.Comments header { margin-bottom: -15px; }
 .Comments footer { margin-top: -15px; margin-bottom: 20px; }

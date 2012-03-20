@@ -1,7 +1,8 @@
 <?php
-# PlomWiki plugin: Comments
+# PlomWiki plugin: Comments. Provides moderated comments.
 # 
-# Provides moderated comments.
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
 $s = ReadStringsFile($plugin_strings_dir.'Comments', $s);
 
@@ -15,8 +16,7 @@ $s['Comments_key']         = 'Comments_captcha';
 $legal_pw_key             .= '|'.$s['Comments_key'];
 $permissions['Comments'][] = $s['Comments_key'];
 
-$s['code'] .= '
-$hook_before_action .= $s["Comments_HookBeforeAction"]; ';
+$hook_before_action .= $s['Comments_HookBeforeAction'];
 
 ###########################
 # Common comments display #
