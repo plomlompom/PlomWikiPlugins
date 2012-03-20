@@ -15,6 +15,8 @@ History§Versions-Geschichte
 §
 IllegalPageTitle§Unerlaubter Seiten-Titel. Nur alphanumerische Zeichen und "-" erlaubt.
 §
+LicensePhrase§PlomWiki-Engine lizensiert unter der <a href="§URL_AGPLv3§">AGPLv3</a>. Quellcode verfügbar <a href="§URL_Source§">auf GitHub</a>.
+§
 #§######################
   # Action_page_view() #
   ######################
