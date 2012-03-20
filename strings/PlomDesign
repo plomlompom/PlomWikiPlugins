@@ -25,6 +25,7 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 
 <div style="float:left;">PlomWiki: 
 <a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§§RecentChanges_ActionLinks§
+<a href="§root_rel§?action=Comments">§Action_Comments():title§</a>
 <script type="text/javascript"> var flattr_url = "http://www.plomlompom.de"; var flattr_btn="compact"; </script> <script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
 </div>
 <div style="text-align: right;">
