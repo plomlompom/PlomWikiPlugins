@@ -11,10 +11,10 @@ Search():content§<form method="get" action="§root_rel§">
 <input type="hidden" name="action" value="Search" />
 <input type="text" name="query" value="§Search_query§" />
 <input type="submit" value="§Search§!" />
-</form>
-§Search():results§ 
+</form>§Search():results§ 
 §
 Search():results§
+
 <h2>§Search_Results§: §Search_queryNoHTML§</h2>
 
 §

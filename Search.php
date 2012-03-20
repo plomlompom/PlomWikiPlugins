@@ -1,8 +1,8 @@
 <?php
-# PlomWiki plugin: Search
+# PlomWiki plugin: Search. Case-insensitive full-text, all-pages search.
 # 
-# Provides a very simple case-insensitive full-text string search
-# through all pages of a PlomWiki via Action_Search().
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
 $s = ReadStringsFile($plugin_strings_dir.'Search', $s);
 
