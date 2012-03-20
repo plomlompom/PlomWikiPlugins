@@ -1,11 +1,12 @@
 <?php
-# PlomWiki plugin: DiffCheck
-#
-# Some diagnostic functions to check that Diff works correctly and that
-# page diff histories are not corrupted. Call by ?action=DiffCheck_All.
+# PlomWiki plugin: DiffCheck. Call diagnostics for correct working of
+# Diff function, page histories corruption by ?action=DiffCheck.
+# 
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
-function Action_DiffCheck_All() {
-# Apply all DiffCheck function to all pages, output results.
+function Action_DiffCheck() {
+# Apply all DiffCheck functions to all pages, output results.
   global $nl;
   echo 'DiffCheck all pages:<br />'.$nl.$nl.'Working ...<br />'.$nl.$nl;
   $titles = GetAllPageTitles();
