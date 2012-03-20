@@ -1,14 +1,12 @@
 <?php
-# PlomWiki plugin: Autolink
-#
-# Provides autolinks; Action_Autolink_admin()
+# PlomWiki plugin: Autolink. Provides autolinks; Action_Autolink_admin()
+# 
+# Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/>
+# License: AGPLv3 or any later version. See file LICENSE for details.
 
 $s = ReadStringsFile($plugin_strings_dir.'AutoLink', $s);
-
-$s['code'] .= '
-$hook_before_action .= $s["Autolink_HookBeforeAction"]; ';
-
 $s['ActionLinks_Plugins'] .= $s['Autolink_ActionLinks'];
+$hook_before_action .= $s['Autolink_HookBeforeAction'];
 
 # Directory for Autolink DB.
 $Autolink_dir = $plugin_dir.'Autolink/';
