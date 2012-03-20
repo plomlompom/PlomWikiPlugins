@@ -1,4 +1,11 @@
 §
+#§######################################################################
+  # PlomDesign plugin strings file.                                    #
+  #                                                                    #
+  # Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/> #
+  # License: AGPLv3 or any later version. See file LICENSE for details.#
+  ######################################################################
+§
 code§
 §
 #§#################
@@ -12,13 +19,11 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 .head { margin:0px; margin-top:10px; margin-bottom: 10px; padding:10px; border:1px solid #C0C0C0; background-color:#FAFAFA;}
 .head h1 { margin:0px; margin-bottom:0px; padding:0px; background-color:#FFFFFF; }
 .default { border: 1px solid #C0C0C0; background-color: #FAFAFA; padding: 10px; }
-§css§
-</style>
+§PlomDesign_css§</style>
 <title>§title§</title>
 
-<div style="float:left;">PlomWiki BETA: 
-<a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§ §RecentChanges_ActionLinks§
-<a href="§root_rel§?action=Comments">§Action_Comments():title§</a>
+<div style="float:left;">PlomWiki: 
+<a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§§RecentChanges_ActionLinks§
 <script type="text/javascript"> var flattr_url = "http://www.plomlompom.de"; var flattr_btn="compact"; </script> <script src="http://api.flattr.com/button/load.js" type="text/javascript"></script>
 </div>
 <div style="text-align: right;">
@@ -26,61 +31,68 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 <a href="http://meta.plomlompom.de/datenschutz.html">Datenschutz-Erklärung</a>
 </div>
 
-<div class="head" ><h1>§title§</h1>§ActionLinks_page§
+<div class="head" >
+<h1>§title§</h1>§PlomDesign_ActionLinks§
 </div>
 
-<div class="§css_class§">§content§</div>
+<div class="default§css_class§">
+§content§
+</div>
+§
+PlomDesign_ActionLinks§
+<a href="plomwiki.php?title=§page_title§&amp;action=page_view">§View§</a> 
+<a href="plomwiki.php?title=§page_title§&amp;action=page_edit">§Edit§</a> 
+<a href="plomwiki.php?title=§page_title§&amp;action=page_history">§History§</a>§PwPages_ActionLinks§§Autolink_ActionLinks_page§
 §
 #§#######
   # CSS #
   #######
 §
-css_class§default
-§
-css_pageview§.pageview { background-color: #FFFFFF; }
+PlomDesign_css_pageview§.pageview { background-color: #FFFFFF; }
+.Autolink_backlinks { width: 46%; min-width: 275px; float: right; margin: 0px; margin-top: 10px; padding-top: 0px; }
 .Comments { width: 46%; min-width: 275px; float: left; margin: 0px; margin-top: 10px; padding-top: 0px; }
 .Comments textarea { width:100%; max-width: 500px; }
-.Comments header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
-.Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
-.Comments footer { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
 .Comments_InputName { width:100%; max-width: 250px; }
 .Comments_InputURL { width:100%; max-width: 250px; }
 .Comments_InputCaptcha { width:100%; max-width: 100px; }
-.Autolink_backlinks { width: 46%; min-width: 275px; float: right; margin: 0px; margin-top: 10px; padding-top: 0px; }
+§PlomDesign_css_Comments§
 §
-css_comments§header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
+PlomDesign_css_Comments§.Comments header { margin:0px; padding:0px; background-color: #FAFAFA; position: relative; top:5px; z-index:1; }
 .Comments_body { margin:0px; padding:10px; background-color: #FFFFFF; position: relative; top:-10px; z-index:0; }
-footer { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
+.Comments footer { margin:0px; padding:0px; background-color: #FAFAFA; text-align: right; position: relative; bottom:25px; z-index:1; margin-bottom:-20px; }
+
 §
-css_fail§.default { font-weight: bold; }
+PlomDesign_css_fail§.fail { font-weight: bold; }
+
 §
 #§###########
   # Plugins #
   ###########
 §
 Comments():Output§
+</div>
 
 <div class="default Comments">
-<h2>§Comments§</h2>§Comments():Comments§
+<h2>§Comments§</h2>
+§Comments():Comments§
 
 §Comments():Input§
-</div>
 §
 Autolink_Backlinks()§
+</div>
 
 <div class="default Autolink_backlinks">
 <h2>§Autolink_Backlinks§</h2>
 <p>§Autolink_Backlinks():links§</p>
-</div>
 §
 Comments():Comment§
-
 <article id="comment_§i_id§">
 <header ><a href="#comment_§i_id§">#§i_id§</a>§i_mod§</header>
 <div class="Comments_body">
 §i_text§</div>
 <footer><strong>§i_author§</strong> / §i_datetime§</footer>
 </article>
+
 §
 Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
 §Comments_Name§: <input class="Comments_InputName" name="author" /><br />
