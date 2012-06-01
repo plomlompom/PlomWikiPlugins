@@ -162,7 +162,7 @@ function Action_page_Comments_ModToggle() {
 
 function PrepareWrite_Comments_ToggleVisibility(&$redir) {
 # Prepare visibility toggling of comment #id to page "title".
-  global $Comments_dir, $Comments_Recent_path, $nl, $pages_dir, $s;
+  global $Comments_dir, $Comments_Recent_path, $nl, $s;
   $id = $_POST['id']; $title = $_POST['title'];
 
   $comment_file   = $Comments_dir.$title;
