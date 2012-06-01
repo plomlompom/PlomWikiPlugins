@@ -259,7 +259,6 @@ function Comments_FileEntry($vis, $id, $time, $who, $url, $txt) {
   global $nl;
   $lines = explode($nl, $txt);         # Prefix : to lines that could be
   $txt = ':'.implode($nl.':', $lines); # empty; empty line is separator.
-  $time = time();
   return $vis.$nl.$id.$nl.$time.$nl.$who.$nl.':'.$url.$nl.$txt.$nl.$nl;}
 
 ###################
