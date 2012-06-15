@@ -6,7 +6,7 @@
 
 $s = ReadStringsFile($plugin_strings_dir.'EditConflict', $s);
 
-$hook_before_action = '
+$hook_before_action .= '
 # Hook before page writing action is initiated.
 if ($action == "Action_write" && $_GET["t"] == "page") {
   $s["css"] .= $s["css_edit"];
