@@ -257,4 +257,22 @@ Atom_ActionLinkText_Diffs§Feed Seitenveränderungen
 §
 Atom_ActionLinkText_Comments§Feed Kommentare
 §
+#§########################
+  # Plugin: EditConflict #
+  ########################
+§
+EditConflict_ErrorSame§Bearbeitungs-(Nicht-)Konflikt: Offenbar ist dir jemand mit präzise demselben Bearbeitungs-Schritt zuvor gekommen. 
+§
+Action_EditConflict():title§Bearbeitungs-Konflikt bei Seite "§page_title§"
+§
+EditConflict_Explanation§Erklärung:
+§
+EditConflict_ExplanationText§Während du den Seitentext bearbeitet hast, wurde er von woanders geupdated. Durchs Umsetzen deines Bearbeitungsschritts könnten wertvolle Äderungen von jenem anderen Update verloren gehen. Bitte überprüfe die Details unten und entscheide, ob du weiterhin deinen Bearbeitungsschritt umsetzen möchtest. Denke darüber nach, Bearbeitungsschritte vom anderen Update in deines zu übernehmen.
+§
+EditConflict_Yours§Deine Version (noch bearbeitbar):
+§
+EditConflict_Theirs§Neuestes Update:
+§
+EditConflict_Difference§Differenz zu neuestem Update:
+§
 #§

@@ -1,0 +1,46 @@
+§
+#§######################################################################
+  # EditConflict plugin strings file.                                  #
+  #                                                                    #
+  # Copyright 2010-2012 Christian Heller / <http://www.plomlompom.de/> #
+  # License: AGPLv3 or any later version. See file LICENSE for details.#
+  ######################################################################
+§
+EditConflict_HashInput§
+<input type="hidden" name="hash_start" value="§EditConflict_Hash§">
+§
+EditConflict_ErrorSame§Editing (non-)conflict: Looks like somebody beat you to making precisely the same edit!
+§
+Action_EditConflict():title§Editing conflict on page "§page_title§"
+§
+Action_EditConflict():forms§<form method="post" action="§title_url§&amp;action=write&amp;t=page">
+<h2>§EditConflict_Explanation§</h2>
+<p>§EditConflict_ExplanationText§</p>
+<h2>§EditConflict_Yours§</h2>
+<textarea name="text" rows="§Action_page_edit():TextareaRows§">
+§EditConflict_TxtYours§</textarea>
+<h2>§EditConflict_Difference§</h2>
+<div class="diff_text">
+§EditConflict_Diff§
+</div>
+<h2>§EditConflict_Theirs§</h2>
+<textarea rows="§Action_page_edit():TextareaRows§" readonly="readonly">
+§EditConflict_TxtOther§</textarea>
+</textarea>§Action_page_edit():form_Plugins§
+§Author§: <input name="author" type="text" value="§EditConflict_Author§" />
+§Summary§: <input name="summary" type="text" value="§EditConflict_Summary§" />
+§PageEditAuth§
+<input type="submit" value="OK" />
+</form>
+§
+EditConflict_Explanation§Explanation:
+§
+EditConflict_ExplanationText§While you edited the page text, it was updated from somewhere else. By applying your edit, valuable changes from this other update may get lost. Please see below for the details and decide whether you want to still go through with your page edit. Think about duplicating edits from the other update in yours.
+§
+EditConflict_Yours§Your version (still editable):
+§
+EditConflict_Theirs§Most recent update:
+§
+EditConflict_Difference§Difference to most recent update:
+§
+#§
