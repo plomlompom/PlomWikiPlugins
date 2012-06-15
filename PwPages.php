@@ -18,9 +18,6 @@ $legal_pw_key                .= '|'.$PwPages_prefix.$legal_title;
 $s['PwPages_CurKey']          = $PwPages_prefix.$title;
 $permissions['page'][]        = $s['PwPages_CurKey'];
 
-# Replace Action_page_edit() form with one allowing page passwords.
-$s['Action_page_edit():form'] = $s['PwPages_ErsatzForm'];
-
 function Action_page_PwPages()
 # Output form to set password for current page via admin authorization.
 { global $s;

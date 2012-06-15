@@ -12,19 +12,10 @@ PwPages_page§page
 §
 PwPages_set§Set password for page
 §
-PwPages_ErsatzForm§<form method="post" action="§title_url§&amp;action=write&amp;t=page">
-<textarea name="text" rows="§Action_page_edit():TextareaRows§">
-§text§</textarea>
-§Author§: <input name="author" type="text" />
-§Summary§: <input name="summary" type="text" />
-§PwPages_PWfor§ <select name="auth">
+PageEditAuth§§PwPages_PWfor§ <select name="auth">
 <option value="*">§admin§</option>
 <option value="§PwPages_CurKey§">§PwPages_page§</option>
 </select>: <input type="password" name="pw">
-<input type="submit" value="OK" />
-</form>
-
-§markup_help§
 §
 Action_PwPages():title§§PwPages_set§ "§page_title§"
 §
@@ -40,3 +31,5 @@ Admin §pw§:<br />
 §
 PwPages_ActionLinks§
 <a href="§title_url§&amp;action=page_PwPages">§PwPages_set§</a>
+§
+#§
