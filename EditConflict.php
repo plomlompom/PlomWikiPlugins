@@ -9,8 +9,6 @@ $s = ReadStringsFile($plugin_strings_dir.'EditConflict', $s);
 $hook_before_action .= '
 # Hook before page writing action is initiated.
 if ($action == "Action_write" && $_GET["t"] == "page") {
-  $s["css"] .= $s["css_edit"];
-  $s["css"] .= $s["css_history"];
 
   # Page exists? Get most recent text and its hash.
   if (is_file($page_path)) {
@@ -35,7 +33,11 @@ if ($action == "Action_write" && $_GET["t"] == "page") {
     # Conflicting edit results? Resolve with Action_EditConflict().
     else {
       $s["EditConflict_TxtYours"] = $_POST["text"];
-      $action = "Action_EditConflict"; } } }
+      $action = "EditConflict"; } }
+
+  if ($action == "EditConflict") {
+    $s["css"] .= $s["css_edit"];
+    $s["css"] .= $s["css_history"]; } }
 
 # Hook before page editing, including edit conflict resolving editing:
 # Send hash of text from which editing starts via hidden $_POST input.
@@ -47,7 +49,7 @@ if ($action == "Action_page_edit" || $action == "Action_EditConflict") {
   $s["Action_page_edit():form_Plugins"].=$s["EditConflict_HashInput"]; }
 ';
 
-function Action_EditConflict() {
+function EditConflict() {
 # Show page editing interface to resolving page editing conflict.
   global $nl, $page_path, $s;
   $s['title'] = $s['Action_EditConflict():title'];

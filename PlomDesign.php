@@ -14,7 +14,7 @@ else if ($action == "Action_page_history")
   $s["PlomDesign_css"]  .= $s["css_history"];
 else if ($action == "Action_page_edit")
   $s["PlomDesign_css"]  .= $s["css_edit"];
-else if ($action == "Action_EditConflict") {
+else if ($action == "EditConflict") {
   $s["PlomDesign_css"]  .= $s["css_history"];
   $s["PlomDesign_css"]  .= $s["css_edit"]; }
 if (substr($action, 7, 5) !== "page_")
