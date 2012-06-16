@@ -15,7 +15,10 @@ else if ($action == "Action_page_history")
   $s["PlomDesign_css"]  .= $s["css_history"];
 else if ($action == "Action_page_edit")
   $s["PlomDesign_css"]  .= $s["css_edit"];
-else if (substr($action, 7, 5) !== "page_")
+else if ($action == "Action_EditConflict") {
+  $s["PlomDesign_css"]  .= $s["css_history"];
+  $s["PlomDesign_css"]  .= $s["css_edit"]; }
+if (substr($action, 7, 5) !== "page_")
   $s["PlomDesign_ActionLinks"] = "";
 if (   $action == "Action_page_Comments_hidden"
     or $action == "Action_page_Comments_mod")
