@@ -9,8 +9,7 @@ $s = ReadStringsFile($plugin_strings_dir.'PlomDesign', $s);
 $hook_before_action .= '
 if ($action == "Action_page_view") {
   $s["PlomDesign_css"]   = $s["PlomDesign_css_pageview"];
-  $s["css_class"]       .= " pageview";
-}
+  $s["css_class"]       .= " pageview"; }
 else if ($action == "Action_page_history")
   $s["PlomDesign_css"]  .= $s["css_history"];
 else if ($action == "Action_page_edit")
@@ -21,9 +20,9 @@ else if ($action == "Action_EditConflict") {
 if (substr($action, 7, 5) !== "page_")
   $s["PlomDesign_ActionLinks"] = "";
 if (   $action == "Action_page_Comments_hidden"
-    or $action == "Action_page_Comments_mod")
+    or $action == "Action_page_Comments_mod") {
   $s["css_class"]       .= " Comments";
-  $s["PlomDesign_css"]  .= $s["PlomDesign_css_Comments"];
+  $s["PlomDesign_css"]  .= $s["PlomDesign_css_Comments"]; }
 ';
 
 $hook_ErrorFail .= '
