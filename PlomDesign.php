@@ -9,6 +9,7 @@ $s = ReadStringsFile($plugin_strings_dir.'PlomDesign', $s);
 $hook_before_action .= '
 if ($action == "Action_page_view") {
   $s["PlomDesign_css"]   = $s["PlomDesign_css_pageview"];
+  $s["PlomDesign_css"]  .= $s["PlomDesign_css_Comments"];
   $s["css_class"]       .= " pageview"; }
 else if ($action == "Action_page_history")
   $s["PlomDesign_css"]  .= $s["css_history"];
