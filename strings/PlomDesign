@@ -24,8 +24,8 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 <title>§title§</title>
 
 <div style="float:left;">PlomWiki: 
-<a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§§RecentChanges_ActionLinks§ (<a href="§root_rel§?action=AtomDiffs">Atom</a>)
-<a href="§root_rel§?action=Comments">§Action_Comments():title§</a> (<a href="§root_rel§?action=AtomComments">Atom</a>)
+<a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§§RecentChanges_ActionLinks§ (<a href="§root_rel§?action=AtomDiffs">Feed</a>)
+<a href="§root_rel§?action=Comments">§Action_Comments():title§</a> (<a href="§root_rel§?action=AtomComments">Feed</a>)
 <a href="http://flattr.com/thing/14231/plomlompom">Flattern</a>
 </div>
 <div style="text-align: right;">
