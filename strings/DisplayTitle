@@ -1,0 +1,31 @@
+§
+#§######################################################################
+  # DisplayTitle plugin strings file.                                  #
+  #                                                                    #
+  # Copyright 2014 Christian Heller / <http://www.plomlompom.de/>      #
+  # License: AGPLv3 or any later version. See file LICENSE for details.#
+  ######################################################################
+§
+Action_page_DisplayTitle:title§Define display title for page "§page_title§"
+§
+Action_page_DisplayTitle:form§
+<form method="post" action="§title_url§&amp;action=write&amp;t=DisplayTitle">
+<p>
+Display title: <input name="DisplayTitle" type="text" value="§DisplayTitle_Default§">
+</p>
+<p>
+Admin §pw§:
+<input type="hidden"   name="auth" value="*">
+<input type="password" name="pw">
+<input type="submit"   value="OK">
+</p>
+</form>
+§
+DisplayTitle_page_ActionLinkTitle§Set display title
+§
+DisplayTitle_page_ActionLinks§
+<a href="§title_url§&amp;action=page_SetDisplayTitle">§DisplayTitle_page_ActionLinkTitle§</a>
+§
+PrepareWrite_DisplayTitle():NoTitle§Empty display title cannot be accepted for page "§page_title§".
+§
+#§
