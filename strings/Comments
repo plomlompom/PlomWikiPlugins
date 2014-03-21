@@ -92,10 +92,10 @@ Comments_WriteNo§Commenting currently impossible: Captcha not set.
 Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
 §Comments_Name§: <input name="author" /><br />
 §Comments_URL§: <input name="URL" /><br />
-<textarea name="text" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§" />
+<textarea name="text" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§">
 </textarea><br />
-§Comments_AskCaptcha§ "§Comments_captcha§": 
-<input name="pw"size="5" />
+§Comments_AskCaptcha§ "§Comments_captcha§":
+<input name="pw" size="5" />
 <input name="auth" type="hidden" value="§Comments_key§" />
 <input type="submit" value="OK" />
 </form>
@@ -200,7 +200,7 @@ Admin §pw§:
 §
 Comments_ActionLinks§
 <a href="§root_rel§?action=Comments">§Action_Comments():title§</a>
-<a href="§root_rel§?action=CommentsAdmin">§Action_CommentsAdmin():title§</a> 
+<a href="§root_rel§?action=CommentsAdmin">§Action_CommentsAdmin():title§</a>
 §
 Comments_ActionLinkText_Hidden§Show hidden comments
 §
