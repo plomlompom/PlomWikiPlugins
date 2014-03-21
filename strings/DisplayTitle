@@ -8,10 +8,12 @@
 §
 Action_page_DisplayTitle:title§Define display title for page "§page_title§"
 §
+Action_page_DisplayTitle:string_displaytitle§Display title
+§
 Action_page_DisplayTitle:form§
 <form method="post" action="§title_url§&amp;action=write&amp;t=DisplayTitle">
 <p>
-Display title: <input name="DisplayTitle" type="text" value="§DisplayTitle_Default§">
+§Action_page_DisplayTitle:string_displaytitle§: <input name="DisplayTitle" type="text" value="§DisplayTitle_Default§">
 </p>
 <p>
 Admin §pw§:

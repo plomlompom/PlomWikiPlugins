@@ -275,4 +275,16 @@ EditConflict_Theirs§Neuestes Update:
 §
 EditConflict_Difference§Differenz zu neuestem Update:
 §
+#§########################
+  # Plugin: DisplayTitle #
+  ########################
+§
+Action_page_DisplayTitle:title§Setzte Anzeige-Titel für Seite "§page_title§"
+§
+DisplayTitle_page_ActionLinkTitle§Setze Anzeige-Titel
+§
+Action_page_DisplayTitle:string_displaytitle§Anzeige-Titel
+§
+PrepareWrite_DisplayTitle():NoTitle§Lehrer Anzeige-Titel kann für Seite "§page_title§" nicht akzeptiert werden.
+§
 #§

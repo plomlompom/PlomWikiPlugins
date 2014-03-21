@@ -1,6 +1,6 @@
 <?php
 # PlomWiki plugin: DisplayTitle. Set display-specific alternate titles.
-# 
+#
 # Copyright 2014 Christian Heller / <http://www.plomlompom.de/>
 # License: AGPLv3 or any later version. See file LICENSE for details.
 
@@ -26,7 +26,7 @@ function Action_page_SetDisplayTitle() {
   OutputHTML(); }
 
 function DisplayTitle_getDB() {
-# Return display title DB in an easily readable form.	
+# Return display title DB in an easily readable form.
   global $DisplayTitle_path_DB, $DisplayTitle_DB_separator, $nl;
   if (is_file($DisplayTitle_path_DB)) {
     $lines = explode($nl, file_get_contents($DisplayTitle_path_DB));
@@ -45,9 +45,9 @@ function DisplayTitle_get($pagetitle) {
 
 function DisplayTitle_set($page_title, $tmp_display_title, $tmp) {
 # Set $tmp_display_title content as display title for $page_title. Uses,
-# expects and finally deletes file at $tmp as temporary file. 
+# expects and finally deletes file at $tmp as temporary file.
   global $DisplayTitle_dir, $DisplayTitle_path_DB,
-	     $DisplayTitle_DB_separator, $nl;
+         $DisplayTitle_DB_separator, $nl;
   if (!is_file($tmp))
     return;
   if (!is_dir($DisplayTitle_dir))
@@ -73,7 +73,7 @@ function PrepareWrite_DisplayTitle(&$redir) {
   $display_title = EscapeHTML($display_title);
   $display_title = str_replace($nl, ' ', $display_title);
   if (!$display_title)
-    ErrorFail('PrepareWrite_Blog_Article():NoTitle');
+    ErrorFail('PrepareWrite_DisplayTitle():NoTitle');
   $tmp_display_title = NewTemp($display_title);
   $tmp = NewTemp();
   return 'DisplayTitle_set("'.$title.'", "'.$tmp_display_title.'", "'.
