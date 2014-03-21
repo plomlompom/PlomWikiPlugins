@@ -69,9 +69,9 @@ Action_Blog():NavFooter§
 §Action_Blog():NavOld§
 </p>
 §
-Action_Blog():NavNew_pattern§<a href="§root_rel§?action=Blog&start=§Action_Blog():new_start§&how_many=§Action_Blog():HowMany§">§Action_Blog():NavNewTitle§</a>
+Action_Blog():NavNew_pattern§<a href="§root_rel§?action=Blog&amp;start=§Action_Blog():new_start§&amp;how_many=§Action_Blog():HowMany§">§Action_Blog():NavNewTitle§</a>
 §
-Action_Blog():NavOld_pattern§<a href="§root_rel§?action=Blog&start=§Action_Blog():new_start§&how_many=§Action_Blog():HowMany§">§Action_Blog():NavOldTitle§</a>
+Action_Blog():NavOld_pattern§<a href="§root_rel§?action=Blog&amp;start=§Action_Blog():new_start§&amp;how_many=§Action_Blog():HowMany§">§Action_Blog():NavOldTitle§</a>
 §
 Action_Blog():NavNewTitle§newer articles
 §
