@@ -30,7 +30,7 @@ $diff_path = $diff_dir.$title;
 if ($action == \'Action_page_view\'
    and Blog_PageIsArticle($title) and is_file($diff_path)) {
   $s[\'Blog_Date\'] = Blog_getDateStringFromDiff($diff_path);
-  $s[\'content\'] = $s[\'content\'].$s[\'Blog_BelowEntry\']; }
+  $s[\'BelowTitle\'] .= $s[\'Blog_BelowTitle\']; }
 ';
 
 function Blog_getDB() {

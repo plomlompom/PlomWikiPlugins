@@ -19,9 +19,7 @@ Blog_ActionLinks§
 <a href="§root_rel§?action=Blog">§Blog_ActionLinkText_BlogOverview§</a>
 <a href="§root_rel§?action=Blog_Atom">§Blog_ActionLinkText_BlogFeed§</a>
 §
-Blog_BelowEntry§
-
-<hr>
+Blog_BelowTitle§
 §Blog_Date§
 §
 Action_page_Blogify():title§Blogify page "§page_title§"
@@ -94,7 +92,7 @@ Action_Blog_Atom():Article§
   <entry>
     <id>tag:§Blog_Domain§,§i_date§:§Blog_RootDir§/§title_root§§i_title§</id>
     <updated>§i_datetime§</updated>
-    <link href="§Blog_RootURL§§title_root§§i_title§" />
+    <link rel="alternate" type="text/html" href="http://§Blog_RootURL§§title_root§§i_title§" />
     <title>§i_title§</title>
     <author><name>§i_author§</name></author>
     <content type="html">
