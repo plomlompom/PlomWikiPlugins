@@ -23,13 +23,13 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 §PlomDesign_css§</style>
 <title>§title§</title>
 
-<div style="float:left;">PlomWiki: 
+<div style="float:left;">PlomWiki:
 <a href="§root_rel§?title=Start">§JumpStart§</a>§Search_ActionLinks§§RecentChanges_ActionLinks§(<a href="§root_rel§?action=AtomDiffs">Feed</a>)
 <a href="§root_rel§?action=Comments">§Action_Comments():title§</a> (<a href="§root_rel§?action=AtomComments">Feed</a>)
 <a href="http://flattr.com/thing/14231/plomlompom">Flattern</a>
 </div>
 <div style="text-align: right;">
-<a href="http://meta.plomlompom.de/impressum.html">Impressum</a> 
+<a href="http://meta.plomlompom.de/impressum.html">Impressum</a>
 <a href="http://meta.plomlompom.de/datenschutz.html">Datenschutz-Erklärung</a>
 </div>
 
@@ -44,8 +44,9 @@ body { background-color: #F2F2F2; font-family: sans-serif; }
 <div class="license">§LicensePhrase§</div>
 §
 PlomDesign_ActionLinks§
-<a href="plomwiki.php?title=§page_title§&amp;action=page_view">§View§</a> 
-<a href="plomwiki.php?title=§page_title§&amp;action=page_edit">§Edit§</a> 
+<a href="plomwiki.php?title=§page_title§&amp;action=page_view">§View§</a>
+<a href="plomwiki.php?title=§page_title§&amp;action=page_edit">§Edit§</a>
+<a href="§title_url§&amp;action=page_SetDisplayTitle">§DisplayTitle_page_ActionLinkTitle§</a>
 <a href="plomwiki.php?title=§page_title§&amp;action=page_history">§History§</a>§PwPages_ActionLinks§§Autolink_ActionLinks_page§
 §
 #§#######
@@ -102,7 +103,7 @@ Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;
 §Comments_Name§: <input class="Comments_InputName" name="author" /><br />
 §Comments_URL§: <input class="Comments_InputURL" name="URL" /><br />
 <textarea name="text" class="Comments_Textarea" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§"></textarea><br />
-§Comments_AskCaptcha§ "§Comments_captcha§": 
+§Comments_AskCaptcha§ "§Comments_captcha§":
 <input name="pw" class="Comments_InputCaptcha" size="5" />
 <input name="auth" type="hidden" value="§Comments_key§" />
 <input type="submit" value="OK" />
