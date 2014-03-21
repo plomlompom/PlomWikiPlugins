@@ -30,7 +30,7 @@ Comments():Output§
 Comments():Comment§
 <article id="comment_§i_id§" class="Comments">
 <header><a href="#comment_§i_id§">#§i_id§</a>§i_mod§</header>
-§i_text§<footer><strong>§i_author§</strong> / §i_datetime§</footer>
+§i_text§<footer><strong>§i_author§</strong> / <time>§i_datetime§</time></footer>
 </article>
 
 §
