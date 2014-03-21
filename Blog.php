@@ -166,6 +166,8 @@ function Action_Blog_Atom() {
   $s['Blog_Domain'] = $_SERVER['SERVER_NAME'];
   $s['Blog_RootDir'] = dirname($_SERVER['REQUEST_URI']);
   $s['Blog_RootURL'] = $s['Blog_Domain'].$s['Blog_RootDir'];
+  if (!is_dir($Blog_dir))
+    mkdir($Blog_dir);
 
   # Set/get feed start date.
   if (is_file($Blog_path_AtomStart))
