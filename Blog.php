@@ -142,7 +142,8 @@ function Action_Blog() {
     $article = ReplaceEscapedVars($s['Action_Blog():Article']);
     $articles .= $article.$s['Action_Blog():Separator']; }
   $len_sep = strlen($s['Action_Blog():Separator']);
-  $articles = substr($articles, 0, -$len_sep);
+  if ($len_sep)
+    $articles = substr($articles, 0, -$len_sep);
 
   # Attach appropriate navigation links to finalized articles display.
   if ($start > 1) {
