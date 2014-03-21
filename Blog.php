@@ -147,10 +147,12 @@ function Action_Blog() {
 
   # Attach appropriate navigation links to finalized articles display.
   if ($start > 1) {
-    $s['Action_Blog():new_start'] = $start-$s['Action_Blog():HowMany'];
+    $s['Action_Blog():new_start'] = $start -$s['Action_Blog():HowMany'];
+    echo $s['Action_Blog():new_start'];
     if ($s['Action_Blog():new_start'] < 1)
       $s['Action_Blog():new_start'] = 1;
-    $s['Action_Blog():NavNew'] = $s['Action_Blog():NavNew_pattern']; }
+    $s['Action_Blog():NavNew'] =
+               ReplaceEscapedVars($s['Action_Blog():NavNew_pattern']); }
   if ($start + $s['Action_Blog():HowMany'] - 1 < $i) {
     $s['Action_Blog():new_start'] = $start+$s['Action_Blog():HowMany'];
     $s['Action_Blog():NavOld'] = $s['Action_Blog():NavOld_pattern']; }
