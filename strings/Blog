@@ -1,0 +1,106 @@
+§
+#§######################################################################
+  # Blog plugin strings file.                                          #
+  #                                                                    #
+  # Copyright 2014 Christian Heller / <http://www.plomlompom.de/>      #
+  # License: AGPLv3 or any later version. See file LICENSE for details.#
+  ######################################################################
+§
+Blog_page_ActionLinkTitle§Blogify
+§
+Blog_page_ActionLinks§
+<a href="§title_url§&amp;action=page_Blogify">§Blog_page_ActionLinkTitle§</a>
+§
+Blog_ActionLinkText_BlogOverview§Blog overview
+§
+Blog_ActionLinkText_BlogFeed§Blog Feed
+§
+Blog_ActionLinks§
+<a href="§root_rel§?action=Blog">§Blog_ActionLinkText_BlogOverview§</a>
+<a href="§root_rel§?action=Blog_Atom">§Blog_ActionLinkText_BlogFeed§</a>
+§
+Blog_BelowEntry§
+
+<hr>
+§Blog_Date§
+§
+Action_page_Blogify():title§Blogify page "§page_title§"
+§
+Action_page_Blogify():check_blogify_title§Publish as blog article?
+§
+Action_page_Blogify():form§
+<form method="post" action="§title_url§&amp;action=write&amp;t=Blog_Article">
+<p>
+
+§Action_page_Blogify():check_blogify_title§
+<input name="blog" type="checkbox" §Action_page_Blogify():checked§/>
+</p>
+<p>
+Admin §pw§:
+<input type="hidden" name="auth" value="*">
+<input type="password" name="pw">
+<input type="submit"   value="OK" />
+</p>
+</form>
+§
+PrepareWrite_Blog_Article():NoPage§Can't publish page "§PrepareWrite_Blog_Article():pagetitle§" as blog article, for it does not exist.
+§
+Blog_SetOverviewArticleData():CommentsTitle§Comments
+§
+#Blog_SetOverviewArticleData():CommentsPattern§§Blog_SetOverviewArticleData():CommentsTitle§: §i_comments_n§
+§
+Blog_SetOverviewArticleData():MetaWithComments§§i_date§ / §Blog_SetOverviewArticleData():CommentsTitle§: §i_comments_n§
+§
+Blog_SetOverviewArticleData():MetaSansComments§§i_date§
+§
+Action_Blog():Title§Blog overview
+§
+Action_Blog():Article§
+<h1><a href="§title_root§§i_title§">§i_display_title§</a></h1>
+§i_content§
+§Action_Blog():Separator§
+<p>§Blog_SetOverviewArticleData():Meta§</p>
+
+§
+Action_Blog():Separator§<hr>
+§
+Action_Blog():NavFooter§
+§Action_Blog():Separator§
+<p>
+§Action_Blog():NavNew§
+§Action_Blog():NavOld§
+</p>
+§
+Action_Blog():NavNew_pattern§<a href="§root_rel§?action=Blog&start=§Action_Blog():new_start§&how_many=§Action_Blog():HowMany§">§Action_Blog():NavNewTitle§</a>
+§
+Action_Blog():NavOld_pattern§<a href="§root_rel§?action=Blog&start=§Action_Blog():new_start§&how_many=§Action_Blog():HowMany§">§Action_Blog():NavOldTitle§</a>
+§
+Action_Blog():NavNewTitle§newer articles
+§
+Action_Blog():NavOldTitle§older articles
+§
+Action_Blog_Atom():FeedTitle§PlomWiki Blog Feed
+§
+Action_Blog_Atom():output§<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>tag:§Blog_Domain§,§Blog_AtomStart§:§Blog_RootDir§/§root_rel§?action=Blog_Feed</id>
+  <updated>§Action_Blog_Atom():LastUpdate§</updated>
+  <title>§Action_Blog_Atom():FeedTitle§</title>
+  <link rel="self" href="http://§Blog_RootURL§/§root_rel§?action=Blog_Atom" />
+  §Action_Blog_Atom():Articles§
+</feed>
+§
+Action_Blog_Atom():Article§
+  <entry>
+    <id>tag:§Blog_Domain§,§i_date§:§Blog_RootDir§/§title_root§§i_title§</id>
+    <updated>§i_datetime§</updated>
+    <link href="§Blog_RootURL§§title_root§§i_title§" />
+    <title>§i_title§</title>
+    <author><name>§i_author§</name></author>
+    <content type="html">
+§i_content§
+    </content>
+  </entry>
+
+§
+#§
