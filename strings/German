@@ -243,9 +243,9 @@ Action_AtomAdmin():NameOfDiffsFeed§Name des Diffs-Feeds
 §
 Action_AtomComments():on§zu
 §
-Atom_DiffAdd§Neue Seite: 
+Atom_DiffAdd§Neue Seite:
 §
-Atom_DiffDel§Seite gelöscht: 
+Atom_DiffDel§Seite gelöscht:
 §
 Atom_DiffDelAuthor§unbekannt
 §
@@ -261,7 +261,7 @@ Atom_ActionLinkText_Comments§Feed Kommentare
   # Plugin: EditConflict #
   ########################
 §
-EditConflict_ErrorSame§Bearbeitungs-(Nicht-)Konflikt: Offenbar ist dir jemand mit präzise demselben Bearbeitungs-Schritt zuvor gekommen. 
+EditConflict_ErrorSame§Bearbeitungs-(Nicht-)Konflikt: Offenbar ist dir jemand mit präzise demselben Bearbeitungs-Schritt zuvor gekommen.
 §
 Action_EditConflict():title§Bearbeitungs-Konflikt bei Seite "§page_title§"
 §
