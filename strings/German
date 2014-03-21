@@ -279,12 +279,38 @@ EditConflict_Difference§Differenz zu neuestem Update:
   # Plugin: DisplayTitle #
   ########################
 §
-Action_page_DisplayTitle:title§Setzte Anzeige-Titel für Seite "§page_title§"
+Action_page_DisplayTitle:title§Setze Anzeige-Titel für Seite "§page_title§"
 §
-DisplayTitle_page_ActionLinkTitle§Setze Anzeige-Titel
+DisplayTitle_page_ActionLinkTitle§Anzeige-Titel setzen
 §
 Action_page_DisplayTitle:string_displaytitle§Anzeige-Titel
 §
 PrepareWrite_DisplayTitle():NoTitle§Lehrer Anzeige-Titel kann für Seite "§page_title§" nicht akzeptiert werden.
+§
+#§################
+  # Plugin: Blog #
+  ################
+§
+Blog_page_ActionLinkTitle§Blogifizieren
+§
+Blog_ActionLinkText_BlogOverview§Blog-Übersicht
+§
+Blog_ActionLinkText_BlogFeed§Blog-Feed
+§
+Action_page_Blogify():title§Seite "§page_title§" blogifizieren
+§
+Action_page_Blogify():check_blogify_title§Als Blog-Artikel veröffentlichen?
+§
+PrepareWrite_Blog_Article():NoPage§Kann Seite "§PrepareWrite_Blog_Article():pagetitle§" nicht als Blog-Artikel veröffentlichen, denn sie existiert nicht.
+§
+Blog_SetOverviewArticleData():CommentsTitle§Kommentare
+§
+Action_Blog():Title§Blog-Übersicht
+§
+Action_Blog():NavNewTitle§neuere Artikel
+§
+Action_Blog():NavOldTitle§ältere Artikel
+§
+Action_Blog_Atom():FeedTitle§PlomWiki-Blog-Feed
 §
 #§
