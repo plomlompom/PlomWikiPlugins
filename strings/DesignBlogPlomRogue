@@ -1,0 +1,182 @@
+§
+#§######################################################################
+  # DesignBlogPlomRogue plugin strings file.                           #
+  #                                                                    #
+  # Copyright 2014 Christian Heller / <http://www.plomlompom.de/>      #
+  # License: AGPLv3 or any later version. See file LICENSE for details.#
+  #                                                                    #
+  # LOTS of HTML+CSS advice was provided by Nils Dagsson Moskopp       #
+  ######################################################################
+§
+#§######1##
+  # Code #
+  ########
+§
+#§#################
+  # Main template #
+  #################
+§
+WikiTitle§PlomRogue Development Blog
+§
+LicensePhrase§Website built with <a href="§URL_Source§">PlomWiki</a> and its <a href="https://github.com/plomlompom/PlomWikiPlugins">plugins</a>, all licensed under the <a href="§URL_AGPLv3§">AGPLv3</a>.
+§
+DesignBlogPlomRogue_ContentDisplay§<h1>§title§</h1>
+
+§content§
+§
+DesignBlogPlomRogue_TitleTagContent§§WikiTitle§: §title§
+§
+DesignBlogPlomRogue_TitleTagContent_Overview§§WikiTitle§: overview
+§
+design§<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>§DesignBlogPlomRogue_TitleTagContent§</title>
+<link rel="alternate" type="application/atom+xml" href="§root_rel§?action=Blog_Atom">
+<style type="text/css">
+body { line-height: 1.5; font-size: 1em; }
+body > h1 { font-size: 1em; float: left; font-weight: normal; }
+#header-nav { text-align: right; border-bottom: 1px solid black; }
+nav > ul, body > h1 { margin: 0; padding: 0; }
+nav > ul > li { display: inline-block; margin: 0 0.25em; }
+body > article, #comment_form, #pagination { margin: auto; min-width: 15em; max-width: 36em; padding: 0 1.5em; }
+body > article { margin-bottom: 3em; }
+header { margin-bottom: 1.5em; padding: 0; }
+article h1 { margin-bottom: 0; font-size: 2em; margin-top: 0.75em; }
+section h1 { font-size: 1.5em; }
+#pagination { text-align: center; border-top: 1px solid black; }
+body > footer { border-top: 1px solid black; margin-top: 3em; }
+#comments { border-top: 1px solid black; }
+#comments article, #comment_form { margin-top: 3em; }
+#comments { margin-top: 1.5em; }
+#comments footer { margin-top: 0.5em; }
+label { display: block; margin: 0.75em 0; padding-right: 50%; position: relative; }
+label > input { width: 50%; position: absolute; left: 50%; }
+input[type=submit] { padding: 0.75em; }
+textarea, input[type=submit] { width: 100% }
+p { margin: 0; }
+p + p { text-indent:1.5em; margin-top: 1.5em; }
+code, kbd, var { font-family: monospace; white-space: pre-wrap; }
+pre { background-color: #000; color: #fff;  }
+pre { display: inline-block; padding: 0.75em; margin-left: -0.75em; overflow-x: visible; }
+img { max-width: 100%; margin-top: 0.75em; margin-bottom: 0.75em; }
+</style>
+
+<h1><a href="§root_rel§?action=Blog">§WikiTitle§</a></h1>
+<nav id="header-nav">
+<ul>
+<li><a href="§root_rel§?action=Blog_Atom">Feed</a>
+<li><a href="http://meta.plomlompom.de/impressum.html">Imprint  (German)</a>
+<li><a href="http://meta.plomlompom.de/datenschutz.html">Privacy Policy (German)</a>
+</ul>
+</nav>
+
+§DesignBlogPlomRogue_ContentDisplay§
+
+<footer>
+§LicensePhrase§
+</footer>
+§
+Action_page_edit():form§<form method="post" action="§title_url§&amp;action=write&amp;t=page">
+<textarea name="text" rows="§Action_page_edit():TextareaRows§">
+§text§</textarea>§Action_page_edit():form_Plugins§
+§Author§: <input name="author" type="text" />
+§Summary§: <input name="summary" type="text" />
+§PageEditAuth§
+<input type="submit" value="OK" />
+</form>
+§
+#§###########
+  # Plugins #
+  ###########
+§
+Blog_BelowEntry§
+
+§Blog_Date§
+§
+DesignBlogPlomRogue_Comments_CloseArticle§</article>
+
+§
+Comments():None§
+<p>§Comments_None§</p>
+
+§
+Comments():FormHead§<h1>§Comments_Write§</h1>
+
+§
+Comments():Output§
+
+<section id="comments">
+
+<h1>§Comments§</h1>
+§Comments():Comments§
+</section>
+
+§DesignBlogPlomRogue_AboveCommentsInput§
+<section id="comment_form">
+§Comments():Input§
+</section>
+§
+Comments():Comment§
+<article id="comment_§i_id§">
+§i_text§
+<footer><a href="#comment_§i_id§">#§i_id§</a> / <time>§i_datetime§</time> / §i_author§ §i_mod§</footer>
+</article>
+
+§
+Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;t=Comments">
+<label>§Comments_Name§: <input name="author" /></label>
+<label>§Comments_URL§: <input name="URL" /></label>
+<textarea name="text" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§">
+</textarea>
+<label>§Comments_AskCaptcha§ "§Comments_captcha§": <input name="pw" size="5" /></label>
+<input name="auth" type="hidden" value="§Comments_key§" />
+<input type="submit" value="OK" />
+</form>
+§
+DesignBlogPlomRogue_ContentDisplay_BlogArticle§<article>
+
+<header>
+<h1>§title§</h1>
+§Blog_BelowTitle§
+</header>
+
+§content§
+§
+DesignBlogPlomRogue_ContentDisplay_BlogOverview§§content§
+§
+Blog_SetOverviewArticleData():MetaWithComments§<time>§i_date§</time> / <a href="§title_root§§i_title§#comments">§Blog_SetOverviewArticleData():CommentsTitle§: §i_comments_n§</a>
+§
+Action_Blog():Article§<article>
+<header>
+<h1><a href="§title_root§§i_title§">§i_display_title§</a></h1>
+§Blog_SetOverviewArticleData():Meta§
+</header>
+§i_content§
+</article>
+§
+Action_Blog():Separator§
+
+
+§
+Blog_ActionLinkText_BlogOverview§Articles
+§
+Blog_ActionLinkText_BlogFeed§Feed
+§
+Action_Blog():Title§§WikiTitle§
+§
+Action_Blog_Atom():FeedTitle§PlomRogue Development Blog Feed
+§
+Action_Blog():NavNew_pattern§
+<li><a href="§root_rel§?action=Blog&amp;start=§Action_Blog():new_start§&amp;how_many=§Action_Blog():HowMany§">§Action_Blog():NavNewTitle§</a>
+§
+Action_Blog():NavOld_pattern§
+<li><a href="§root_rel§?action=Blog&amp;start=§Action_Blog():new_start§&amp;how_many=§Action_Blog():HowMany§">§Action_Blog():NavOldTitle§</a>
+§
+Action_Blog():NavFooter§
+
+<nav id="pagination">
+<ul>§Action_Blog():NavNew§§Action_Blog():NavOld§
+</ul>
+</nav>
+§
+#§
