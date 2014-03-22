@@ -58,7 +58,7 @@ p + p { text-indent:1.5em; margin-top: 1.5em; }
 code, kbd, var { font-family: monospace; white-space: pre-wrap; }
 pre { background-color: #000; color: #fff;  }
 pre { display: inline-block; padding: 0.75em; margin-left: -0.75em; overflow-x: visible; }
-img { max-width: 100%; margin-top: 0.75em; margin-bottom: 0.75em; }
+img { max-width: 100%; margin-top: 1.5em; margin-bottom: 1.5em; }
 </style>
 
 <h1><a href="§root_rel§?action=Blog">§WikiTitle§</a></h1>
@@ -128,7 +128,7 @@ Comments():form§<form method="post" action="§title_url§&amp;action=write&amp;
 <label>§Comments_URL§: <input name="URL" /></label>
 <textarea name="text" rows="§Comments_TextareaRows§" cols="§Comments_TextareaCols§">
 </textarea>
-<label>§Comments_AskCaptcha§ "§Comments_captcha§": <input name="pw" size="5" /></label>
+<label>Write <a href="http://en.wikipedia.org/wiki/CAPTCHA">captcha</a> "§Comments_captcha§": <input name="pw" size="5" /></label>
 <input name="auth" type="hidden" value="§Comments_key§" />
 <input type="submit" value="OK" />
 </form>
