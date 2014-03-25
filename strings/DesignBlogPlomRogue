@@ -34,7 +34,7 @@ design§<!DOCTYPE html>
 <link rel="alternate" type="application/atom+xml" href="§root_rel§?action=Blog_Atom">
 <style type="text/css">
 body { line-height: 1.5; font-size: 1em; }
-body > h1 { font-size: 1em; float: left; font-weight: normal; }
+#wiki_title { font-size: 1em; float: left; font-weight: normal; }
 #header-nav { text-align: right; border-bottom: 1px solid black; }
 nav > ul, body > h1 { margin: 0; padding: 0; }
 nav > ul > li { display: inline-block; margin: 0 0.25em; }
@@ -42,7 +42,7 @@ body > article, #comment_form, #pagination { margin: auto; min-width: 15em; max-
 body > article { margin-bottom: 3em; }
 header { margin-bottom: 1.5em; padding: 0; }
 article h1 { margin-bottom: 0; font-size: 2em; margin-top: 0.75em; }
-section h1 { font-size: 1.5em; }
+article h2 , section h1{ font-size: 1.5em; }
 #pagination { text-align: center; border-top: 1px solid black; }
 body > footer { border-top: 1px solid black; margin-top: 3em; }
 #comments { border-top: 1px solid black; }
@@ -62,7 +62,7 @@ pre { display: inline-block; padding: 0.75em; margin-left: -0.75em; overflow-x: 
 img { width: 100%; margin-top: 1.5em; margin-bottom: 1.5em; }
 </style>
 
-<h1><a href="§root_rel§?action=Blog">§WikiTitle§</a></h1>
+<h1 id="wiki_title"><a href="§root_rel§?action=Blog">§WikiTitle§</a></h1>
 <nav id="header-nav">
 <ul>
 <li><a href="§root_rel§?action=Blog_Atom">Feed</a>
