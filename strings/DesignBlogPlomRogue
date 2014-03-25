@@ -46,9 +46,10 @@ section h1 { font-size: 1.5em; }
 #pagination { text-align: center; border-top: 1px solid black; }
 body > footer { border-top: 1px solid black; margin-top: 3em; }
 #comments { border-top: 1px solid black; }
-#comments article, #comment_form { margin-top: 3em; }
+#comment_form, #comments article + article { margin-top: 3em; }
 #comments { margin-top: 1.5em; }
 #comments footer { margin-top: 0.5em; }
+#comments h1 { margin-bottom: 0.75em; }
 label { display: block; margin: 0.75em 0; padding-right: 50%; position: relative; }
 label > input { width: 50%; position: absolute; left: 50%; }
 input[type=submit] { padding: 0.75em; }
