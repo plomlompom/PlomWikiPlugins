@@ -99,7 +99,7 @@ function PrepareWrite_Blog_Article(&$redir) {
 function Blog_getDateStringFromDiff($diff_path) {
 # Return creation date for page of $diff_path in Y-m-d format.
   $diff_list = DiffList($diff_path);
-  $date = $diff_list[count($diff_list) - 1]['time'];
+  $date = $diff_list[0]['time'];
   return date('Y-m-d', (int) $date); }
 
 function Blog_SetOverviewArticleData($title) {

@@ -58,7 +58,7 @@ p + p { text-indent:1.5em; margin-top: 1.5em; }
 code, kbd, var { font-family: monospace; white-space: pre-wrap; }
 pre { background-color: #000; color: #fff;  }
 pre { display: inline-block; padding: 0.75em; margin-left: -0.75em; overflow-x: visible; }
-img { max-width: 100%; margin-top: 1.5em; margin-bottom: 1.5em; }
+img { width: 100%; margin-top: 1.5em; margin-bottom: 1.5em; }
 </style>
 
 <h1><a href="§root_rel§?action=Blog">§WikiTitle§</a></h1>
