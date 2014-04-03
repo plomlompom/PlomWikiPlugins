@@ -23,15 +23,32 @@ $txt_PluginsTodo .= "
 Blog_UpdatePageAsArticle(\'$title\', $Blog_del, \'$Blog_tmp\');";
 ';
 
-# Prepend date display to blogified articles in "page_view" action.
-$hook_OutputHTML .= '
-global $action, $pages_dir, $diff_dir, $title;
-$diff_path = $diff_dir.$title;
-if ($action == \'Action_page_view\'
-   and Blog_PageIsArticle($title) and is_file($diff_path)) {
-  $s[\'Blog_Date\'] = Blog_getDateStringFromDiff($diff_path);
-  $s[\'BelowTitle\'] .= $s[\'Blog_BelowTitle\']; }
+# Prepend to blogified articles metadata prepared by Blog_BelowTitle().
+$hook_before_action .= '
+if ($action == \'Action_page_view\')
+  Blog_BelowTitle($title);
 ';
+
+function Blog_BelowTitle() {
+# Append below blog article title date and prev/next navigation links.
+  global $diff_dir, $s, $title;
+  $diff_path = $diff_dir.$title;
+  if (!Blog_PageIsArticle($title) or !is_file($diff_path))
+    return;
+  $s['Blog_Date'] = Blog_getDateStringFromDiff($diff_path);
+  foreach (array_keys(Blog_getDB()) as $i_title) {
+    if      ($title == $i_title)
+      $s['Blog_BelowTitle():later_title'] = $i_later_title;
+    else if ($i_later_title == $title) {
+      $s['Blog_BelowTitle():earlier_title'] = $i_title;
+      break; }
+    $i++;
+    $i_later_title = $i_title; }
+  if ($s['Blog_BelowTitle():later_title'])
+    $s['Blog_BelowTitle():next'] = $s['Blog_BelowTitle():next_pattern'];
+  if ($s['Blog_BelowTitle():earlier_title'])
+    $s['Blog_BelowTitle():prev'] = $s['Blog_BelowTitle():prev_pattern'];
+  $s['BelowTitle'] .= $s['Blog_BelowTitle():result']; }
 
 function Blog_getDB() {
 # Return Blog DB in easily readable form.

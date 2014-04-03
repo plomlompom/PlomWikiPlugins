@@ -42,6 +42,9 @@ body > article, #comment_form, #pagination { margin: auto; min-width: 15em; max-
 body > article { margin-bottom: 3em; }
 header { margin-bottom: 1.5em; padding: 0; }
 article h1 { margin-bottom: 0; font-size: 2em; margin-top: 0.75em; }
+article nav { display: inline-block; }
+article nav + time { margin-left: 0.5em; }
+article time + nav { margin-left: 0.5em; }
 article h2 , section h1{ font-size: 1.5em; }
 #pagination { text-align: center; border-top: 1px solid black; }
 body > footer { border-top: 1px solid black; margin-top: 3em; }
@@ -138,10 +141,16 @@ DesignBlogPlomRogue_ContentDisplay_BlogArticle§<article>
 
 <header>
 <h1>§title§</h1>
-§Blog_BelowTitle§
+§Blog_BelowTitle():result§
 </header>
 
 §content§
+§
+Blog_BelowTitle():prev_pattern§<nav><a href="§title_root§§Blog_BelowTitle():earlier_title§">&larr;</a></nav>
+
+§
+Blog_BelowTitle():next_pattern§
+<nav><a href="§title_root§§Blog_BelowTitle():later_title§">&rarr;</a></nav>
 §
 DesignBlogPlomRogue_ContentDisplay_BlogOverview§§content§
 §
