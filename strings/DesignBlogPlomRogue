@@ -68,6 +68,7 @@ img { width: 100%; margin-top: 1.5em; margin-bottom: 1.5em; }
 <h1 id="wiki_title"><a href="§root_rel§?action=Blog">§WikiTitle§</a></h1>
 <nav id="header-nav">
 <ul>
+<li><a href="http://github.com/plomlompom/plomrogue">PlomRogue on GitHub</a>
 <li><a href="§root_rel§?action=Blog_Atom">Feed</a>
 <li><a href="http://meta.plomlompom.de/impressum.html">Imprint  (German)</a>
 <li><a href="http://meta.plomlompom.de/datenschutz.html">Privacy Policy (German)</a>
