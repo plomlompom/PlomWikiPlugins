@@ -64,13 +64,15 @@ function Autolink_Markup($text) {
     # title from $titles, a list generated from the matches of
     # $regex_pagename on the other titles of $links_out.
     $avoid  = '(?=[^>]*($|<(?!\/(a|script))))';
-    $match  = '/('.$regex_pagename.')'.$avoid.'/ieu';
+    $match  = '/('.$regex_pagename.')'.$avoid.'/iu';
     $titles = array();
-    foreach ($links_out as $x)
-      if (preg_match('/'.$regex_pagename.'/ieu', $x))
-        $titles[] = $x;
-    $repl   = 'Autolink_SetLink("$1", $titles)';
-    $text   = preg_replace($match, $repl, $text); }
+    foreach ($links_out as $link_out)
+      if (preg_match('/'.$regex_pagename.'/iu', $link_out))
+        $titles[] = $link_out;
+    $text   = preg_replace_callback($match,
+      function($match) use (&$titles) {
+        return Autolink_SetLink($match[1], $titles); },
+      $text); }
 
   return $text; }
 
